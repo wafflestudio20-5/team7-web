@@ -6,5 +6,11 @@ module.exports = {
     'import/no-unresolved': 1,
     'import/extensions': 1,
     'no-unused-vars': 1,
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
   },
 };

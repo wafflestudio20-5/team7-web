@@ -1,7 +1,10 @@
 module.exports = {
   env: { browser: true, es6: true, node: true },
-  extends: ['eslint:recommended', 'airbnb', 'plugin:prettier/recommended'],
+  extends: ['airbnb', 'plugin:prettier/recommended'],
   rules: {
-    'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
+    'react/jsx-filename-extension': 1,
+    'import/no-unresolved': 1,
+    'import/extensions': 1,
+    'no-unused-vars': 1,
   },
 };

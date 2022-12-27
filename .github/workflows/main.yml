@@ -9,7 +9,7 @@ jobs:
   deploy:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout source code.
         uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
         run: yarn --prefer-offline
 
       - name: Build
-        run: yarn build
+        run: CI= yarn build
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1

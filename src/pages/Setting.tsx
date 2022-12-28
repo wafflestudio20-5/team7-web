@@ -1,1 +1,7 @@
-export default function Setting() {}
+import React from 'react';
+
+function Setting() {
+  return <div>Setting</div>;
+}
+
+export default Setting;

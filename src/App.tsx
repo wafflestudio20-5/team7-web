@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
@@ -18,6 +17,8 @@ import Personal from './pages/Personal';
 import PersonalSeries from './pages/PersonalSeries';
 import PersonalSeriesName from './pages/PersonalSeriesName';
 import PersonalAbout from './pages/PersonalAbout';
+import PersonalPost from './pages/PersonalPost';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (

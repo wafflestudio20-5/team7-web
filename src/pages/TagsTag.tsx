@@ -1,1 +1,7 @@
-export default function TagsTag() {}
+import React from 'react';
+
+function TagsTag() {
+  return <div>TagsTag</div>;
+}
+
+export default TagsTag;

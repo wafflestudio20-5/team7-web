@@ -1,25 +1,52 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import Recent from './pages/Recent';
+import Search from './pages/Search';
+import Write from './pages/Write';
+import Saves from './pages/Saves';
+import Setting from './pages/Setting';
+import Follows from './pages/Follows';
+import ListsLiked from './pages/ListsLiked';
+import ListsRead from './pages/ListsRead';
+import ListsFollowing from './pages/ListsFollowing';
+import Tags from './pages/Tags';
+import TagsTag from './pages/TagsTag';
+import Personal from './pages/Personal';
+import PersonalSeries from './pages/PersonalSeries';
+import PersonalSeriesName from './pages/PersonalSeriesName';
+import PersonalAbout from './pages/PersonalAbout';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload. deploy test.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/recent" element={<Recent />} />
+      <Route path="/search" element={<Search />} />
+      <Route path="/write" element={<Write />} />
+      <Route path="/saves" element={<Saves />} />
+      <Route path="/setting" element={<Setting />} />
+      <Route path="/follows" element={<Follows />} />
+      <Route path="/lists">
+        <Route path="liked" element={<ListsLiked />} />
+        <Route path="read" element={<ListsRead />} />
+        <Route path="following" element={<ListsFollowing />} />
+        <Route path="" element={<NotFound />} />
+      </Route>
+      <Route path="/tags" element={<Tags />}>
+        <Route path=":tag" element={<TagsTag />} />
+      </Route>
+      <Route path="/:id" element={<Personal />}>
+        <Route path="series" element={<PersonalSeries />}>
+          <Route path=":seriesName" element={<PersonalSeriesName />} />
+        </Route>
+        <Route path="about" element={<PersonalAbout />} />
+        <Route path=":postTitle" element={<PersonalPost />} />
+      </Route>
+      <Route path="/*" element={<NotFound />} />
+    </Routes>
   );
 }
 

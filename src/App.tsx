@@ -36,11 +36,14 @@ function App() {
         <Route path="following" element={<ListsFollowing />} />
         <Route path="" element={<NotFound />} />
       </Route>
-      <Route path="/tags" element={<Tags />}>
+      <Route path="/tags">
+        <Route path="" element={<Tags />} />
         <Route path=":tag" element={<TagsTag />} />
       </Route>
-      <Route path="/:id" element={<Personal />}>
-        <Route path="series" element={<PersonalSeries />}>
+      <Route path="/:id">
+        <Route path="" element={<Personal />} />
+        <Route path="series">
+          <Route path="" element={<PersonalSeries />} />
           <Route path=":seriesName" element={<PersonalSeriesName />} />
         </Route>
         <Route path="about" element={<PersonalAbout />} />

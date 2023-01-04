@@ -23,8 +23,6 @@ function Write() {
     return tree;
   };
 
-  // const markdownElem = document.getElementById('markdown');
-  // const previewElem = document.getElementById('preview');
   const markdownElem = editorRef.current;
   const previewElem = previewRef.current;
 
@@ -53,7 +51,6 @@ function Write() {
   };
 
   const handleMdScroll = () => {
-    console.log(mouseIsOn.current);
     if (mouseIsOn.current !== 'markdown') {
       return;
     }

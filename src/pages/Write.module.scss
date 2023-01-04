@@ -1,0 +1,31 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+#editor_wrapper {
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+#markdown {
+  height: 100%;
+  flex: 0 0 50%;
+  padding: 0 12px 0 0;
+  overflow-y: auto;
+}
+
+#preview {
+  font-size: 14px; /*make it same as codemirror */
+  height: 100%;
+  flex: 0 0 50%;
+  padding: 0 0 0 12px;
+  border-left: solid 1px #ddd;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#preview * {
+  overflow-x: auto;
+}

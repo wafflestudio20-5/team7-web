@@ -6,6 +6,14 @@ import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react/lib';
 import useCodemirror from '../hooks/useCodemirror';
 import styles from './Write.module.scss';
+import { ReactComponent as BoldIcon } from '../assets/markdown_bold.svg';
+import { ReactComponent as ItalicIcon } from '../assets/markdown_italic.svg';
+import { ReactComponent as StrikeIcon } from '../assets/markdown_strike.svg';
+import { ReactComponent as BlockquoteIcon } from '../assets/markdown_blockquote.svg';
+import { ReactComponent as LinkIcon } from '../assets/markdown_link.svg';
+import { ReactComponent as ImageIcon } from '../assets/markdown_image.svg';
+import { ReactComponent as CodeblockIcon } from '../assets/markdown_codeblock.svg';
+import { ReactComponent as BackIcon } from '../assets/back.svg';
 
 let treeData: any;
 
@@ -141,19 +149,82 @@ function Write() {
 
   return (
     <div id={styles.editor_wrapper}>
-      <div
-        id={styles.markdown}
-        ref={editorRef}
-        onScroll={handleMdScroll}
-        onMouseEnter={() => setMouseIsOn('markdown')}
-      />
-      <div
-        id={styles.preview}
-        ref={previewRef}
-        onScroll={handlePreviewScroll}
-        onMouseEnter={() => setMouseIsOn('preview')}
-      >
-        {md}
+      <div className={styles.md_container}>
+        <div className={styles.md_header}>
+          <textarea placeholder="제목을 입력하세요" className={styles.md_title}>
+            fe
+          </textarea>
+          <div className={styles.md_title_underline} />
+          <div className={styles.md_tag_container}>
+            <input placeholder="태그를 입력하세요" className={styles.md_tag} />
+            <div className={styles.md_tag_underline} />
+          </div>
+        </div>
+        <div id={styles.md_toolbar}>
+          {[1, 2, 3, 4].map(val => {
+            return (
+              <button type="button" value={val}>
+                <div>
+                  H<span>{val}</span>
+                </div>
+              </button>
+            );
+          })}
+          <div className={styles.md_toolbar_partition} />
+          <button type="button">
+            <BoldIcon />
+          </button>
+          <button type="button">
+            <ItalicIcon />
+          </button>
+          <button type="button">
+            <StrikeIcon />
+          </button>
+          <div className={styles.md_toolbar_partition} />
+          <button type="button">
+            <BlockquoteIcon />
+          </button>
+          <button type="button">
+            <LinkIcon />
+          </button>
+          <button type="button">
+            <ImageIcon />
+          </button>
+          <button type="button">
+            <CodeblockIcon />
+          </button>
+        </div>
+        <div
+          id={styles.markdown}
+          ref={editorRef}
+          onScroll={handleMdScroll}
+          onMouseEnter={() => setMouseIsOn('markdown')}
+        />
+        <div className={styles.md_footer}>
+          <button type="button" className={styles.md_footer_back}>
+            <BackIcon />
+            <span>나가기</span>
+          </button>
+          <div className={styles.md_footer_right}>
+            <button type="button" className={styles.md_footer_save}>
+              임시 저장
+            </button>
+            <button type="button" className={styles.md_footer_publish}>
+              출간하기
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className={styles.pv_container}>
+        <h1 className={styles.pv_title}>ff</h1>
+        <div
+          id={styles.preview}
+          ref={previewRef}
+          onScroll={handlePreviewScroll}
+          onMouseEnter={() => setMouseIsOn('preview')}
+        >
+          {md}
+        </div>
       </div>
     </div>
   );

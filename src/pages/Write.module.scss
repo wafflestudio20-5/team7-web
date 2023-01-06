@@ -230,7 +230,7 @@
 .pv_container {
   height: 100%;
   flex: 0 0 50%;
-  padding: 0 3rem 3rem 3rem;
+  padding: 0 3rem 0 3rem;
   color: #212529; //var(--text1);
   display: flex;
   flex-direction: column;
@@ -246,7 +246,7 @@
       max-height: 0px;
       opacity: 0;
       margin-top: 0;
-      margin-bottom: 3rem;
+      margin-bottom: 0;
     }
   }
 
@@ -263,5 +263,9 @@
     * {
       overflow-x: auto;
     }
+  }
+
+  .pv_footer {
+    margin-bottom: 3rem;
   }
 }

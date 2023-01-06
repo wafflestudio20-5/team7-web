@@ -239,6 +239,7 @@ function Write() {
           onMouseEnter={() => setMouseIsOn('preview')}
         >
           {md}
+          <div className={styles.pv_footer} />
         </div>
       </div>
     </div>

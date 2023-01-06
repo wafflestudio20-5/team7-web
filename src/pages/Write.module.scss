@@ -230,13 +230,14 @@
 .pv_container {
   height: 100%;
   flex: 0 0 50%;
-  padding: 3rem;
+  padding: 0 3rem 3rem 3rem;
   color: #212529; //var(--text1);
   display: flex;
   flex-direction: column;
 
   .pv_title {
     font-size: 2.5em;
+    margin-top: 3rem;
     margin-bottom: 4rem;
     font-weight: 800;
     transition: all 0.125s ease-in 0s;
@@ -244,7 +245,8 @@
     &.hide {
       max-height: 0px;
       opacity: 0;
-      margin-bottom: 0rem;
+      margin-top: 0;
+      margin-bottom: 3rem;
     }
   }
 

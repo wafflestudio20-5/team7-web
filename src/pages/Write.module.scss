@@ -19,6 +19,14 @@
     padding-top: 2rem;
     padding-left: 3rem;
     padding-right: 3rem;
+    max-height: 432px;
+    transition: all 0.125s ease-in 0s;
+
+    &.hide {
+      max-height: 0px;
+      opacity: 0;
+      padding-top: 0rem;
+    }
   }
 
   .md_title {
@@ -72,7 +80,7 @@
     transition: all 0.125s ease-in 0s;
   }
 
-  #md_toolbar {
+  .md_toolbar {
     top: 0px;
     display: flex;
     -webkit-box-align: center;
@@ -85,6 +93,11 @@
     padding-left: 3rem;
     padding-right: 3rem;
     width: auto;
+
+    &.hide {
+      margin-bottom: 0rem;
+      box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 8px;
+    }
 
     button {
       width: 3rem;
@@ -226,6 +239,13 @@
     font-size: 2.5em;
     margin-bottom: 4rem;
     font-weight: 800;
+    transition: all 0.125s ease-in 0s;
+
+    &.hide {
+      max-height: 0px;
+      opacity: 0;
+      margin-bottom: 0rem;
+    }
   }
 
   #preview {

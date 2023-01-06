@@ -4,6 +4,7 @@ import remarkParse from 'remark-parse/lib';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react/lib';
+import classNames from 'classnames/bind';
 import useCodemirror from '../hooks/useCodemirror';
 import styles from './Write.module.scss';
 import { ReactComponent as BoldIcon } from '../assets/markdown_bold.svg';
@@ -16,9 +17,11 @@ import { ReactComponent as CodeblockIcon } from '../assets/markdown_codeblock.sv
 import { ReactComponent as BackIcon } from '../assets/back.svg';
 
 let treeData: any;
+const cx = classNames.bind(styles);
 
 function Write() {
   const [doc, setDoc] = useState('# Hello byome');
+  const [isHide, setHide] = useState(false);
   const { ref: editorRef, view: editorView } = useCodemirror({
     initialDoc: doc,
     setDoc,
@@ -87,6 +90,12 @@ function Write() {
       return;
     }
 
+    if (markdownElem.scrollTop === 0) {
+      setHide(false);
+    } else {
+      setHide(true);
+    }
+
     if (scrollElemIndex >= 0) {
       const ratio =
         (markdownElem.scrollTop -
@@ -121,6 +130,12 @@ function Write() {
       }
     }
 
+    if (previewElem.scrollTop === 0) {
+      setHide(false);
+    } else {
+      setHide(true);
+    }
+
     if (scrollElemIndex >= 0) {
       const ratio =
         (previewElem.scrollTop -
@@ -150,7 +165,7 @@ function Write() {
   return (
     <div id={styles.editor_wrapper}>
       <div className={styles.md_container}>
-        <div className={styles.md_header}>
+        <div className={cx('md_header', { hide: isHide })}>
           <textarea placeholder="제목을 입력하세요" className={styles.md_title}>
             fe
           </textarea>
@@ -160,7 +175,7 @@ function Write() {
             <div className={styles.md_tag_underline} />
           </div>
         </div>
-        <div id={styles.md_toolbar}>
+        <div className={cx('md_toolbar', { hide: isHide })}>
           {[1, 2, 3, 4].map(val => {
             return (
               <button type="button" value={val}>
@@ -216,7 +231,7 @@ function Write() {
         </div>
       </div>
       <div className={styles.pv_container}>
-        <h1 className={styles.pv_title}>ff</h1>
+        <h1 className={cx('pv_title', { hide: isHide })}>ff</h1>
         <div
           id={styles.preview}
           ref={previewRef}

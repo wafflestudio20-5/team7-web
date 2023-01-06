@@ -15,6 +15,7 @@ import { ReactComponent as LinkIcon } from '../assets/markdown_link.svg';
 import { ReactComponent as ImageIcon } from '../assets/markdown_image.svg';
 import { ReactComponent as CodeblockIcon } from '../assets/markdown_codeblock.svg';
 import { ReactComponent as BackIcon } from '../assets/back.svg';
+import { showToast } from '../components/Toast';
 
 let treeData: any;
 const cx = classNames.bind(styles);
@@ -162,6 +163,10 @@ function Write() {
     mouseIsOn.current = target;
   };
 
+  const onSaveClick = () => {
+    showToast({ type: 'success', message: '포스트가 임시저장되었습니다' });
+  };
+
   return (
     <div id={styles.editor_wrapper}>
       <div className={styles.md_container}>
@@ -178,7 +183,7 @@ function Write() {
         <div className={cx('md_toolbar', { hide: isHide })}>
           {[1, 2, 3, 4].map(val => {
             return (
-              <button type="button" value={val}>
+              <button type="button" value={val} key={val}>
                 <div>
                   H<span>{val}</span>
                 </div>
@@ -221,8 +226,12 @@ function Write() {
             <span>나가기</span>
           </button>
           <div className={styles.md_footer_right}>
-            <button type="button" className={styles.md_footer_save}>
-              임시 저장
+            <button
+              type="button"
+              className={styles.md_footer_save}
+              onClick={onSaveClick}
+            >
+              임시저장
             </button>
             <button type="button" className={styles.md_footer_publish}>
               출간하기

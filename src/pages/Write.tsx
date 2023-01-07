@@ -16,6 +16,7 @@ import { ReactComponent as ImageIcon } from '../assets/markdown_image.svg';
 import { ReactComponent as CodeblockIcon } from '../assets/markdown_codeblock.svg';
 import { ReactComponent as BackIcon } from '../assets/back.svg';
 import { showToast } from '../components/Toast';
+import PublishModal from '../components/PublishModal';
 
 let treeData: any;
 const cx = classNames.bind(styles);
@@ -23,6 +24,7 @@ const cx = classNames.bind(styles);
 function Write() {
   const [doc, setDoc] = useState('# Hello byome');
   const [isHide, setHide] = useState(false);
+  const [modalActive, setModalActive] = useState(false);
   const { ref: editorRef, view: editorView } = useCodemirror({
     initialDoc: doc,
     setDoc,
@@ -167,6 +169,10 @@ function Write() {
     showToast({ type: 'success', message: '포스트가 임시저장되었습니다' });
   };
 
+  const onPublishClick = () => {
+    setModalActive(true);
+  };
+
   return (
     <div id={styles.editor_wrapper}>
       <div className={styles.md_container}>
@@ -233,7 +239,11 @@ function Write() {
             >
               임시저장
             </button>
-            <button type="button" className={styles.md_footer_publish}>
+            <button
+              type="button"
+              className={styles.md_footer_publish}
+              onClick={onPublishClick}
+            >
               출간하기
             </button>
           </div>
@@ -251,6 +261,7 @@ function Write() {
           <div className={styles.pv_footer} />
         </div>
       </div>
+      <PublishModal modalActive={modalActive} setModalActive={setModalActive} />
     </div>
   );
 }

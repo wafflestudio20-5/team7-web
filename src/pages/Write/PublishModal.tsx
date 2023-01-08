@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './PublishModal.module.scss';
-import { ReactComponent as ImageIcon } from '../assets/image.svg';
-import { ReactComponent as WorldIcon } from '../assets/world.svg';
-import { ReactComponent as LockIcon } from '../assets/lock.svg';
-import { ReactComponent as ListAddIcon } from '../assets/list_add.svg';
+import { ReactComponent as ImageIcon } from '../../assets/image.svg';
+import { ReactComponent as WorldIcon } from '../../assets/world.svg';
+import { ReactComponent as LockIcon } from '../../assets/lock.svg';
+import { ReactComponent as ListAddIcon } from '../../assets/list_add.svg';
 
 const cx = classNames.bind(styles);
 

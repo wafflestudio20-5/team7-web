@@ -41,7 +41,7 @@
     outline: none;
     border: none;
     font-weight: bold;
-    color: #212529; //var(--text1);
+    color: var(--text1);
   }
 
   .md_title_underline {
@@ -54,7 +54,7 @@
   }
 
   .md_tag_container {
-    color: #212529; //var(--text1);
+    color: var(--text1);
     font-size: 1.125rem;
     display: flex;
     flex-wrap: wrap;
@@ -70,7 +70,7 @@
     margin-bottom: 0.75rem;
     min-width: 8rem;
     border: none;
-    color: #212529; //var(--text1);
+    color: var(--text1);
   }
 
   .md_tag_underline {
@@ -85,7 +85,7 @@
     display: flex;
     -webkit-box-align: center;
     align-items: center;
-    background: #ffffff; //var(--bg-page2);
+    background: var(--bg-page2);
     z-index: 10;
     transition: all 0.125s ease-in 0s;
     flex-wrap: wrap;
@@ -108,7 +108,7 @@
       -webkit-box-pack: center;
       justify-content: center;
       font-size: 1.75rem;
-      color: #868e96; //var(--text3);
+      color: var(--text3);
       cursor: pointer;
       flex-shrink: 0;
       background: none;
@@ -132,7 +132,7 @@
       height: 1.25rem;
       margin-left: 0.5rem;
       margin-right: 0.5rem;
-      background: #dee2e6; //var(--border3);
+      background: var(--border3);
     }
   }
 
@@ -151,7 +151,7 @@
     height: 4rem;
     width: 100%;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
-    background: #ffffff; //var(--editor-footer);
+    background: var(--editor-footer);
     display: flex;
     -webkit-box-pack: justify;
     justify-content: space-between;
@@ -169,7 +169,7 @@
       border: none;
       display: flex;
       outline: none;
-      color: #212529; //var(--text1);
+      color: var(--text1);
 
       svg {
         font-size: 1.25rem;
@@ -203,7 +203,7 @@
         outline: none;
         border: none;
         background: none;
-        color: #12b886; //var(--primary1);
+        color: var(--primary1);
         border-radius: 4px;
         padding: 0px 1.25rem;
       }
@@ -218,8 +218,8 @@
         cursor: pointer;
         outline: none;
         border: none;
-        background: #12b886; //var(--primary1);
-        color: #ffffff; //var(--button-text);
+        background: var(--primary1);
+        color: var(--button-text);
         border-radius: 4px;
         padding: 0px 1.25rem;
       }
@@ -231,7 +231,7 @@
   height: 100%;
   flex: 0 0 50%;
   padding: 0 3rem 0 3rem;
-  color: #212529; //var(--text1);
+  color: var(--text1);
   display: flex;
   flex-direction: column;
 
@@ -252,7 +252,7 @@
 
   #preview {
     font-size: 1.125rem;
-    color: #212529; //var(--text1);
+    color: var(--text1);
     transition: color 0.125s ease-in 0s;
     line-height: 1.7;
     letter-spacing: -0.004em;

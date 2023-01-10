@@ -12,11 +12,6 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react/lib';
 import styles from './PersonalPost.module.scss';
-import { ReactComponent as LikeIcon } from '../../assets/like.svg';
-import { ReactComponent as FacebookIcon } from '../../assets/facebook.svg';
-import { ReactComponent as TwitterIcon } from '../../assets/twitter.svg';
-import { ReactComponent as ClipIcon } from '../../assets/clip.svg';
-import { ReactComponent as ShareIcon } from '../../assets/share.svg';
 import { ReactComponent as SeriesIcon } from '../../assets/series_mark.svg';
 import { ReactComponent as UpTriangleIcon } from '../../assets/up_triangle.svg';
 import { ReactComponent as DownTriangleIcon } from '../../assets/down_triangle.svg';
@@ -27,6 +22,7 @@ import { ReactComponent as MinusIcon } from '../../assets/minus_box.svg';
 import { ReactComponent as LeftArrowIcon } from '../../assets/left_arrow.svg';
 import { ReactComponent as RightArrowIcon } from '../../assets/right_arrow.svg';
 import Toc from './Toc';
+import UtilBar from './UtilBar';
 
 let treeData: any;
 const cx = classNames.bind(styles);
@@ -36,7 +32,9 @@ function PersonalPost() {
     '# title\n ## title2\n ### title3\n\n just content\n ---\n'
   );
   const [tocFixed, setTocFixed] = useState(false);
+  const [utilFixed, setUtilFixed] = useState(false);
   const tocRef = useRef<HTMLDivElement>(null);
+  const utilRef = useRef<HTMLDivElement>(null);
 
   const defaultPlugin = () => (tree: any) => {
     treeData = tree; // treeData length corresponds to previewer's childNodes length
@@ -51,19 +49,21 @@ function PersonalPost() {
     .use(defaultPlugin)
     .processSync(doc).result;
 
-  const findTocPosition = () => {
+  const findTocUtilPosition = () => {
     const windowPos = window.scrollY;
     const tocPos = tocRef.current?.getBoundingClientRect().top;
+    const utilPos = utilRef.current?.getBoundingClientRect().top;
 
-    if (tocPos) {
+    if (tocPos && utilPos) {
       setTocFixed(windowPos >= tocPos);
+      setUtilFixed(windowPos >= utilPos);
     }
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', findTocPosition);
+    window.addEventListener('scroll', findTocUtilPosition);
 
-    return () => window.removeEventListener('scroll', findTocPosition);
+    return () => window.removeEventListener('scroll', findTocUtilPosition);
   }, [tocFixed]);
 
   return (
@@ -88,39 +88,9 @@ function PersonalPost() {
           <div className={styles.tag_container}>
             <a href="/tags/mytag">tagname</a>
           </div>
-          <div className={styles.util_positioner}>
+          <div className={styles.util_positioner} ref={utilRef}>
             <div className={styles.util_container}>
-              <div className={styles.util_box}>
-                {/* should add position fixing */}
-                <div className={styles.like}>
-                  <LikeIcon />
-                </div>
-                <div className={styles.like_count}>0</div>
-                <div className={styles.links_container}>
-                  <div className={styles.positioner}>
-                    <div className={styles.link_container}>
-                      <div className={styles.link}>
-                        <FacebookIcon />
-                      </div>
-                    </div>
-                    <div className={styles.link_container}>
-                      <div className={styles.link}>
-                        <TwitterIcon />
-                      </div>
-                    </div>
-                    <div className={styles.link_container}>
-                      <div className={styles.link}>
-                        <ClipIcon />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div className={styles.link_share}>
-                    <ShareIcon className={styles.share} />
-                  </div>
-                </div>
-              </div>
+              <UtilBar utilFixed={utilFixed} />
             </div>
           </div>
           <div className={styles.toc_positioner} ref={tocRef}>

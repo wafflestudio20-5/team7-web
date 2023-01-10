@@ -27,9 +27,15 @@ import UtilBar from './UtilBar';
 let treeData: any;
 const cx = classNames.bind(styles);
 
+export interface mdElementType {
+  key: string;
+  rank: number;
+  content: string;
+}
+
 function PersonalPost() {
   const [doc, setDoc] = useState(
-    '# title\n ## title2\n ### title3\n\n just content\n ---\n'
+    '# title\n ## title2\n ### title3\n\n other title\n ---\n\n content\n '
   );
   const [tocFixed, setTocFixed] = useState(false);
   const [utilFixed, setUtilFixed] = useState(false);
@@ -48,6 +54,20 @@ function PersonalPost() {
     .use(rehypeReact, { createElement, Fragment })
     .use(defaultPlugin)
     .processSync(doc).result;
+
+  const mdElements: mdElementType[] = md.props.children
+    .filter((child: any) => {
+      // extract h(n) elements
+      return child !== '\n' && child.type[0] === 'h';
+    })
+    .map((child: any) => {
+      const mdKey: string = child.key;
+      const mdRank: number = parseInt(child.type.slice(1), 10);
+      const mdContent: string = child.props.children[0];
+
+      return { key: mdKey, rank: mdRank, content: mdContent };
+    });
+  console.log(mdElements);
 
   const findTocUtilPosition = () => {
     const windowPos = window.scrollY;
@@ -95,7 +115,7 @@ function PersonalPost() {
           </div>
           <div className={styles.toc_positioner} ref={tocRef}>
             <div className={styles.toc_container}>
-              <Toc content={doc} tocFixed={tocFixed} />
+              <Toc md={mdElements} tocFixed={tocFixed} />
             </div>
           </div>
           <div className={styles.series_container}>

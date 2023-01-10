@@ -1,0 +1,22 @@
+.toc_box {
+  width: 240px;
+  margin-left: 5rem;
+  border-left: 2px solid var(--border4);
+  padding: 0.25rem 0.75rem;
+  color: var(--text3);
+  line-height: 1.5;
+  font-size: 0.875rem;
+  max-height: calc(100vh - 128px);
+  overflow: hidden auto;
+}
+
+.toc_element + .toc_element {
+  margin-top: 4px;
+}
+
+.active {
+  display: block;
+  transition: all 0.125s ease-in 0s;
+  color: var(--text1);
+  transform: scale(1.05);
+}

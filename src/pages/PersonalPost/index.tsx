@@ -1,5 +1,16 @@
-import React from 'react';
+import React, {
+  useState,
+  createElement,
+  Fragment,
+  useRef,
+  useEffect,
+} from 'react';
 import classNames from 'classnames/bind';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse/lib';
+import remarkGfm from 'remark-gfm';
+import remarkRehype from 'remark-rehype';
+import rehypeReact from 'rehype-react/lib';
 import styles from './PersonalPost.module.scss';
 import { ReactComponent as LikeIcon } from '../../assets/like.svg';
 import { ReactComponent as FacebookIcon } from '../../assets/facebook.svg';
@@ -12,12 +23,49 @@ import { ReactComponent as DownTriangleIcon } from '../../assets/down_triangle.s
 import { ReactComponent as LeftIcon } from '../../assets/left_mark.svg';
 import { ReactComponent as RightIcon } from '../../assets/right_mark.svg';
 import { ReactComponent as PlusIcon } from '../../assets/plus_box.svg';
+import { ReactComponent as MinusIcon } from '../../assets/minus_box.svg';
 import { ReactComponent as LeftArrowIcon } from '../../assets/left_arrow.svg';
 import { ReactComponent as RightArrowIcon } from '../../assets/right_arrow.svg';
+import Toc from './Toc';
 
+let treeData: any;
 const cx = classNames.bind(styles);
 
 function PersonalPost() {
+  const [doc, setDoc] = useState(
+    '# title\n ## title2\n ### title3\n\n just content\n ---\n'
+  );
+  const [tocFixed, setTocFixed] = useState(false);
+  const tocRef = useRef<HTMLDivElement>(null);
+
+  const defaultPlugin = () => (tree: any) => {
+    treeData = tree; // treeData length corresponds to previewer's childNodes length
+    return tree;
+  };
+
+  const md: any = unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkRehype)
+    .use(rehypeReact, { createElement, Fragment })
+    .use(defaultPlugin)
+    .processSync(doc).result;
+
+  const findTocPosition = () => {
+    const windowPos = window.scrollY;
+    const tocPos = tocRef.current?.getBoundingClientRect().top;
+
+    if (tocPos) {
+      setTocFixed(windowPos >= tocPos);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', findTocPosition);
+
+    return () => window.removeEventListener('scroll', findTocPosition);
+  }, [tocFixed]);
+
   return (
     <div className={styles.page_container}>
       <div className={cx('head_container', 'hori_size')}>
@@ -75,13 +123,9 @@ function PersonalPost() {
               </div>
             </div>
           </div>
-          <div className={styles.toc_positioner}>
+          <div className={styles.toc_positioner} ref={tocRef}>
             <div className={styles.toc_container}>
-              <div className={styles.toc_box}>
-                <div className={cx('toc_element', 'deactive')}>
-                  markdown title
-                </div>
-              </div>
+              <Toc content={doc} tocFixed={tocFixed} />
             </div>
           </div>
           <div className={styles.series_container}>
@@ -111,7 +155,7 @@ function PersonalPost() {
       </div>
       <div className={styles.text_container}>
         <div className={styles.text_box}>
-          <div>test</div>
+          <div>{md}</div>
         </div>
       </div>
       <div className={cx('name_card_container', 'hori_size')}>

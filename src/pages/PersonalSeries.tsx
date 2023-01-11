@@ -82,7 +82,16 @@ const user = {
       heart: 10,
     },
   ],
-  series: [],
+  series: [
+    {
+      id: 1,
+      title: '내 시리즈',
+      photo: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
+      update: '2022년 12월 6일',
+      authorId: '2-0-is',
+      postNum: 25,
+    },
+  ],
   about: '<h1>벨로그에 오신 것을 환영합니다.</h1>',
 };
 interface series {
@@ -118,10 +127,13 @@ function PersonalSeries() {
           </div>
         </div>
         <div>
-          <div className="seriesList">
+          <div className={cx('seriesList')}>
             {user.series.map((seriesInfo: series) => (
-              <div className="seriesDiv">
-                <a href={`/@${seriesInfo.authorId}/series/${seriesInfo.title}`}>
+              <div className={cx('seriesDiv')}>
+                <a
+                  href={`/@${seriesInfo.authorId}/series/${seriesInfo.title}`}
+                  className={cx('link')}
+                >
                   <div>
                     <img src={seriesInfo.photo} alt="thumbnail" />
                   </div>
@@ -129,12 +141,16 @@ function PersonalSeries() {
                 <h4>
                   <a
                     href={`/@${seriesInfo.authorId}/series/${seriesInfo.title}`}
+                    className={cx('link')}
                   >
                     {seriesInfo.title}
                   </a>
                 </h4>
-                <div className="subInfo">
-                  <span>{seriesInfo.postNum}개의 포스트 · </span>
+                <div className={cx('subInfo')}>
+                  <span className={cx('count')}>
+                    {seriesInfo.postNum}개의 포스트
+                  </span>
+                  <span className={cx('dot')}>·</span>
                   마지막 업테이트 {seriesInfo.update}
                 </div>
               </div>

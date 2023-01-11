@@ -18,6 +18,11 @@ function UtilBar({ utilFixed }: utilProps) {
   const [likeScale, setLikeScale] = useState(1.0);
   const [likeTransit, setLikeTransit] = useState(150);
 
+  const [linkClicked, setLinkClicked] = useState(false);
+  const [facePos, setFacePos] = useState([0, 0]);
+  const [twitPos, setTwitPos] = useState(0);
+  const [clipPos, setClipPos] = useState([0, 0]);
+
   const onLikeClick = () => {
     setLikeClicked(x => !x);
 
@@ -35,6 +40,26 @@ function UtilBar({ utilFixed }: utilProps) {
         setLikeScale(1.0);
         setLikeTransit(220);
       }, 375);
+    }
+  };
+
+  const onLinkClick = () => {
+    setLinkClicked(x => !x);
+
+    if (linkClicked) {
+      setFacePos([48 * 1.07, -52 * 1.07]);
+      setTwitPos(72 * 1.07);
+      setClipPos([48 * 1.07, 52 * 1.07]);
+
+      setTimeout(() => {
+        setFacePos([48, -52]);
+        setTwitPos(72);
+        setClipPos([48, 52]);
+      }, 300);
+    } else {
+      setFacePos([0, 0]);
+      setTwitPos(0);
+      setClipPos([0, 0]);
     }
   };
 
@@ -57,25 +82,62 @@ function UtilBar({ utilFixed }: utilProps) {
       <div className={styles.like_count}>0</div>
       <div className={styles.links_container}>
         <div className={styles.positioner}>
-          <div className={styles.link_container}>
-            <div className={styles.link}>
+          <div
+            className={styles.link_container}
+            style={{
+              opacity: `${linkClicked ? 0 : 1}`,
+              transform: `translate(${facePos[0]}px, ${facePos[1]}px)`,
+              transition: `all 0.25s ease-out 0s`,
+            }}
+          >
+            <div
+              className={styles.link}
+              onClick={onLinkClick}
+              role="presentation"
+            >
               <FacebookIcon />
             </div>
           </div>
-          <div className={styles.link_container}>
-            <div className={styles.link}>
+          <div
+            className={styles.link_container}
+            style={{
+              opacity: `${linkClicked ? 0 : 1}`,
+              transform: `translate(${twitPos}px)`,
+              transition: `all 0.25s ease-out 0s`,
+            }}
+          >
+            <div
+              className={styles.link}
+              onClick={onLinkClick}
+              role="presentation"
+            >
               <TwitterIcon />
             </div>
           </div>
-          <div className={styles.link_container}>
-            <div className={styles.link}>
+          <div
+            className={styles.link_container}
+            style={{
+              opacity: `${linkClicked ? 0 : 1}`,
+              transform: `translate(${clipPos[0]}px, ${clipPos[1]}px)`,
+              transition: `all 0.25s ease-out 0s`,
+            }}
+          >
+            <div
+              className={styles.link}
+              onClick={onLinkClick}
+              role="presentation"
+            >
               <ClipIcon />
             </div>
           </div>
         </div>
       </div>
       <div>
-        <div className={styles.link_share}>
+        <div
+          className={styles.link_share}
+          onClick={onLinkClick}
+          role="presentation"
+        >
           <ShareIcon className={styles.share} />
         </div>
       </div>

@@ -25,9 +25,36 @@
   cursor: pointer;
   z-index: 5;
 
+  &:hover {
+    color: var(--text1);
+    border-color: var(--text1);
+  }
+
   svg {
     width: 24px;
     height: 24px;
+  }
+}
+
+.like_active {
+  height: 3rem;
+  width: 3rem;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  color: var(--button-text);
+  border-radius: 1.5rem;
+  background: var(--primary2);
+  border-color: var(--primary2);
+
+  &:hover {
+    background: rgb(56, 217, 169);
+    border-color: rgb(56, 217, 169);
+    color: var(--button-text);
   }
 }
 

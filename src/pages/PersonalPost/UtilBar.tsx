@@ -14,12 +14,44 @@ interface utilProps {
 }
 
 function UtilBar({ utilFixed }: utilProps) {
+  const [likeClicked, setLikeClicked] = useState(false);
+  const [likeScale, setLikeScale] = useState(1.0);
+  const [likeTransit, setLikeTransit] = useState(150);
+
+  const onLikeClick = () => {
+    setLikeClicked(x => !x);
+
+    if (!likeClicked) {
+      setLikeScale(1.25);
+      setTimeout(() => {
+        setLikeScale(1.0);
+        setLikeTransit(100);
+      }, 150);
+      setTimeout(() => {
+        setLikeScale(1.25);
+        setLikeTransit(125);
+      }, 250);
+      setTimeout(() => {
+        setLikeScale(1.0);
+        setLikeTransit(220);
+      }, 375);
+    }
+  };
+
   return (
     <div
       className={styles.util_box}
       style={utilFixed ? { position: 'fixed', top: '112px' } : {}}
     >
-      <div className={styles.like}>
+      <div
+        className={cx(likeClicked ? 'like_active' : 'like')}
+        onClick={onLikeClick}
+        role="presentation"
+        style={{
+          transform: `scale(${likeScale})`,
+          transition: `transform 0.${likeTransit}s ease-in 0s`,
+        }}
+      >
         <LikeIcon />
       </div>
       <div className={styles.like_count}>0</div>

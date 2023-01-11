@@ -10,8 +10,18 @@
   overflow: hidden auto;
 }
 
-.toc_element + .toc_element {
-  margin-top: 4px;
+.toc_element {
+  &:hover {
+    color: var(--text1);
+  }
+
+  & + .toc_element {
+    margin-top: 4px;
+  }
+
+  a {
+    cursor: pointer;
+  }
 }
 
 .active {

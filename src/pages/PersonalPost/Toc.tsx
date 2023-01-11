@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
+import { Link } from 'react-scroll';
 import styles from './Toc.module.scss';
 import { mdElementType } from '.';
 import useTitleObserver from '../Write/useTitleObserver';
@@ -38,7 +39,7 @@ function Toc({ md, textRef, tocFixed, doc }: tocProps) {
             style={{ marginLeft: `${(rank - 1) * 12}px` }}
             key={key}
           >
-            {content}
+            <Link to={key}>{content}</Link>
           </div>
         );
       })}

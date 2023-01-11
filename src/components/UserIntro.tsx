@@ -21,6 +21,14 @@ interface post {
   authorImg: string;
   heart: number;
 }
+interface series {
+  id: number;
+  title: string;
+  photo: string;
+  update: string;
+  authorId: string;
+  postNum: number;
+}
 interface user {
   username: string;
   userImg: string;
@@ -32,7 +40,7 @@ interface user {
   mail: string;
   tags: string[];
   posts: post[];
-  series: string[];
+  series: series[];
   about: string;
 }
 interface user_type {

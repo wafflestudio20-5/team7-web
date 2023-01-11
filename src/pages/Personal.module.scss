@@ -1,0 +1,205 @@
+.page {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", 나눔고딕, "Nanum Gothic", "Noto Sans KR", "Noto Sans CJK KR", arial, 돋움, Dotum, Tahoma, Geneva, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: var(--bg-element5);
+  box-sizing: border-box;
+}
+
+.pageContent {
+  width: 82%;
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.user {
+  margin-top: 5.625rem;
+}
+
+.intro {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  img {
+    display: block;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.textIntro {
+  display: flex;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  justify-content: center;
+  margin-left: 1rem;
+  .name{
+    font-size: 1.5rem;
+    line-height: 1.5;
+    font-weight: bold;
+    color: var(--bg-element5);
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+  .description {
+    white-space: pre-wrap;
+    font-size: 1.125rem;
+    line-height: 1.5;
+    margin-top: 0.25rem;
+    color: var(--text2);
+    letter-spacing: -0.004em;
+  }
+}
+
+.line {
+  background: var(--bg-element3);
+  width: 100%;
+  height: 1px;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.snsPages {
+  color: var(--text3);
+  display: flex;
+  a {
+    color: inherit;
+    display: block;
+  }
+  svg {
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+  }
+  a + a, a + svg {
+    margin-left: 1rem;
+  }
+}
+
+.pageIndex {
+  margin-top: 4.5rem;
+  margin-bottom: 4.5rem;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  position: relative;
+  .index {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    font-size: 1.325rem;
+    width: 8rem;
+    height: 3rem;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.25s ease-in-out 0s;
+    font-weight: 600;
+  }
+  .active {
+    color: var(--primary2);
+  }
+}
+
+.activeLine {
+  width: 8rem;
+  height: 2px;
+  left: 25%;
+  background: var(--primary2);
+  bottom: -2px;
+  position: absolute;
+  transition: left 0.25s ease-in-out 0s;
+}
+
+.searchSection {
+  display: flex;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  margin-bottom: 2rem;
+  .box {
+    display: flex;
+    height: 2.25rem;
+    border: 1px solid var(--border2);
+    padding-left: 0.625rem;
+    padding-right: 0.625rem;
+    -webkit-box-align: center;
+    align-items: center;
+    transition: all 0.125s ease-in 0s;
+    cursor: text;
+    svg {
+      margin-right: 0.5rem;
+      width: 1rem;
+      height: 1rem;
+      fill: rgb(173, 181, 189);
+      flex-shrink: 0;
+    }
+    input {
+      font-size: 0.875rem;
+      flex: 1 1 0;
+      display: block;
+      line-height: 1rem;
+      height: 1rem;
+      padding: 0;
+      border: none;
+      outline: 0;
+      background: transparent;
+      color: var(--text2);
+      min-width: 0;
+    }
+  }
+}
+
+.tagDiv{
+  position: relative;
+}
+.tagList {
+  position: absolute;
+  width: 11.5rem;
+  left: -13.5rem;
+  .title {
+    font-size: 1rem;
+    line-height: 1.5;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border2);
+    margin-bottom: 1rem;
+    color: var(--text2);
+    font-weight: bold;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+}
+
+.tagElem {
+  color: var(--bg-element5);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  span {
+    margin-left: 0.5rem;
+    color: var(--text3);
+    font-weight: normal;
+  }
+}
+
+.tagElem + .tagElem {
+  margin-top: 0.25rem;
+}
+
+.tagActive {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--primary2);
+  font-weight: bold;
+}

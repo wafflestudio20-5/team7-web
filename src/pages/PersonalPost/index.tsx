@@ -41,6 +41,7 @@ function PersonalPost() {
   const [utilFixed, setUtilFixed] = useState(false);
   const tocRef = useRef<HTMLDivElement>(null);
   const utilRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
 
   const defaultPlugin = () => (tree: any) => {
     treeData = tree; // treeData length corresponds to previewer's childNodes length
@@ -67,7 +68,6 @@ function PersonalPost() {
 
       return { key: mdKey, rank: mdRank, content: mdContent };
     });
-  console.log(mdElements);
 
   const findTocUtilPosition = () => {
     const windowPos = window.scrollY;
@@ -115,7 +115,12 @@ function PersonalPost() {
           </div>
           <div className={styles.toc_positioner} ref={tocRef}>
             <div className={styles.toc_container}>
-              <Toc md={mdElements} tocFixed={tocFixed} />
+              <Toc
+                md={mdElements}
+                textRef={textRef}
+                tocFixed={tocFixed}
+                doc={doc}
+              />
             </div>
           </div>
           <div className={styles.series_container}>
@@ -145,7 +150,7 @@ function PersonalPost() {
       </div>
       <div className={styles.text_container}>
         <div className={styles.text_box}>
-          <div>{md}</div>
+          <div ref={textRef}>{md}</div>
         </div>
       </div>
       <div className={cx('name_card_container', 'hori_size')}>

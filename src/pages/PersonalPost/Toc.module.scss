@@ -20,3 +20,8 @@
   color: var(--text1);
   transform: scale(1.05);
 }
+
+.deactive {
+  display: block;
+  transition: all 0.125s ease-in 0s;
+}

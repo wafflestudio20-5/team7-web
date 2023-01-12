@@ -35,7 +35,6 @@ export default function ModalProvider({
           message,
           visible: true,
         });
-        console.log('modal: ', modal.visible);
       },
       close() {
         setModal(prev => ({

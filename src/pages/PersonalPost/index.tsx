@@ -45,12 +45,12 @@ export interface commentListType {
 }
 
 function PersonalPost() {
-  const [doc, setDoc] = useState(
+  const [doc] = useState(
     '# title\n ## title2\n ### title3\n\n other title\n ---\n\n content\n '
   );
   const [tocFixed, setTocFixed] = useState(false);
   const [utilFixed, setUtilFixed] = useState(false);
-  const [commentList, setCommentList] = useState<commentListType>({
+  const [commentList] = useState<commentListType>({
     comments: [
       {
         content: 'first',
@@ -249,7 +249,7 @@ function PersonalPost() {
         </div>
       </div>
       <div className={cx('comment_container', 'hori_size')}>
-        <h4>3개의 댓글</h4>
+        <h4>{commentList.length}개의 댓글</h4>
         <div>
           <div>
             <textarea

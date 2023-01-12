@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
-import classNames from 'classnames/bind';
-import styles from './Comment.module.scss';
+import React from 'react';
 import { commentListType } from '.';
 import CommentItem from './CommentItem';
-
-const cx = classNames.bind(styles);
 
 interface commentProps {
   commentList: commentListType;

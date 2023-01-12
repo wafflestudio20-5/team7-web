@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import classNames from 'classnames/bind';
 import styles from './Comment.module.scss';
 import { ReactComponent as PlusIcon } from '../../assets/plus_box.svg';
 import { ReactComponent as MinusIcon } from '../../assets/minus_box.svg';
 import { commentType } from '.';
 import Comment from './Comment';
 import { useModalActions } from '../../contexts/ModalProvider';
-
-const cx = classNames.bind(styles);
 
 interface commentProps {
   comment: commentType;

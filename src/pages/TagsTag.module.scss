@@ -1,0 +1,38 @@
+main {
+  margin-top: 3rem;
+}
+
+.body {
+  width: 82%;
+  max-width: 702px;
+  margin: 0 auto;
+}
+
+.tagInfo {
+  padding-bottom: 4rem;
+  img {
+    width: 12rem;
+    height: 12rem;
+    display: block;
+    border-radius: 6rem;
+    margin-bottom: 2rem;
+  }
+  h1 {
+    font-size: 3rem;
+    margin: 0;
+    line-height: 1.5;
+    color: var(--text1);
+  }
+  p {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+    line-height: 1.5;
+    color: var(--text2);
+  }
+  .count {
+    margin-top: 1rem;
+    color: var(--text3);
+    font-size: 1rem;
+  }
+}

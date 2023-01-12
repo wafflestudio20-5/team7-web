@@ -24,6 +24,7 @@ interface post {
   authorId: string;
   authorImg: string;
   heart: number;
+  public: boolean;
 }
 
 function Search() {
@@ -44,6 +45,7 @@ function Search() {
       authorId: '2-0-is',
       authorImg: '',
       heart: 10,
+      public: true,
     },
     {
       id: 2,
@@ -59,6 +61,7 @@ function Search() {
       authorId: '2-0-is',
       authorImg: '',
       heart: 10,
+      public: true,
     },
     {
       id: 3,
@@ -74,6 +77,7 @@ function Search() {
       authorId: '2-0-is',
       authorImg: '',
       heart: 10,
+      public: true,
     },
     {
       id: 4,
@@ -89,6 +93,7 @@ function Search() {
       authorId: '2-0-is',
       authorImg: '',
       heart: 10,
+      public: false,
     },
   ];
   const postCount = posts.length;

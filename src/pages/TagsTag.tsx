@@ -31,6 +31,7 @@ interface post {
   authorId: string;
   authorImg: string;
   heart: number;
+  public: boolean;
 }
 const tagPosts: post[] = [
   {
@@ -47,6 +48,7 @@ const tagPosts: post[] = [
     authorId: '2-0-is',
     authorImg: '',
     heart: 10,
+    public: true,
   },
   {
     id: 2,
@@ -62,6 +64,7 @@ const tagPosts: post[] = [
     authorId: '2-0-is',
     authorImg: '',
     heart: 10,
+    public: true,
   },
   {
     id: 3,
@@ -77,6 +80,7 @@ const tagPosts: post[] = [
     authorId: '2-0-is',
     authorImg: '',
     heart: 10,
+    public: true,
   },
   {
     id: 4,
@@ -92,6 +96,7 @@ const tagPosts: post[] = [
     authorId: '2-0-is',
     authorImg: '',
     heart: 10,
+    public: false,
   },
 ];
 

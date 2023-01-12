@@ -35,6 +35,7 @@ const user = {
       authorId: '2-0-is',
       authorImg: '',
       heart: 10,
+      public: true,
     },
     {
       id: 2,
@@ -50,6 +51,7 @@ const user = {
       authorId: '2-0-is',
       authorImg: '',
       heart: 10,
+      public: true,
     },
     {
       id: 3,
@@ -65,6 +67,7 @@ const user = {
       authorId: '2-0-is',
       authorImg: '',
       heart: 10,
+      public: true,
     },
     {
       id: 4,
@@ -80,6 +83,7 @@ const user = {
       authorId: '2-0-is',
       authorImg: '',
       heart: 10,
+      public: false,
     },
   ],
   series: [

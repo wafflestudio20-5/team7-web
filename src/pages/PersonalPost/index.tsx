@@ -17,12 +17,11 @@ import { ReactComponent as UpTriangleIcon } from '../../assets/up_triangle.svg';
 import { ReactComponent as DownTriangleIcon } from '../../assets/down_triangle.svg';
 import { ReactComponent as LeftIcon } from '../../assets/left_mark.svg';
 import { ReactComponent as RightIcon } from '../../assets/right_mark.svg';
-import { ReactComponent as PlusIcon } from '../../assets/plus_box.svg';
-import { ReactComponent as MinusIcon } from '../../assets/minus_box.svg';
 import { ReactComponent as LeftArrowIcon } from '../../assets/left_arrow.svg';
 import { ReactComponent as RightArrowIcon } from '../../assets/right_arrow.svg';
 import Toc from './Toc';
 import UtilBar from './UtilBar';
+import Comment from './Comment';
 
 let treeData: any;
 const cx = classNames.bind(styles);
@@ -33,12 +32,55 @@ export interface mdElementType {
   content: string;
 }
 
+export interface commentType {
+  content: string;
+  // eslint-disable-next-line no-use-before-define
+  children?: commentListType;
+}
+export interface commentListType {
+  comments: commentType[];
+  length: number;
+}
+
 function PersonalPost() {
   const [doc, setDoc] = useState(
     '# title\n ## title2\n ### title3\n\n other title\n ---\n\n content\n '
   );
   const [tocFixed, setTocFixed] = useState(false);
   const [utilFixed, setUtilFixed] = useState(false);
+  const [commentList, setCommentList] = useState<commentListType>({
+    comments: [
+      {
+        content: 'first',
+        children: {
+          comments: [
+            {
+              content: 'second',
+            },
+            {
+              content: 'third',
+              children: {
+                comments: [
+                  {
+                    content: 'fourth',
+                  },
+                  {
+                    content: 'fifth',
+                  },
+                ],
+                length: 2,
+              },
+            },
+          ],
+          length: 2,
+        },
+      },
+      {
+        content: 'sixth',
+      },
+    ],
+    length: 2,
+  });
   const tocRef = useRef<HTMLDivElement>(null);
   const utilRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -210,45 +252,7 @@ function PersonalPost() {
             </div>
           </div>
           <div className={styles.comment_list_container}>
-            <div>
-              <div className={styles.comment}>
-                <div className={styles.comment_head}>
-                  <div className={styles.profile}>
-                    <a href="/@username">
-                      <img
-                        src="https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png"
-                        alt="profile"
-                      />
-                    </a>
-                    <div className={styles.comment_info}>
-                      <div className={styles.username}>
-                        <a href="/@username">username</a>
-                      </div>
-                      <div className={styles.date}>약 1시간 전</div>
-                    </div>
-                  </div>
-                  <div className={styles.actions}>
-                    <span>수정</span>
-                    <span>삭제</span>
-                  </div>
-                </div>
-                <div className={styles.comment_text}>
-                  <div>
-                    <div>
-                      <div>
-                        <p>good</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.comment_footer}>
-                  <div className={styles.buttons_wrapper}>
-                    <PlusIcon />
-                    <span>1개의 답글</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Comment commentList={commentList} rank={0} />
           </div>
         </div>
       </div>

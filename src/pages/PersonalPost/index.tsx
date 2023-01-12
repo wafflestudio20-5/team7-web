@@ -22,6 +22,8 @@ import { ReactComponent as RightArrowIcon } from '../../assets/right_arrow.svg';
 import Toc from './Toc';
 import UtilBar from './UtilBar';
 import Comment from './Comment';
+import Modal from '../../components/Modal';
+import { useModalActions } from '../../contexts/ModalProvider';
 
 let treeData: any;
 const cx = classNames.bind(styles);
@@ -84,6 +86,7 @@ function PersonalPost() {
   const tocRef = useRef<HTMLDivElement>(null);
   const utilRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
+  const { open } = useModalActions();
 
   const defaultPlugin = () => (tree: any) => {
     treeData = tree; // treeData length corresponds to previewer's childNodes length
@@ -128,6 +131,10 @@ function PersonalPost() {
     return () => window.removeEventListener('scroll', findTocUtilPosition);
   }, [tocFixed]);
 
+  const onDeleteClick = () => {
+    open('포스트 삭제', '정말로 삭제하시겠습니까?');
+  };
+
   return (
     <div className={styles.page_container}>
       <div className={cx('head_container', 'hori_size')}>
@@ -136,7 +143,9 @@ function PersonalPost() {
           <div className={styles.actions}>
             <button type="button">통계</button>
             <button type="button">수정</button>
-            <button type="button">삭제</button>
+            <button type="button" onClick={onDeleteClick}>
+              삭제
+            </button>
           </div>
           <div className={styles.info_container}>
             <div className={styles.information}>
@@ -256,6 +265,7 @@ function PersonalPost() {
           </div>
         </div>
       </div>
+      <Modal />
     </div>
   );
 }

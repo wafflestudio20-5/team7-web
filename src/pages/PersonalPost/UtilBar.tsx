@@ -46,7 +46,7 @@ function UtilBar({ utilFixed }: utilProps) {
   const onLinkClick = () => {
     setLinkClicked(x => !x);
 
-    if (linkClicked) {
+    if (!linkClicked) {
       setFacePos([48 * 1.07, -52 * 1.07]);
       setTwitPos(72 * 1.07);
       setClipPos([48 * 1.07, 52 * 1.07]);
@@ -85,7 +85,7 @@ function UtilBar({ utilFixed }: utilProps) {
           <div
             className={styles.link_container}
             style={{
-              opacity: `${linkClicked ? 0 : 1}`,
+              opacity: `${linkClicked ? 1 : 0}`,
               transform: `translate(${facePos[0]}px, ${facePos[1]}px)`,
               transition: `all 0.25s ease-out 0s`,
             }}
@@ -101,7 +101,7 @@ function UtilBar({ utilFixed }: utilProps) {
           <div
             className={styles.link_container}
             style={{
-              opacity: `${linkClicked ? 0 : 1}`,
+              opacity: `${linkClicked ? 1 : 0}`,
               transform: `translate(${twitPos}px)`,
               transition: `all 0.25s ease-out 0s`,
             }}
@@ -117,7 +117,7 @@ function UtilBar({ utilFixed }: utilProps) {
           <div
             className={styles.link_container}
             style={{
-              opacity: `${linkClicked ? 0 : 1}`,
+              opacity: `${linkClicked ? 1 : 0}`,
               transform: `translate(${clipPos[0]}px, ${clipPos[1]}px)`,
               transition: `all 0.25s ease-out 0s`,
             }}

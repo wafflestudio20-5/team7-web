@@ -5,6 +5,7 @@ import { ReactComponent as PlusIcon } from '../../assets/plus_box.svg';
 import { ReactComponent as MinusIcon } from '../../assets/minus_box.svg';
 import { commentType } from '.';
 import Comment from './Comment';
+import { useModalActions } from '../../contexts/ModalProvider';
 
 const cx = classNames.bind(styles);
 
@@ -48,6 +49,7 @@ function CommentItem({ comment, rank }: commentProps) {
   const [replyVisible, setReplyVisible] = useState(false);
   const [replyWrite, setReplyWrite] = useState(false);
   const [replyRevise, setReplyRevise] = useState(false);
+  const { open } = useModalActions();
 
   const toggleReply = () => {
     setReplyVisible(x => !x);
@@ -67,6 +69,10 @@ function CommentItem({ comment, rank }: commentProps) {
 
   const toggleReplyRevise = () => {
     setReplyRevise(x => !x);
+  };
+
+  const onDeleteClick = () => {
+    open('댓글 삭제', '댓글을 정말로 삭제하시겠습니까?');
   };
 
   return (
@@ -92,7 +98,9 @@ function CommentItem({ comment, rank }: commentProps) {
               수정
             </span>
           )}
-          <span>삭제</span>
+          <span onClick={onDeleteClick} role="presentation">
+            삭제
+          </span>
         </div>
       </div>
       {replyRevise ? (

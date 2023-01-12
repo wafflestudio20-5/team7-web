@@ -1,6 +1,6 @@
 .page {
   margin: 0;
-  padding: 0;
+  padding: 0 0 4rem;
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", 나눔고딕, "Nanum Gothic", "Noto Sans KR", "Noto Sans CJK KR", arial, 돋움, Dotum, Tahoma, Geneva, sans-serif;
   -webkit-font-smoothing: antialiased;
   color: var(--bg-element5);
@@ -48,4 +48,52 @@
   bottom: -2px;
   position: absolute;
   transition: left 0.25s ease-in-out 0s;
+}
+
+.empty {
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  flex-direction: column;
+  img {
+    width: 20rem;
+    height: 20rem;
+    margin-bottom: 2rem;
+    display: block;
+  }
+  .message {
+    font-size: 2rem;
+    color: var(--text3);
+    margin-bottom: 2rem;
+  }
+}
+
+.addIntro {
+  display: inline-flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background: var(--primary1);
+  color: var(--button-text);
+  border-radius: 4px;
+  padding: 0 1.125rem;
+  height: 2.5rem;
+  font-size: 1.125rem;
+}
+
+.intro {
+  font-size: 1.125rem;
+  color: var(--text1);
+  transition: color 0.125s ease-in 0s;
+  line-height: 1.7;
+  letter-spacing: -0.004em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }

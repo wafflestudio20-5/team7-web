@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -83,10 +83,11 @@ const user = {
     },
   ],
   series: [],
-  about: '<h1>벨로그에 오신 것을 환영합니다.</h1>',
+  about: '소개글',
 };
 
 function PersonalAbout() {
+  const loginUser = useState(false);
   return (
     <div className={cx('page')}>
       <Header />
@@ -110,7 +111,21 @@ function PersonalAbout() {
           </div>
         </div>
         <div>
-          <div className="intro">{user.about}</div>
+          {user.about === '' && (
+            <div className={cx('empty')}>
+              <img
+                src="https://static.velog.io/static/media/undraw_empty.5fd6f2b8.svg"
+                alt="empty about"
+              />
+              <div className={cx('message')}>소개가 작성되지 않았습니다.</div>
+              {loginUser && (
+                <button type="button" color="teal" className={cx('addIntro')}>
+                  소개 글 작성하기
+                </button>
+              )}
+            </div>
+          )}
+          {user.about !== '' && <div className={cx('intro')}>{user.about}</div>}
         </div>
       </div>
     </div>

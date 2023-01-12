@@ -1,0 +1,56 @@
+.searchDiv {
+  margin-top: 3.5rem;
+  width: 80%;
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: inherit;
+}
+
+.author {
+  margin-top: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text1);
+}
+
+.queryInput {
+  display: flex;
+  border: 1px solid var(--border2);
+  -webkit-box-align: center;
+  align-items: center;
+  transition: all 0.125s ease-in 0s;
+  cursor: text;
+  height: 4rem;
+  padding: 0 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.queryInput svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 1.25rem;
+  fill: rgb(173, 181, 189);
+  flex-shrink: 0;
+}
+
+.queryInput input {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  height: 2rem;
+  flex: 1 1 0;
+  display: block;
+  padding: 0;
+  border: none;
+  outline: 0;
+  background: transparent;
+  color: var(--text2);
+  min-width: 0;
+}
+
+.found {
+  margin-bottom: 4rem;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: var(--text2);
+}

@@ -1,0 +1,83 @@
+.followSetter {
+  width: 70%;
+  margin: auto;
+  padding-top: 5%;
+  .following {
+    height: 50%;
+    padding-bottom: 5%;
+    border-bottom: 1px solid rgb(230, 230, 230);
+    margin-bottom: 5%;
+    p {
+      color: gray;
+    }
+    .followings {
+      max-height: 24rem;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      overflow: auto;
+      .user {
+        cursor: pointer;
+        display: block;
+        align-items: center;
+        text-align: center;
+        margin: 2%;
+        text-decoration: none;
+        color: gray;
+        position: relative;
+        .profile {
+          display: block;
+          height: 8rem;
+          width: 8rem;
+          border-radius: 50%;
+          object-fit: cover;
+          transition: all 0.125s ease-in 0s;
+        }
+        .delete {
+          display: none;
+        }
+      }
+      .user:hover {
+        .delete {
+          display: block;
+          height: 2rem;
+          position: absolute;
+          right: 10%;
+        }
+      }
+    }
+  }
+  .follower {
+    height: 50%;
+    p {
+      color: gray;
+    }
+    .followers {
+      max-height: 24rem;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      overflow: auto;
+      .user {
+        cursor: pointer;
+        display: block;
+        align-items: center;
+        text-align: center;
+        margin: 2%;
+        text-decoration: none;
+        color: gray;
+        .profile {
+          display: block;
+          height: 8rem;
+          width: 8rem;
+          border-radius: 50%;
+          object-fit: cover;
+          transition: all 0.125s ease-in 0s;
+        }
+        .delete {
+          display: none;
+        }
+      }
+    }
+  }
+}

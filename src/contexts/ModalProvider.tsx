@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
 import React, { createContext, useContext, useMemo, useState } from 'react';
 
-type modalType = { visible: boolean; message: string };
-const initialModal = { visible: false, message: '' };
+type modalType = { visible: boolean; title: string; message: string };
+const initialModal = { visible: false, title: '', message: '' };
 
 type actionsType = {
-  open: (message: string) => void;
+  open: (title: string, message: string) => void;
   close: () => void;
 };
 const initialActions: actionsType = {
-  open: (message: string) => undefined,
+  open: (title: string, message: string) => undefined,
   close: () => undefined,
 };
 
@@ -23,13 +23,15 @@ export default function ModalProvider({
 }) {
   const [modal, setModal] = useState({
     visible: false,
+    title: '',
     message: '',
   });
 
   const actions = useMemo(
     () => ({
-      open(message: string) {
+      open(title: string, message: string) {
         setModal({
+          title,
           message,
           visible: true,
         });
@@ -53,7 +55,7 @@ export default function ModalProvider({
   );
 }
 
-function useModalValue() {
+export function useModalValue() {
   const value = useContext(ModalValueContext);
   if (value === undefined) {
     throw new Error('useModalValue should be used within ModalProvider');
@@ -61,7 +63,7 @@ function useModalValue() {
   return value;
 }
 
-function useModalActions() {
+export function useModalActions() {
   const value = useContext(ModalActionsContext);
   if (value === undefined) {
     throw new Error('useModalActions should be used within ModalProvider');

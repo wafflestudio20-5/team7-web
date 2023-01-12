@@ -1,0 +1,14 @@
+.Toastify__toast--success {
+  background-color: rgb(5, 204, 91);
+  color: #ffffff;
+  border-radius: 0;
+}
+
+.Toastify__close-button {
+  color: #ffffff;
+  opacity: 0.7;
+}
+
+:root {
+  --toastify-color-progress-success: rgba(255, 255, 255, 0.7);
+}

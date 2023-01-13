@@ -49,26 +49,27 @@
         justify-content: center;
         background: transparent;
         border: none;
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 2.5rem;
+        height: 2.5rem;
         outline: none;
+        border-radius: 50%;
+        color: var(--text1);
         cursor: pointer;
-        margin-right: 1rem;
+        margin-right: 0.5rem;
       }
       button {
-        margin-left: 0.5rem;
-        margin-right: 2rem;
+        margin-right: 1.25rem;
         height: 2rem;
         padding-left: 1rem;
         padding-right: 1rem;
-        width: 80%;
-        font-size: 15px;
+        font-size: 1rem;
         border-radius: 1rem;
         outline: none;
         font-weight: bold;
         word-break: keep-all;
         background: #f8f9fa;
         border: 1px solid #212529;
+        color: #212529;
         transition: all 0.125s ease-in 0s;
         cursor: pointer;
       }
@@ -79,6 +80,7 @@
       .login-button {
         background: #212529;
         color: #ffffff;
+        margin-right: 0;
       }
       .user {
         cursor: pointer;
@@ -92,11 +94,13 @@
           object-fit: cover;
           transition: all 0.125s ease-in 0s;
         }
-        .more {
-          width: 30%;
-          margin-left: 0.25rem;
-          transition: all 0.125s ease-in 0s;
-          margin-right: -0.4375rem;
+        svg {
+          stroke: currentcolor;
+          fill: currentcolor;
+          stroke-width: 0;
+          height: 1em;
+          width: 1em;
+          color: #868e96;
         }
       }
     }

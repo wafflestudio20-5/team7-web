@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import styles from './Header.module.scss';
+import styles from './HeaderMoving.module.scss';
 import search from '../resources/search.png';
+import more from '../resources/more.jpeg';
+import HeaderFilter from './HeaderFilter';
 
 const cx = classNames.bind(styles);
 
@@ -14,6 +16,53 @@ export default function Header() {
   const [modalOn, setModalOn] = useState(false);
 
   const path = useLocation().pathname;
+
+  function useScrollDirection() {
+    const [scrollDirection, setScrollDirection] = useState('up');
+
+    useEffect(() => {
+      let lastScrollY = window.pageYOffset;
+
+      const updateScrollDirection = () => {
+        const scrollY = window.pageYOffset;
+        const direction = scrollY > lastScrollY ? 'down' : 'up';
+        if (
+          direction !== scrollDirection &&
+          (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)
+        ) {
+          setScrollDirection(direction);
+        }
+        lastScrollY = scrollY > 0 ? scrollY : 0;
+      };
+      window.addEventListener('scroll', updateScrollDirection);
+      return () => {
+        window.removeEventListener('scroll', updateScrollDirection);
+      };
+    }, [scrollDirection]);
+
+    return scrollDirection;
+  }
+
+  const scrollDirection = useScrollDirection();
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const listenToScroll = () => {
+    const heightToHideFrom = 70;
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+
+    if (winScroll <= heightToHideFrom) {
+      setIsVisible(false);
+    } else {
+      setIsVisible(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', listenToScroll);
+    return () => window.removeEventListener('scroll', listenToScroll);
+  }, []);
 
   function openMenu() {
     if (menuOn === false) {
@@ -33,7 +82,15 @@ export default function Header() {
 
   return (
     <div>
-      <div className={cx('header')}>
+      <div
+        className={cx(
+          'header',
+          {
+            hide: scrollDirection === 'down' || !isVisible,
+          },
+          { blind: !isVisible }
+        )}
+      >
         <div className={cx('center')}>
           <div className={path === '/myvelog' ? cx('blind') : cx('left')}>
             <a href="/">velog</a>
@@ -118,6 +175,7 @@ export default function Header() {
             </div>
           </div>
         </div>
+        <HeaderFilter />
       </div>
     </div>
   );

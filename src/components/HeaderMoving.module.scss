@@ -1,17 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap');
 
 .header {
-  z-index: 5;
-  background-color: #f8f9fa;
+  z-index: 4;
+  background-color: #ffffff;
   top: 0;
-  position: sticky;
+  position: fixed;
   width: 100%;
-  height: 4rem;
   display: block;
   .center {
     position: relative;
     width: 1728px;
-    height: 100%;
+    height: 4rem;
     display: flex;
     -webkit-box-align: center;
     align-items: center;
@@ -72,10 +71,6 @@
         transition: all 0.125s ease-in 0s;
         cursor: pointer;
       }
-      button:hover {
-        background: black;
-        color: #f8f9fa;
-      }
       .login-button {
         background: #212529;
         color: #ffffff;
@@ -105,6 +100,7 @@
       top: 100%;
       margin-top: 1rem;
       right: 0px;
+      z-index: 6;
       .menu-wrapper {
         right: 0px;
         z-index: 5;
@@ -142,6 +138,9 @@
     .center {
       width: calc(100% - 2rem);
     }
+  }
+  .filter-container {
+    position: fixed;
   }
 }
 

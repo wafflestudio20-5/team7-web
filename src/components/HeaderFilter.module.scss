@@ -29,13 +29,9 @@
         color: #868e96;
         white-space: nowrap;
         height: 3rem;
-        img {
-          stroke: currentcolor;
-          fill: currentcolor;
-          stroke-width: 0;
-          height: 1em;
-          width: 1em;
-          margin-right: 0.5em;
+        svg {
+          font-size: 1.5rem;
+          margin-right: 0.5rem;
         }
       }
       .highlight {

@@ -120,15 +120,15 @@ export default function Header() {
               <a href="/setting">
                 <div>설정</div>
               </a>
-              <button
-                type="button"
+              <div
                 onClick={() => {
                   logout();
                   setMenuOn(false);
                 }}
+                role="presentation"
               >
                 로그아웃
-              </button>
+              </div>
             </div>
           </div>
         </div>

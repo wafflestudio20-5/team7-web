@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './HeaderMoving.module.scss';
-import search from '../resources/search.png';
-import more from '../resources/more.jpeg';
 import HeaderFilter from './HeaderFilter';
 
 const cx = classNames.bind(styles);

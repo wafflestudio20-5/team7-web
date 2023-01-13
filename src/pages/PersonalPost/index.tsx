@@ -24,6 +24,8 @@ import UtilBar from './UtilBar';
 import Comment from './Comment';
 import Modal from '../../components/Modal';
 import { useModalActions } from '../../contexts/ModalProvider';
+import Header from '../../components/Header';
+import HeaderMoving from '../../components/HeaderMoving';
 
 let treeData: any;
 const cx = classNames.bind(styles);
@@ -137,6 +139,8 @@ function PersonalPost() {
 
   return (
     <div className={styles.page_container}>
+      <Header />
+      <HeaderMoving />
       <div className={cx('head_container', 'hori_size')}>
         <div className={styles.head_wrapper}>
           <h1>title</h1>

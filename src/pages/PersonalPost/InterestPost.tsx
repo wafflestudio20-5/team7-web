@@ -9,6 +9,12 @@ function InterestPost() {
       <div className={styles.container}>
         <div className={styles.post_container}>
           <PostComp />
+          <PostComp />
+          <PostComp />
+          <PostComp />
+          <PostComp />
+          <PostComp />
+          <PostComp />
         </div>
       </div>
     </div>

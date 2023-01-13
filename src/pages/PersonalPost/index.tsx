@@ -26,6 +26,7 @@ import Modal from '../../components/Modal';
 import { useModalActions } from '../../contexts/ModalProvider';
 import Header from '../../components/Header';
 import HeaderMoving from '../../components/HeaderMoving';
+import InterestPost from './InterestPost';
 
 let treeData: any;
 const cx = classNames.bind(styles);
@@ -269,6 +270,7 @@ function PersonalPost() {
           </div>
         </div>
       </div>
+      <InterestPost />
       <Modal />
     </div>
   );

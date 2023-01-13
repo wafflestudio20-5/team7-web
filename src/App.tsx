@@ -20,45 +20,52 @@ import PersonalAbout from './pages/PersonalAbout';
 import PersonalPost from './pages/PersonalPost';
 import NotFound from './pages/NotFound';
 import ModalProvider from './contexts/ModalProvider';
+import LoginProvider from './contexts/LoginProvider';
 import Toast from './components/Toast';
 
 function AppProvider({ children }: { children: React.ReactNode }) {
   return <ModalProvider>{children}</ModalProvider>;
 }
 
+function AppProvider2({ children }: { children: React.ReactNode }) {
+  return <LoginProvider>{children}</LoginProvider>;
+}
+
 function App() {
   return (
     <AppProvider>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/recent" element={<Recent />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/write" element={<Write />} />
-        <Route path="/saves" element={<Saves />} />
-        <Route path="/setting" element={<Setting />} />
-        <Route path="/follows" element={<Follows />} />
-        <Route path="/lists">
-          <Route path="liked" element={<ListsLiked />} />
-          <Route path="read" element={<ListsRead />} />
-          <Route path="following" element={<ListsFollowing />} />
-          <Route path="" element={<NotFound />} />
-        </Route>
-        <Route path="/tags">
-          <Route path="" element={<Tags />} />
-          <Route path=":tag" element={<TagsTag />} />
-        </Route>
-        <Route path="/:id">
-          <Route path="" element={<Personal />} />
-          <Route path="series">
-            <Route path="" element={<PersonalSeries />} />
-            <Route path=":seriesName" element={<PersonalSeriesName />} />
+      <AppProvider2>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/recent" element={<Recent />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/write" element={<Write />} />
+          <Route path="/saves" element={<Saves />} />
+          <Route path="/setting" element={<Setting />} />
+          <Route path="/follows" element={<Follows />} />
+          <Route path="/lists">
+            <Route path="liked" element={<ListsLiked />} />
+            <Route path="read" element={<ListsRead />} />
+            <Route path="following" element={<ListsFollowing />} />
+            <Route path="" element={<NotFound />} />
           </Route>
-          <Route path="about" element={<PersonalAbout />} />
-          <Route path=":postTitle" element={<PersonalPost />} />
-        </Route>
-        <Route path="/*" element={<NotFound />} />
-      </Routes>
-      <Toast />
+          <Route path="/tags">
+            <Route path="" element={<Tags />} />
+            <Route path=":tag" element={<TagsTag />} />
+          </Route>
+          <Route path="/:id">
+            <Route path="" element={<Personal />} />
+            <Route path="series">
+              <Route path="" element={<PersonalSeries />} />
+              <Route path=":seriesName" element={<PersonalSeriesName />} />
+            </Route>
+            <Route path="about" element={<PersonalAbout />} />
+            <Route path=":postTitle" element={<PersonalPost />} />
+          </Route>
+          <Route path="/*" element={<NotFound />} />
+        </Routes>
+        <Toast />
+      </AppProvider2>
     </AppProvider>
   );
 }

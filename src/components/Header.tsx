@@ -3,13 +3,15 @@ import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 import search from '../resources/search.png';
+import { useLoginValue, useLoginSetting } from '../contexts/LoginProvider';
 
 const cx = classNames.bind(styles);
 
 export default function Header() {
   const [menuOn, setMenuOn] = useState(false);
 
-  const [logOn, setLogOn] = useState(true);
+  // const [logOn, setLogOn] = useState(true);
+  const { logout } = useLoginSetting();
 
   const [modalOn, setModalOn] = useState(false);
 
@@ -61,20 +63,24 @@ export default function Header() {
             <a href="/write">
               <button
                 type="button"
-                className={logOn ? cx('write-button') : cx('blind')}
+                className={
+                  useLoginValue().isLogin ? cx('write-button') : cx('blind')
+                }
               >
                 새 글 작성
               </button>
             </a>
             <button
               type="button"
-              className={logOn ? cx('blind') : cx('login-button')}
+              className={
+                useLoginValue().isLogin ? cx('blind') : cx('login-button')
+              }
             >
               로그인
             </button>
             <div>
               <div
-                className={logOn ? cx('user') : cx('blind')}
+                className={useLoginValue().isLogin ? cx('user') : cx('blind')}
                 onClick={openMenu}
                 role="presentation"
               >
@@ -114,7 +120,15 @@ export default function Header() {
               <a href="/setting">
                 <div>설정</div>
               </a>
-              <div>로그아웃</div>
+              <button
+                type="button"
+                onClick={() => {
+                  logout();
+                  setMenuOn(false);
+                }}
+              >
+                로그아웃
+              </button>
             </div>
           </div>
         </div>

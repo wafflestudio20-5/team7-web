@@ -20,10 +20,15 @@ import PersonalAbout from './pages/PersonalAbout';
 import PersonalPost from './pages/PersonalPost';
 import NotFound from './pages/NotFound';
 import ModalProvider from './contexts/ModalProvider';
+import LoginProvider from './contexts/LoginProvider';
 import Toast from './components/Toast';
 
 function AppProvider({ children }: { children: React.ReactNode }) {
-  return <ModalProvider>{children}</ModalProvider>;
+  return (
+    <LoginProvider>
+      <ModalProvider>{children}</ModalProvider>
+    </LoginProvider>
+  );
 }
 
 function App() {

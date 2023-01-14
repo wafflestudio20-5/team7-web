@@ -25,5 +25,6 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
+    'no-shadow': 'off',
   },
 };

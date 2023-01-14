@@ -21,6 +21,20 @@ import PublishModal from './PublishModal';
 let treeData: any;
 const cx = classNames.bind(styles);
 
+export enum presetBtn {
+  h1 = 1,
+  h2,
+  h3,
+  h4,
+  bold,
+  italic,
+  strike,
+  blockquote,
+  link,
+  image,
+  codeblock,
+}
+
 function Write() {
   const [doc, setDoc] = useState('# Hello byome');
   const [isHide, setHide] = useState(false);
@@ -165,6 +179,15 @@ function Write() {
     mouseIsOn.current = target;
   };
 
+  const onPresetClick = (type: string) => {
+    if (!editorView) return;
+
+    const cursor = editorView.state.selection.main;
+    editorView.dispatch({
+      changes: { from: cursor.anchor, insert: 'test' },
+    });
+  };
+
   const onSaveClick = () => {
     showToast({ type: 'success', message: '포스트가 임시저장되었습니다' });
   };
@@ -197,7 +220,7 @@ function Write() {
             );
           })}
           <div className={styles.md_toolbar_partition} />
-          <button type="button">
+          <button type="button" onClick={() => onPresetClick('')}>
             <BoldIcon />
           </button>
           <button type="button">

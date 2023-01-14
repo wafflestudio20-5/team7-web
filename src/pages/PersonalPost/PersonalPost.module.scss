@@ -225,6 +225,11 @@
       font-size: 1.5rem;
       color: var(--primary2);
       margin-right: 1rem;
+      position: relative;
+    }
+
+    &:hover .arrow_container {
+      animation: 0.35s ease 0s 1 normal forwards running arrow_left;
     }
 
     .desc_container {
@@ -281,6 +286,11 @@
       font-size: 1.5rem;
       color: var(--primary2);
       margin-left: 1rem;
+      position: relative;
+    }
+
+    &:hover .arrow_container {
+      animation: 0.35s ease 0s 1 normal forwards running arrow_right;
     }
 
     .desc_container {
@@ -309,6 +319,34 @@
       white-space: nowrap;
       overflow: hidden;
     }
+  }
+}
+
+@keyframes arrow_left {
+  0% {
+    left: 0px;
+  }
+
+  50% {
+    left: -7px;
+  }
+
+  100% {
+    left: 0px;
+  }
+}
+
+@keyframes arrow_right {
+  0% {
+    right: 0px;
+  }
+
+  50% {
+    right: -7px;
+  }
+
+  100% {
+    right: 0px;
   }
 }
 

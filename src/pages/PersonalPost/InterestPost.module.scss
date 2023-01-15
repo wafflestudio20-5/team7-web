@@ -1,0 +1,29 @@
+.background {
+  z-index: 5;
+  position: relative;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  margin-top: 4rem;
+  background: var(--bg-page1);
+  box-shadow: rgba(0, 0, 0, 0.04) 0px -16px 16px;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--text2);
+  margin-bottom: 3.5rem;
+}
+
+.container {
+  width: 1376px;
+  margin: 0px auto;
+  padding-bottom: 3rem;
+}
+
+.post_container {
+  display: flex;
+  margin: -1rem;
+  flex-wrap: wrap;
+}

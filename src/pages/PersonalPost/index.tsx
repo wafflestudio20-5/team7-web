@@ -12,11 +12,6 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react/lib';
 import styles from './PersonalPost.module.scss';
-import { ReactComponent as SeriesIcon } from '../../assets/series_mark.svg';
-import { ReactComponent as UpTriangleIcon } from '../../assets/up_triangle.svg';
-import { ReactComponent as DownTriangleIcon } from '../../assets/down_triangle.svg';
-import { ReactComponent as LeftIcon } from '../../assets/left_mark.svg';
-import { ReactComponent as RightIcon } from '../../assets/right_mark.svg';
 import { ReactComponent as LeftArrowIcon } from '../../assets/left_arrow.svg';
 import { ReactComponent as RightArrowIcon } from '../../assets/right_arrow.svg';
 import Toc from './Toc';
@@ -24,6 +19,10 @@ import UtilBar from './UtilBar';
 import Comment from './Comment';
 import Modal from '../../components/Modal';
 import { useModalActions } from '../../contexts/ModalProvider';
+import Header from '../../components/Header';
+import HeaderMoving from '../../components/HeaderMoving';
+import InterestPost from './InterestPost';
+import SeriesSelector from './SeriesSelector';
 
 let treeData: any;
 const cx = classNames.bind(styles);
@@ -137,6 +136,8 @@ function PersonalPost() {
 
   return (
     <div className={styles.page_container}>
+      <Header />
+      <HeaderMoving />
       <div className={cx('head_container', 'hori_size')}>
         <div className={styles.head_wrapper}>
           <h1>title</h1>
@@ -174,29 +175,7 @@ function PersonalPost() {
               />
             </div>
           </div>
-          <div className={styles.series_container}>
-            <h2>
-              <a href="/@username/series/seriesname">seriesname</a>
-            </h2>
-            <SeriesIcon className={styles.series_mark} />
-            <div className={styles.list_actions}>
-              <div className={styles.see_hide_container}>
-                <DownTriangleIcon />
-                목록 보기
-              </div>
-              <div className={styles.series_number_container}>
-                <div className={styles.series_number}>1/1</div>
-                <div className={styles.button_container}>
-                  <button type="button">
-                    <LeftIcon />
-                  </button>
-                  <button type="button">
-                    <RightIcon />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <SeriesSelector />
         </div>
       </div>
       <div className={styles.text_container}>
@@ -265,6 +244,7 @@ function PersonalPost() {
           </div>
         </div>
       </div>
+      <InterestPost />
       <Modal />
     </div>
   );

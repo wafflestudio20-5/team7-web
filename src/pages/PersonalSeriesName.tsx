@@ -35,7 +35,7 @@ const detailedSeries: series_detail = {
       series_id: 1,
       post: {
         id: 1,
-        title: '포스트 제목입니다',
+        title: '첫 번째 포스트 제목입니다',
         author: exampleUser,
         url: 'post-title-1',
         preview: '포스트를 소개해주세요.',
@@ -52,7 +52,7 @@ const detailedSeries: series_detail = {
       series_id: 2,
       post: {
         id: 2,
-        title: '포스트 제목입니다',
+        title: '두 번째 포스트 제목입니다',
         author: exampleUser,
         url: 'post-title-2',
         preview: '포스트를 소개해주세요.',
@@ -69,7 +69,7 @@ const detailedSeries: series_detail = {
       series_id: 3,
       post: {
         id: 3,
-        title: '포스트 제목입니다',
+        title: '세 번째 포스트 제목입니다',
         author: exampleUser,
         url: 'post-title-3',
         preview: '포스트를 소개해주세요.',
@@ -88,9 +88,15 @@ const detailedSeries: series_detail = {
 function PersonalSeriesName() {
   const [rotate, setRotate] = useState(false);
 
+  const [sortedList, setList] = useState(
+    rotate ? detailedSeries.postList : detailedSeries.postList.reverse()
+  );
   const changeOrder = () => {
     setRotate(!rotate);
+    const reverseList = sortedList.reverse();
+    setList(reverseList);
   };
+
   return (
     <div className={cx('page')}>
       <Header />
@@ -124,8 +130,8 @@ function PersonalSeriesName() {
               </button>
             </div>
             <div className={cx('postList')}>
-              {detailedSeries.postList.map((postInfo: seriesPost) => (
-                <div className={cx('postDiv')}>
+              {sortedList.map((postInfo: seriesPost) => (
+                <div className={cx('postDiv')} key={postInfo.series_id}>
                   <h2>
                     <span>{postInfo.series_id}.</span>
                     <a

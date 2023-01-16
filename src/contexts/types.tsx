@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-use-before-define */
 import React from 'react';
 
@@ -113,3 +114,17 @@ export type mdElementType = {
   rank: number;
   content: string;
 }; // 마크다운 heading 요소 타입
+
+export enum presetBtn {
+  h1 = 1,
+  h2,
+  h3,
+  h4,
+  bold,
+  italic,
+  strike,
+  blockquote,
+  link,
+  image,
+  codeblock,
+} // 마크다운 프리셋 버튼 종류

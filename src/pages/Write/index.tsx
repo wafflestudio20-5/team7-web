@@ -24,23 +24,10 @@ import { ReactComponent as CodeblockIcon } from '../../assets/markdown_codeblock
 import { ReactComponent as BackIcon } from '../../assets/back.svg';
 import { showToast } from '../../components/Toast';
 import PublishModal from './PublishModal';
+import { presetBtn } from '../../contexts/types';
 
 let treeData: any;
 const cx = classNames.bind(styles);
-
-export enum presetBtn {
-  h1 = 1,
-  h2,
-  h3,
-  h4,
-  bold,
-  italic,
-  strike,
-  blockquote,
-  link,
-  image,
-  codeblock,
-}
 
 const wrapperToRegExp = (wrapper: string) => {
   switch (wrapper) {

@@ -1,44 +1,46 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import styles from './PostComp.module.scss';
+import { post } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
-export default function PostComp() {
+type postCompProps = {
+  post: post;
+};
+
+export default function PostComp({ post }: postCompProps) {
   return (
     <div className={cx('post')}>
-      <a className={cx('image-link')} href="/">
+      <a className={cx('image-link')} href={post.url}>
         <div className={cx('image-container')}>
-          <img
-            src="https://th.bing.com/th/id/R.d01dd3fd4074d38334656a25a511dd5a?rik=x6upOuofKEAgRQ&riu=http%3a%2f%2fwww.etoland.co.kr%2fdata%2fdaumeditor02%2f200202%2f56492515806018600.jpg&ehk=e7vLw%2bHjTj3q2eX6TnrulH77vFS5G4qzokeLISh%2brRM%3d&risl=&pid=ImgRaw&r=0"
-            alt="post"
-          />
+          <img src={post.thumbnail} alt="post" />
         </div>
       </a>
       <div className={cx('body')}>
-        <a className={cx('content')} href="/">
-          <h4>포스트 제목</h4>
+        <a className={cx('content')} href={post.url}>
+          <h4>{post.title}</h4>
           <div>
-            <p>포스트 소개 글</p>
+            <p>{post.preview}</p>
           </div>
         </a>
         <div className={cx('sub-info')}>
-          <span>2022년 12월 30일</span>
+          <span>{post.created_at}</span>
           <span> · </span>
-          <span>14개의 댓글</span>
+          <span>{post.comments}개의 댓글</span>
         </div>
       </div>
       <div className={cx('footer')}>
-        <a href="/">
+        <a href={'@'.concat(post.author.id)}>
           <img
             className={cx('profile')}
-            src="https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png"
+            src={post.author.userImg}
             alt="profile"
           />
           by
-          <span>writer</span>
+          <span>{post.author.id}</span>
         </a>
-        <div className={cx('likes')}>♥ 77</div>
+        <div className={cx('likes')}>{'♥ '.concat(String(post.likes))}</div>
       </div>
     </div>
   );

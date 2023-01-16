@@ -3,13 +3,15 @@ import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './HeaderMoving.module.scss';
 import HeaderFilter from './HeaderFilter';
+import { useLoginValue, useLoginSetting } from '../contexts/LoginProvider';
 
 const cx = classNames.bind(styles);
 
 export default function Header() {
   const [menuOn, setMenuOn] = useState(false);
 
-  const [logOn, setLogOn] = useState(true);
+  const { isLogin, user } = useLoginValue();
+  const { logout } = useLoginSetting();
 
   const [modalOn, setModalOn] = useState(false);
 
@@ -116,26 +118,30 @@ export default function Header() {
             <a href="/write">
               <button
                 type="button"
-                className={logOn ? cx('write-button') : cx('blind')}
+                className={isLogin ? cx('write-button') : cx('blind')}
               >
                 새 글 작성
               </button>
             </a>
             <button
               type="button"
-              className={logOn ? cx('blind') : cx('login-button')}
+              className={isLogin ? cx('blind') : cx('login-button')}
             >
               로그인
             </button>
             <div>
               <div
-                className={logOn ? cx('user') : cx('blind')}
+                className={isLogin ? cx('user') : cx('blind')}
                 onClick={openMenu}
                 role="presentation"
               >
                 <img
                   className={cx('profile')}
-                  src="https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png"
+                  src={
+                    user
+                      ? user.userImg
+                      : 'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png'
+                  }
                   alt="profile"
                 />
                 <svg

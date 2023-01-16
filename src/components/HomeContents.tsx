@@ -4,26 +4,22 @@ import classNames from 'classnames/bind';
 import styles from './HomeContents.module.scss';
 import HeaderFilter from './HeaderFilter';
 import PostComp from './PostComp';
+import { post } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
-export default function HomeContents() {
+type HomeContentsProps = { posts: post[] };
+
+export default function HomeContents({ posts }: HomeContentsProps) {
   return (
     <div className={cx('contents')}>
       <HeaderFilter />
       <div className={cx('container')}>
         <main>
           <div className={cx('posts')}>
-            <PostComp />
-            <PostComp />
-            <PostComp />
-            <PostComp />
-            <PostComp />
-            <PostComp />
-            <PostComp />
-            <PostComp />
-            <PostComp />
-            <PostComp />
+            {posts.map(post => (
+              <PostComp post={post} key={post.id} />
+            ))}
           </div>
         </main>
       </div>

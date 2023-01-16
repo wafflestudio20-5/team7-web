@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
-import search from '../resources/search.png';
 import { useLoginValue, useLoginSetting } from '../contexts/LoginProvider';
 
 const cx = classNames.bind(styles);
@@ -10,7 +9,7 @@ const cx = classNames.bind(styles);
 export default function Header() {
   const [menuOn, setMenuOn] = useState(false);
 
-  const { isLogin } = useLoginValue();
+  const { isLogin, user } = useLoginValue();
   const { logout } = useLoginSetting();
 
   const [modalOn, setModalOn] = useState(false);
@@ -47,7 +46,7 @@ export default function Header() {
                 alt="velog"
               />
             </a>
-            <a href={'/'.concat('')}>id.log</a>
+            <a href={'/'.concat('')}>{path.replace('/', '').concat('.log')}</a>
           </div>
           <div className={cx('right')}>
             <a href="/search" className={cx('search')}>
@@ -82,7 +81,11 @@ export default function Header() {
               >
                 <img
                   className={cx('profile')}
-                  src="https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png"
+                  src={
+                    user
+                      ? user.userImg
+                      : 'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png'
+                  }
                   alt="profile"
                 />
                 <svg

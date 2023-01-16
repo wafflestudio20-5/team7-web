@@ -11,6 +11,7 @@ import remarkParse from 'remark-parse/lib';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react/lib';
+import Moment from 'react-moment';
 import styles from './PersonalPost.module.scss';
 import { ReactComponent as LeftArrowIcon } from '../../assets/left_arrow.svg';
 import { ReactComponent as RightArrowIcon } from '../../assets/right_arrow.svg';
@@ -23,7 +24,14 @@ import Header from '../../components/Header';
 import HeaderMoving from '../../components/HeaderMoving';
 import InterestPost from './InterestPost';
 import SeriesSelector from './SeriesSelector';
-import { commentListType } from '../../contexts/types';
+import {
+  commentListType,
+  post,
+  postDetail,
+  seriesPost,
+  seriesDetail,
+  user,
+} from '../../contexts/types';
 
 let treeData: any;
 const cx = classNames.bind(styles);
@@ -34,7 +42,7 @@ export interface mdElementType {
   content: string;
 }
 
-const dummyUser = {
+const dummyUser: user = {
   id: 'id',
   velog_name: 'velog',
   username: 'name',
@@ -48,69 +56,109 @@ const dummyUser = {
   mail: 'mail',
 };
 
+const dummyCommentList: commentListType = {
+  comments: [
+    {
+      id: 1,
+      writer: dummyUser,
+      content: 'first',
+      created_at: '2020-02-20 20:20:20',
+      updated_at: '2020-02-20 20:20:20',
+      children: {
+        comments: [
+          {
+            id: 2,
+            writer: dummyUser,
+            content: 'second',
+            created_at: '2020-02-20 20:20:20',
+            updated_at: '2022-02-20 20:20:20',
+          },
+          {
+            id: 3,
+            writer: dummyUser,
+            content: 'third',
+            created_at: '2020-02-20 20:20:20',
+            updated_at: '2023-01-17 00:49:20',
+            children: {
+              comments: [
+                {
+                  id: 4,
+                  writer: dummyUser,
+                  content: 'fourth',
+                  created_at: '2020-02-20 20:20:20',
+                  updated_at: '2020-02-20 20:20:20',
+                },
+                {
+                  id: 5,
+                  writer: dummyUser,
+                  content: 'fifth',
+                  created_at: '2020-02-20 20:20:20',
+                  updated_at: '2020-02-20 20:20:20',
+                },
+              ],
+              length: 2,
+            },
+          },
+        ],
+        length: 2,
+      },
+    },
+    {
+      id: 6,
+      writer: dummyUser,
+      content: 'sixth',
+      created_at: '2020-02-20 20:20:20',
+      updated_at: '2020-02-20 20:20:20',
+    },
+  ],
+  length: 2,
+};
+
+const dummyPost: post = {
+  id: 1,
+  title: 'title',
+  author: dummyUser,
+  url: '/userid/posttitle',
+  preview: 'preview',
+  thumbnail: 'thm',
+  tags: ['tag1', 'tag2', 'tag3'],
+  created_at: '2020-02-20 20:20:20',
+  updated_at: '2020-02-20 20:20:20',
+  comments: 2,
+  likes: 77,
+  is_private: false,
+};
+
+const dummySeriesPost: seriesPost = {
+  series_id: 1,
+  post: dummyPost,
+};
+
+const dummySeriesDetail: seriesDetail = {
+  id: 1,
+  title: 'series',
+  photo: 'photo',
+  update: '2020-02-20 20:20:20',
+  authorId: 'id',
+  postNum: 2,
+  postList: [dummySeriesPost, dummySeriesPost],
+};
+
+const dummyPostDetail: postDetail = {
+  ...dummyPost,
+  content:
+    '# title\n ## title2\n ### title3\n\n other title\n ---\n\n content\n ',
+  series: dummySeriesDetail,
+  prev_post: dummyPost,
+  next_post: dummyPost,
+  comments: dummyCommentList,
+};
+
 function PersonalPost() {
-  const [doc] = useState(
-    '# title\n ## title2\n ### title3\n\n other title\n ---\n\n content\n '
-  );
+  const [doc] = useState(dummyPostDetail.content);
   const [tocFixed, setTocFixed] = useState(false);
   const [utilFixed, setUtilFixed] = useState(false);
-  const [commentList] = useState<commentListType>({
-    comments: [
-      {
-        id: 1,
-        writer: dummyUser,
-        content: 'first',
-        created_at: '2020-02-20 20:20:20',
-        updated_at: '2020-02-20 20:20:20',
-        children: {
-          comments: [
-            {
-              id: 2,
-              writer: dummyUser,
-              content: 'second',
-              created_at: '2020-02-20 20:20:20',
-              updated_at: '2022-02-20 20:20:20',
-            },
-            {
-              id: 3,
-              writer: dummyUser,
-              content: 'third',
-              created_at: '2020-02-20 20:20:20',
-              updated_at: '2023-01-17 00:49:20',
-              children: {
-                comments: [
-                  {
-                    id: 4,
-                    writer: dummyUser,
-                    content: 'fourth',
-                    created_at: '2020-02-20 20:20:20',
-                    updated_at: '2020-02-20 20:20:20',
-                  },
-                  {
-                    id: 5,
-                    writer: dummyUser,
-                    content: 'fifth',
-                    created_at: '2020-02-20 20:20:20',
-                    updated_at: '2020-02-20 20:20:20',
-                  },
-                ],
-                length: 2,
-              },
-            },
-          ],
-          length: 2,
-        },
-      },
-      {
-        id: 6,
-        writer: dummyUser,
-        content: 'sixth',
-        created_at: '2020-02-20 20:20:20',
-        updated_at: '2020-02-20 20:20:20',
-      },
-    ],
-    length: 2,
-  });
+  const [commentList] = useState<commentListType>(dummyCommentList);
   const tocRef = useRef<HTMLDivElement>(null);
   const utilRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -169,7 +217,7 @@ function PersonalPost() {
       <HeaderMoving />
       <div className={cx('head_container', 'hori_size')}>
         <div className={styles.head_wrapper}>
-          <h1>title</h1>
+          <h1>{dummyPostDetail.title}</h1>
           <div className={styles.actions}>
             <button type="button">통계</button>
             <button type="button">수정</button>
@@ -180,14 +228,22 @@ function PersonalPost() {
           <div className={styles.info_container}>
             <div className={styles.information}>
               <span className={styles.username}>
-                <a href="/@username">username</a>
+                <a href={`/@${dummyPostDetail.author.username}`}>
+                  {dummyPostDetail.author.username}
+                </a>
               </span>
               <span className={styles.separator}>·</span>
-              <span>1일 전</span>
+              <span>
+                <Moment format="YYYY년 MM월 DD일">
+                  {dummyPostDetail.updated_at}
+                </Moment>
+              </span>
             </div>
           </div>
           <div className={styles.tag_container}>
-            <a href="/tags/mytag">tagname</a>
+            {dummyPostDetail.tags.map(tag => {
+              return <a href={`/tags/${tag}`}>{tag}</a>;
+            })}
           </div>
           <div className={styles.util_positioner} ref={utilRef}>
             <div className={styles.util_container}>
@@ -215,17 +271,18 @@ function PersonalPost() {
       <div className={cx('name_card_container', 'hori_size')}>
         <div>
           <div className={styles.name_card}>
-            <a href="/@username">
-              <img
-                src="https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png"
-                alt="profile"
-              />
+            <a href={`/@${dummyPostDetail.author.username}`}>
+              <img src={dummyPostDetail.author.userImg} alt="profile" />
             </a>
             <div className={styles.name_desc}>
               <div className={styles.name}>
-                <a href="/@username">신호원</a>
+                <a href={`/@${dummyPostDetail.author.username}`}>
+                  {dummyPostDetail.author.username}
+                </a>
               </div>
-              <div className={styles.description}>description</div>
+              <div className={styles.description}>
+                {dummyPostDetail.author.description}
+              </div>
             </div>
           </div>
           <div className={styles.line} />
@@ -234,24 +291,30 @@ function PersonalPost() {
       </div>
       <div className={cx('post_links_container', 'hori_size')}>
         <div className={styles.link_box}>
-          <a href="/@username/prev" className={styles.left_link}>
+          <a
+            href={`/@${dummyUser.id}/${dummyPostDetail.title}`}
+            className={styles.left_link}
+          >
             <div className={styles.arrow_container}>
               <LeftArrowIcon />
             </div>
             <div className={styles.desc_container}>
               <div className={styles.description}>이전 포스트</div>
-              <h3>prev post</h3>
+              <h3>{dummyPostDetail.prev_post.title}</h3>
             </div>
           </a>
         </div>
         <div className={styles.link_box}>
-          <a href="/@username/next" className={styles.right_link}>
+          <a
+            href={`/@${dummyUser.id}/${dummyPostDetail.title}`}
+            className={styles.right_link}
+          >
             <div className={styles.arrow_container}>
               <RightArrowIcon />
             </div>
             <div className={styles.desc_container}>
               <div className={styles.description}>다음 포스트</div>
-              <h3>next post</h3>
+              <h3>{dummyPostDetail.prev_post.title}</h3>
             </div>
           </a>
         </div>

@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import React from 'react';
 
 export type user = {
@@ -34,7 +35,6 @@ export type commentType = {
   content: string;
   created_at: string;
   updated_at: string;
-  // eslint-disable-next-line no-use-before-define
   children?: commentListType;
 }; // 댓글 상세 정보
 
@@ -43,7 +43,7 @@ export type commentListType = {
   length: number;
 }; // 포스트의 트리 구조 댓글 목록
 
-export type post_detail = {
+export type postDetail = {
   id: number;
   title: string;
   author: user;
@@ -51,6 +51,8 @@ export type post_detail = {
   tags: string[];
   created_at: string;
   updated_at: string;
+  content: string;
+  series: seriesDetail;
   prev_post: post;
   next_post: post;
   comments: commentListType;
@@ -72,7 +74,7 @@ export type series = {
   postNum: number;
 }; // series 목록에서 필요한 series 정보
 
-export type series_detail = {
+export type seriesDetail = {
   id: number;
   title: string;
   photo: string;

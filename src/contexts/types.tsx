@@ -28,15 +28,20 @@ export type post = {
   is_private: boolean;
 }; // component를 위한 post 정보
 
-export interface commentType {
+export type commentType = {
+  id: number;
+  writer: user;
   content: string;
+  created_at: string;
+  updated_at: string;
   // eslint-disable-next-line no-use-before-define
   children?: commentListType;
-}
-export interface commentListType {
+}; // 댓글 상세 정보
+
+export type commentListType = {
   comments: commentType[];
   length: number;
-}
+}; // 포스트의 트리 구조 댓글 목록
 
 export type post_detail = {
   id: number;

@@ -23,6 +23,7 @@ import Header from '../../components/Header';
 import HeaderMoving from '../../components/HeaderMoving';
 import InterestPost from './InterestPost';
 import SeriesSelector from './SeriesSelector';
+import { commentListType } from '../../contexts/types';
 
 let treeData: any;
 const cx = classNames.bind(styles);
@@ -33,15 +34,19 @@ export interface mdElementType {
   content: string;
 }
 
-export interface commentType {
-  content: string;
-  // eslint-disable-next-line no-use-before-define
-  children?: commentListType;
-}
-export interface commentListType {
-  comments: commentType[];
-  length: number;
-}
+const dummyUser = {
+  id: 'id',
+  velog_name: 'velog',
+  username: 'name',
+  userImg:
+    'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',
+  description: 'desc',
+  github: 'git',
+  twitter: 'twit',
+  facebook: 'face',
+  homepage: 'home',
+  mail: 'mail',
+};
 
 function PersonalPost() {
   const [doc] = useState(
@@ -52,21 +57,41 @@ function PersonalPost() {
   const [commentList] = useState<commentListType>({
     comments: [
       {
+        id: 1,
+        writer: dummyUser,
         content: 'first',
+        created_at: '2020-02-20 20:20:20',
+        updated_at: '2020-02-20 20:20:20',
         children: {
           comments: [
             {
+              id: 2,
+              writer: dummyUser,
               content: 'second',
+              created_at: '2020-02-20 20:20:20',
+              updated_at: '2022-02-20 20:20:20',
             },
             {
+              id: 3,
+              writer: dummyUser,
               content: 'third',
+              created_at: '2020-02-20 20:20:20',
+              updated_at: '2023-01-17 00:49:20',
               children: {
                 comments: [
                   {
+                    id: 4,
+                    writer: dummyUser,
                     content: 'fourth',
+                    created_at: '2020-02-20 20:20:20',
+                    updated_at: '2020-02-20 20:20:20',
                   },
                   {
+                    id: 5,
+                    writer: dummyUser,
                     content: 'fifth',
+                    created_at: '2020-02-20 20:20:20',
+                    updated_at: '2020-02-20 20:20:20',
                   },
                 ],
                 length: 2,
@@ -77,7 +102,11 @@ function PersonalPost() {
         },
       },
       {
+        id: 6,
+        writer: dummyUser,
         content: 'sixth',
+        created_at: '2020-02-20 20:20:20',
+        updated_at: '2020-02-20 20:20:20',
       },
     ],
     length: 2,

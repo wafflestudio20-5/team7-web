@@ -5,16 +5,12 @@ import classNames from 'classnames/bind';
 import styles from './Tags.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import Header from '../components/Header';
+// eslint-disable-next-line import/extensions,import/no-unresolved
+import { tag } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 const sortTab = new URLSearchParams(window.location.search).get('sort');
 
-interface tag {
-  name: string;
-  thumbnail: string;
-  intro: string;
-  postCount: number;
-}
 const tagList: tag[] = [
   {
     name: 'JavaScript',

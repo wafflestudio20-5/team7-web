@@ -97,3 +97,38 @@
   word-break: keep-all;
   overflow-wrap: break-word;
 }
+
+.buttonDiv {
+  display: flex;
+  margin-bottom: 1.5rem;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+}
+
+.button {
+  display: inline-flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background: var(--primary1);
+  color: var(--button-text);
+  border-radius: 4px;
+  padding: 0 1.125rem;
+  height: 2.5rem;
+  font-size: 1.125rem;
+}
+
+textarea {
+  border: none;
+  width: 100%;
+  height: auto;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: var(--text1);
+  font-family: "Fira Mono", monospace;
+}

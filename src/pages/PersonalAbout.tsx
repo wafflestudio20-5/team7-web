@@ -7,6 +7,8 @@ import Header from '../components/Header';
 import UserIntro from '../components/UserIntro';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './PersonalAbout.module.scss';
+// eslint-disable-next-line import/extensions,import/no-unresolved
+import { useLoginValue } from '../contexts/LoginProvider';
 
 const cx = classNames.bind(styles);
 
@@ -108,7 +110,18 @@ const detailedUser = {
 };
 
 function PersonalAbout() {
-  const loginUser = useState(false);
+  const loginUser =
+    useLoginValue().isLogin && useLoginValue().user?.id === currentUser.id;
+  const [isWriting, setWriting] = useState(false);
+  function writeOpen() {
+    setWriting(true);
+  }
+  const [newAbout, setAbout] = useState(detailedUser.about);
+  function writeClose() {
+    detailedUser.about = newAbout;
+    setWriting(false);
+  }
+
   return (
     <div className={cx('page')}>
       <Header />
@@ -132,7 +145,7 @@ function PersonalAbout() {
           </div>
         </div>
         <div>
-          {detailedUser.about === '' && (
+          {!isWriting && detailedUser.about === '' && (
             <div className={cx('empty')}>
               <img
                 src="https://static.velog.io/static/media/undraw_empty.5fd6f2b8.svg"
@@ -140,14 +153,52 @@ function PersonalAbout() {
               />
               <div className={cx('message')}>소개가 작성되지 않았습니다.</div>
               {loginUser && (
-                <button type="button" color="teal" className={cx('addIntro')}>
+                <button
+                  type="button"
+                  color="teal"
+                  className={cx('addIntro')}
+                  onClick={writeOpen}
+                >
                   소개 글 작성하기
                 </button>
               )}
             </div>
           )}
-          {detailedUser.about !== '' && (
-            <div className={cx('intro')}>{detailedUser.about}</div>
+          {!isWriting && detailedUser.about !== '' && (
+            <div>
+              {loginUser && (
+                <div className={cx('buttonDiv')}>
+                  <button
+                    type="button"
+                    color="teal"
+                    className={cx('button')}
+                    onClick={writeOpen}
+                  >
+                    수정하기
+                  </button>
+                </div>
+              )}
+              <div className={cx('intro')}>{newAbout}</div>
+            </div>
+          )}
+          {isWriting && (
+            <div>
+              <div className={cx('buttonDiv')}>
+                <button
+                  type="button"
+                  color="teal"
+                  className={cx('button')}
+                  onClick={writeClose}
+                >
+                  저장하기
+                </button>
+              </div>
+              <textarea
+                defaultValue={detailedUser.about}
+                placeholder="소개 문구를 입력하세요."
+                onChange={e => setAbout(e.target.value)}
+              />
+            </div>
           )}
         </div>
       </div>

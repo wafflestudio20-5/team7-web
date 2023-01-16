@@ -11,9 +11,10 @@ const cx = classNames.bind(styles);
 
 interface utilProps {
   utilFixed: boolean;
+  likes: number;
 }
 
-function UtilBar({ utilFixed }: utilProps) {
+function UtilBar({ utilFixed, likes }: utilProps) {
   const [likeClicked, setLikeClicked] = useState(false);
   const [likeScale, setLikeScale] = useState(1.0);
   const [likeTransit, setLikeTransit] = useState(150);
@@ -79,7 +80,7 @@ function UtilBar({ utilFixed }: utilProps) {
       >
         <LikeIcon />
       </div>
-      <div className={styles.like_count}>0</div>
+      <div className={styles.like_count}>{likes}</div>
       <div className={styles.links_container}>
         <div className={styles.positioner}>
           <div

@@ -242,7 +242,7 @@ function PersonalPost() {
           </div>
           <div className={styles.util_positioner} ref={utilRef}>
             <div className={styles.util_container}>
-              <UtilBar utilFixed={utilFixed} />
+              <UtilBar utilFixed={utilFixed} likes={dummyPostDetail.likes} />
             </div>
           </div>
           <div className={styles.toc_positioner} ref={tocRef}>

@@ -9,11 +9,11 @@ import UserIntro from '../components/UserIntro';
 import BigPostComp from '../components/BigPostComp';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './Personal.module.scss';
-// eslint-disable-next-line import/extensions,import/no-unresolved
-import { post } from '../contexts/types';
+// eslint-disable-next-line import/extensions,import/no-unresolved,camelcase
+import { post, user, user_detail } from '../contexts/types';
 
 const cx = classNames.bind(styles);
-const currentUser = {
+const currentUser: user = {
   id: '2-0-is',
   velog_name: '2-0-is_velog',
   username: '이영은',
@@ -26,7 +26,8 @@ const currentUser = {
   mail: 'yuye2002@snu.ac.kr',
 };
 
-const detailedUser = {
+// eslint-disable-next-line camelcase
+const detailedUser: user_detail = {
   id: '2-0-is',
   velog_name: '2-0-is_velog',
   username: '이영은',
@@ -101,8 +102,7 @@ const detailedUser = {
       id: 1,
       title: '내 시리즈',
       photo: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      created_at: '2022-12-30',
-      updated_at: '2022-12-31',
+      update: '2022-12-21',
       authorId: '2-0-is',
       postNum: 12,
     },

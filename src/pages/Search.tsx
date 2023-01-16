@@ -8,14 +8,14 @@ import Header from '../components/Header';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import BigPostComp from '../components/BigPostComp';
 // eslint-disable-next-line import/extensions,import/no-unresolved
-import { post } from '../contexts/types';
+import { post, user } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
 function Search() {
   const [query, setQuery] = useState('');
   const username = new URLSearchParams(window.location.search).get('username');
-  const exampleUser = {
+  const exampleUser: user = {
     id: '2-0-is',
     velog_name: '2-0-is_velog',
     username: '이영은',
@@ -27,7 +27,7 @@ function Search() {
     homepage: 'https://localhost:3000',
     mail: 'yuye2002@snu.ac.kr',
   };
-  const posts = [
+  const posts: post[] = [
     {
       id: 1,
       title: '포스트 제목입니다',

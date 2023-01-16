@@ -3,46 +3,11 @@ import React from 'react';
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './UserIntro.module.scss';
+// eslint-disable-next-line import/extensions,import/no-unresolved
+import { user } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
-interface post {
-  id: number;
-  title: string;
-  url: string;
-  intro: string;
-  thumbnail: string;
-  seriesTitle: string;
-  seriesId: number;
-  tags: string[];
-  date: string;
-  comments: number;
-  authorId: string;
-  authorImg: string;
-  heart: number;
-}
-interface series {
-  id: number;
-  title: string;
-  photo: string;
-  update: string;
-  authorId: string;
-  postNum: number;
-}
-interface user {
-  username: string;
-  userImg: string;
-  description: string;
-  github: string;
-  twitter: string;
-  facebook: string;
-  homepage: string;
-  mail: string;
-  tags: string[];
-  posts: post[];
-  series: series[];
-  about: string;
-}
 interface user_type {
   userInfo: user;
 }
@@ -51,12 +16,12 @@ function UserIntro({ userInfo }: user_type) {
   return (
     <div className={cx('user')}>
       <div className={cx('intro')}>
-        <a href={`/@${userInfo.username}`}>
+        <a href={`/@${userInfo.id}`}>
           <img src={userInfo.userImg} alt="profile" />
         </a>
         <div className={cx('textIntro')}>
           <div className={cx('name')}>
-            <a href={`/@${userInfo.username}`}>{userInfo.username}</a>
+            <a href={`/@${userInfo.id}`}>{userInfo.id}</a>
           </div>
           <div className={cx('description')}>{userInfo.description}</div>
         </div>

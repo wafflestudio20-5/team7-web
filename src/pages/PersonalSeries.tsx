@@ -7,11 +7,15 @@ import Header from '../components/Header';
 import UserIntro from '../components/UserIntro';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './PersonalSeries.module.scss';
+// eslint-disable-next-line import/extensions,import/no-unresolved
+import { series } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
-const user = {
-  username: '2-0-is',
+const currentUser = {
+  id: '2-0-is',
+  velog_name: '2-0-is_velog',
+  username: '이영은',
   userImg: '',
   description: '이영은의 벨로그',
   github: '2-0-is',
@@ -19,71 +23,76 @@ const user = {
   facebook: 'facebook',
   homepage: 'https://localhost:3000',
   mail: 'yuye2002@snu.ac.kr',
-  tags: ['새태그'],
+};
+
+const detailedUser = {
+  id: '2-0-is',
+  velog_name: '2-0-is_velog',
+  username: '이영은',
+  userImg: '',
+  description: '이영은의 벨로그',
+  github: '2-0-is',
+  twitter: 'twitter',
+  facebook: 'facebook',
+  homepage: 'https://localhost:3000',
+  mail: 'yuye2002@snu.ac.kr',
+  tags: ['tagA', 'tagB', 'tagC'],
   posts: [
     {
       id: 1,
       title: '포스트 제목입니다',
+      author: currentUser,
       url: 'post-title-1',
-      intro: '포스트를 소개해주세요.',
+      preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      seriesTitle: 'series1',
-      seriesId: 1,
       tags: ['tagA', 'tagB', 'tagC'],
-      date: '2022년 10월 31일',
-      comments: 10,
-      authorId: '2-0-is',
-      authorImg: '',
-      heart: 10,
-      public: true,
+      created_at: '2022-12-30',
+      updated_at: '2022-12-31',
+      comments: 23,
+      likes: 45,
+      is_private: false,
     },
     {
       id: 2,
       title: '포스트 제목입니다',
+      author: currentUser,
       url: 'post-title-2',
-      intro: '포스트를 소개해주세요.',
+      preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      seriesTitle: 'series1',
-      seriesId: 2,
       tags: ['tagA', 'tagB', 'tagC'],
-      date: '2022년 10월 31일',
-      comments: 10,
-      authorId: '2-0-is',
-      authorImg: '',
-      heart: 10,
-      public: true,
+      created_at: '2022-12-30',
+      updated_at: '2022-12-31',
+      comments: 23,
+      likes: 45,
+      is_private: false,
     },
     {
       id: 3,
       title: '포스트 제목입니다',
+      author: currentUser,
       url: 'post-title-3',
-      intro: '포스트를 소개해주세요.',
+      preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      seriesTitle: 'series1',
-      seriesId: 3,
       tags: ['tagA', 'tagB', 'tagC'],
-      date: '2022년 10월 31일',
-      comments: 10,
-      authorId: '2-0-is',
-      authorImg: '',
-      heart: 10,
-      public: true,
+      created_at: '2022-12-30',
+      updated_at: '2022-12-31',
+      comments: 23,
+      likes: 45,
+      is_private: false,
     },
     {
       id: 4,
       title: '포스트 제목입니다',
+      author: currentUser,
       url: 'post-title-4',
-      intro: '포스트를 소개해주세요.',
+      preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      seriesTitle: '',
-      seriesId: 0,
-      tags: [],
-      date: '2022년 10월 31일',
-      comments: 10,
-      authorId: '2-0-is',
-      authorImg: '',
-      heart: 10,
-      public: false,
+      tags: ['tagA', 'tagB', 'tagC'],
+      created_at: '2022-12-30',
+      updated_at: '2022-12-31',
+      comments: 23,
+      likes: 45,
+      is_private: true,
     },
   ],
   series: [
@@ -91,40 +100,32 @@ const user = {
       id: 1,
       title: '내 시리즈',
       photo: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      update: '2022년 12월 6일',
+      update: '2022-01-01',
       authorId: '2-0-is',
-      postNum: 25,
+      postNum: 12,
     },
   ],
-  about: '<h1>벨로그에 오신 것을 환영합니다.</h1>',
+  about: '<h1>내 벨로그입니다.</h1>',
 };
-interface series {
-  id: number;
-  title: string;
-  photo: string;
-  update: string;
-  authorId: string;
-  postNum: number;
-}
 
 function PersonalSeries() {
   return (
     <div className={cx('page')}>
       <Header />
       <div className={cx('pageContent')}>
-        <UserIntro userInfo={user} />
+        <UserIntro userInfo={currentUser} />
         <div>
           <div className={cx('pageIndex')}>
-            <a href={`/@${user.username}`} className={cx('index')}>
+            <a href={`/@${currentUser.id}`} className={cx('index')}>
               글
             </a>
             <a
-              href={`/@${user.username}/series`}
+              href={`/@${currentUser.id}/series`}
               className={cx('index', 'active')}
             >
               시리즈
             </a>
-            <a href={`/@${user.username}/about`} className={cx('index')}>
+            <a href={`/@${currentUser.id}/about`} className={cx('index')}>
               소개
             </a>
             <div className={cx('activeLine')} />
@@ -132,7 +133,7 @@ function PersonalSeries() {
         </div>
         <div>
           <div className={cx('seriesList')}>
-            {user.series.map((seriesInfo: series) => (
+            {detailedUser.series.map((seriesInfo: series) => (
               <div className={cx('seriesDiv')}>
                 <a
                   href={`/@${seriesInfo.authorId}/series/${seriesInfo.title}`}

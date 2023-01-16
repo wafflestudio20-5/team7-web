@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { Link } from 'react-scroll';
 import styles from './Toc.module.scss';
-import { mdElementType } from '.';
 import useTitleObserver from '../Write/useTitleObserver';
+import { mdElementType } from '../../contexts/types';
 
 const cx = classNames.bind(styles);
 

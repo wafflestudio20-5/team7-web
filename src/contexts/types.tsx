@@ -107,3 +107,9 @@ export type tag = {
   intro: string;
   postCount: number;
 };
+
+export type mdElementType = {
+  key: string;
+  rank: number;
+  content: string;
+}; // 마크다운 heading 요소 타입

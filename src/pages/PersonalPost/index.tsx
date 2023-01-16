@@ -31,16 +31,11 @@ import {
   seriesPost,
   seriesDetail,
   user,
+  mdElementType,
 } from '../../contexts/types';
 
 let treeData: any;
 const cx = classNames.bind(styles);
-
-export interface mdElementType {
-  key: string;
-  rank: number;
-  content: string;
-}
 
 const dummyUser: user = {
   id: 'id',

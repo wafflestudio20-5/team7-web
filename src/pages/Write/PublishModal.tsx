@@ -1,28 +1,34 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './PublishModal.module.scss';
 import { ReactComponent as ImageIcon } from '../../assets/image.svg';
 import { ReactComponent as WorldIcon } from '../../assets/world.svg';
 import { ReactComponent as LockIcon } from '../../assets/lock.svg';
 import { ReactComponent as ListAddIcon } from '../../assets/list_add.svg';
+import { postDetail } from '../../contexts/types';
 
 const cx = classNames.bind(styles);
 
-interface PublishModalParamsType {
+interface PublishModalProps {
+  post: postDetail;
+  setPost: React.Dispatch<React.SetStateAction<postDetail>>;
   modalActive: boolean;
   setModalActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function PublishModal({
+  post,
+  setPost,
   modalActive,
   setModalActive,
-}: PublishModalParamsType) {
+}: PublishModalProps) {
   const [thumbnailActive, setThumbnailActive] = useState(false);
   const [isPublic, setPublic] = useState(true);
   const [seriesActive, setSeriesActive] = useState(false);
   const [curSeries, setCurSeries] = useState(0);
   const [newSeriesActive, setNewSeriesActive] = useState(false);
   const [newSeriesStart, setNewSeriesStart] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const onCancelClick = () => {
     setModalActive(false);
@@ -30,10 +36,23 @@ export default function PublishModal({
 
   const onDeleteClick = () => {
     setThumbnailActive(false);
+    setPost(post => {
+      return { ...post, thumbnail: '' };
+    });
   };
 
   const onUploadClick = () => {
     setThumbnailActive(true);
+    fileInputRef.current?.click();
+  };
+
+  const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPost(post => {
+      return {
+        ...post,
+        thumbnail: e.target.files ? URL.createObjectURL(e.target.files[0]) : '',
+      };
+    });
   };
 
   const onPublicClick = () => {
@@ -81,7 +100,9 @@ export default function PublishModal({
               {thumbnailActive && (
                 <div className={styles.thumbnail_actions_container}>
                   <div className={styles.actions}>
-                    <button type="button">재업로드</button>
+                    <button type="button" onClick={onUploadClick}>
+                      재업로드
+                    </button>
                     <div className={styles.middledot} />
                     <button type="button" onClick={onDeleteClick}>
                       제거
@@ -94,7 +115,7 @@ export default function PublishModal({
                   {thumbnailActive ? (
                     <img
                       className={styles.thumbnail}
-                      src="https://i.ibb.co/pQjGB1q/waffle1.png"
+                      src={post.thumbnail}
                       alt="썸네일"
                     />
                   ) : (
@@ -106,6 +127,12 @@ export default function PublishModal({
                     </div>
                   )}
                 </div>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={onFileInputChange}
+                  style={{ display: 'none' }}
+                />
               </div>
               <div className={styles.summary_container}>
                 <h4>rer</h4>

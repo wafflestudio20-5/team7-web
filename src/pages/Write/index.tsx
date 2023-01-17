@@ -638,7 +638,12 @@ function Write() {
           <div className={styles.pv_footer} />
         </div>
       </div>
-      <PublishModal modalActive={modalActive} setModalActive={setModalActive} />
+      <PublishModal
+        post={post}
+        setPost={setPost}
+        modalActive={modalActive}
+        setModalActive={setModalActive}
+      />
     </div>
   );
 }

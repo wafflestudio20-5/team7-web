@@ -49,11 +49,13 @@ export type postDetail = {
   title: string;
   author: user;
   url: string;
+  preview: string;
+  thumbnail: string;
   tags: string[];
   created_at: string;
   updated_at: string;
   content: string;
-  series: seriesDetail;
+  series: seriesDetail | null;
   prev_post: post | null;
   next_post: post | null;
   comments: commentListType;

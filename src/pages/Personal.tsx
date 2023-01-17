@@ -26,7 +26,6 @@ const currentUser: user = {
   mail: 'yuye2002@snu.ac.kr',
 };
 
-// eslint-disable-next-line camelcase
 const detailedUser: userDetail = {
   id: '2-0-is',
   velog_name: '2-0-is_velog',

@@ -498,6 +498,12 @@ function Write() {
 
   const onPublishClick = () => {
     setModalActive(true);
+    setPost(post => {
+      return {
+        ...post,
+        preview: post.content.slice(0, 150),
+      };
+    });
   };
 
   const onExitClick = () => {

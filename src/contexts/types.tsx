@@ -54,8 +54,8 @@ export type postDetail = {
   updated_at: string;
   content: string;
   series: seriesDetail;
-  prev_post: post;
-  next_post: post;
+  prev_post: post | null;
+  next_post: post | null;
   comments: commentListType;
   likes: number;
   is_private: boolean;
@@ -113,7 +113,7 @@ export type mdElementType = {
   key: string;
   rank: number;
   content: string;
-}; // 마크다운 heading 요소 타입
+}; // 마크다운 heading 요소 타입, (프론트에서만 사용)
 
 export enum presetBtn {
   h1 = 1,

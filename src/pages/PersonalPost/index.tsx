@@ -293,10 +293,12 @@ function PersonalPost() {
             <div className={styles.arrow_container}>
               <LeftArrowIcon />
             </div>
-            <div className={styles.desc_container}>
-              <div className={styles.description}>이전 포스트</div>
-              <h3>{dummyPostDetail.prev_post.title}</h3>
-            </div>
+            {dummyPostDetail.prev_post && (
+              <div className={styles.desc_container}>
+                <div className={styles.description}>이전 포스트</div>
+                <h3>{dummyPostDetail.prev_post.title}</h3>
+              </div>
+            )}
           </a>
         </div>
         <div className={styles.link_box}>
@@ -307,10 +309,12 @@ function PersonalPost() {
             <div className={styles.arrow_container}>
               <RightArrowIcon />
             </div>
-            <div className={styles.desc_container}>
-              <div className={styles.description}>다음 포스트</div>
-              <h3>{dummyPostDetail.prev_post.title}</h3>
-            </div>
+            {dummyPostDetail.next_post && (
+              <div className={styles.desc_container}>
+                <div className={styles.description}>다음 포스트</div>
+                <h3>{dummyPostDetail.next_post.title}</h3>
+              </div>
+            )}
           </a>
         </div>
       </div>

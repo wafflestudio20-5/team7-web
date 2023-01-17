@@ -25,7 +25,21 @@ import { ReactComponent as CodeblockIcon } from '../../assets/markdown_codeblock
 import { ReactComponent as BackIcon } from '../../assets/back.svg';
 import { showToast } from '../../components/Toast';
 import PublishModal from './PublishModal';
-import { presetBtn } from '../../contexts/types';
+import { presetBtn, user } from '../../contexts/types';
+
+const dummyUser: user = {
+  id: 'id',
+  velog_name: 'velog',
+  username: 'name',
+  userImg:
+    'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',
+  description: 'desc',
+  github: 'git',
+  twitter: 'twit',
+  facebook: 'face',
+  homepage: 'home',
+  mail: 'mail',
+};
 
 let treeData: any;
 const cx = classNames.bind(styles);
@@ -53,6 +67,7 @@ const wrapperToRegExp = (wrapper: string) => {
 
 function Write() {
   const [doc, setDoc] = useState('# Hello byome');
+  const [post, setPost] = useState();
   const [isHide, setHide] = useState(false);
   const [modalActive, setModalActive] = useState(false);
   const [imageLink, setImageLink] = useState<string | null>('');

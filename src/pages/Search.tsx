@@ -7,93 +7,82 @@ import styles from './Search.module.scss';
 import Header from '../components/Header';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import BigPostComp from '../components/BigPostComp';
+// eslint-disable-next-line import/extensions,import/no-unresolved
+import { post, user } from '../contexts/types';
 
 const cx = classNames.bind(styles);
-
-interface post {
-  id: number;
-  title: string;
-  url: string;
-  intro: string;
-  thumbnail: string;
-  seriesTitle: string;
-  seriesId: number;
-  tags: string[];
-  date: string;
-  comments: number;
-  authorId: string;
-  authorImg: string;
-  heart: number;
-  public: boolean;
-}
 
 function Search() {
   const [query, setQuery] = useState('');
   const username = new URLSearchParams(window.location.search).get('username');
-  const posts = [
+  const exampleUser: user = {
+    id: '2-0-is',
+    velog_name: '2-0-is_velog',
+    username: '이영은',
+    userImg: '',
+    description: '이영은의 벨로그',
+    github: '2-0-is',
+    twitter: 'twitter',
+    facebook: 'facebook',
+    homepage: 'https://localhost:3000',
+    mail: 'yuye2002@snu.ac.kr',
+  };
+  const posts: post[] = [
     {
       id: 1,
       title: '포스트 제목입니다',
+      author: exampleUser,
       url: 'post-title-1',
-      intro: '포스트를 소개해주세요.',
+      preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      seriesTitle: 'series1',
-      seriesId: 1,
       tags: ['tagA', 'tagB', 'tagC'],
-      date: '2022년 10월 31일',
-      comments: 10,
-      authorId: '2-0-is',
-      authorImg: '',
-      heart: 10,
-      public: true,
+      created_at: '2022-12-30',
+      updated_at: '2022-12-31',
+      comments: 23,
+      likes: 45,
+      is_private: false,
     },
     {
       id: 2,
       title: '포스트 제목입니다',
+      author: exampleUser,
       url: 'post-title-2',
-      intro: '포스트를 소개해주세요.',
+      preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      seriesTitle: 'series1',
-      seriesId: 2,
       tags: ['tagA', 'tagB', 'tagC'],
-      date: '2022년 10월 31일',
-      comments: 10,
-      authorId: '2-0-is',
-      authorImg: '',
-      heart: 10,
-      public: true,
+      created_at: '2022-12-30',
+      updated_at: '2022-12-31',
+      comments: 23,
+      likes: 45,
+      is_private: false,
     },
     {
       id: 3,
       title: '포스트 제목입니다',
+      author: exampleUser,
       url: 'post-title-3',
-      intro: '포스트를 소개해주세요.',
+      preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      seriesTitle: 'series1',
-      seriesId: 3,
       tags: ['tagA', 'tagB', 'tagC'],
-      date: '2022년 10월 31일',
-      comments: 10,
-      authorId: '2-0-is',
-      authorImg: '',
-      heart: 10,
-      public: true,
+      created_at: '2022-12-30',
+      updated_at: '2022-12-31',
+      comments: 23,
+      likes: 45,
+      is_private: false,
     },
     {
       id: 4,
       title: '포스트 제목입니다',
+      author: exampleUser,
       url: 'post-title-4',
-      intro: '포스트를 소개해주세요.',
+      preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      seriesTitle: '',
-      seriesId: 0,
-      tags: [],
-      date: '2022년 10월 31일',
-      comments: 10,
-      authorId: '2-0-is',
-      authorImg: '',
-      heart: 10,
-      public: false,
+      tags: ['tagA', 'tagB', 'tagC'],
+      created_at: '2022-12-30',
+      updated_at: '2022-12-31',
+      comments: 23,
+      likes: 45,
+      is_private: true,
     },
   ];
   const postCount = posts.length;

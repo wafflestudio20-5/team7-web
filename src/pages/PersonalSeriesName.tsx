@@ -5,93 +5,105 @@ import classNames from 'classnames/bind';
 import Header from '../components/Header';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './PersonalSeriesName.module.scss';
+// eslint-disable-next-line import/extensions,import/no-unresolved,camelcase
+import { user, series_detail, seriesPost } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
-const series = {
+const exampleUser: user = {
+  id: '2-0-is',
+  velog_name: '2-0-is_velog',
+  username: '이영은',
+  userImg: '',
+  description: '이영은의 벨로그',
+  github: '2-0-is',
+  twitter: 'twitter',
+  facebook: 'facebook',
+  homepage: 'https://localhost:3000',
+  mail: 'yuye2002@snu.ac.kr',
+};
+// eslint-disable-next-line camelcase
+const detailedSeries: series_detail = {
   id: 1,
   title: '내 시리즈',
   photo: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
   update: '2022년 12월 6일',
   authorId: '2-0-is',
   postNum: 25,
+  postList: [
+    {
+      series_id: 1,
+      post: {
+        id: 1,
+        title: '첫 번째 포스트 제목입니다',
+        author: exampleUser,
+        url: 'post-title-1',
+        preview: '포스트를 소개해주세요.',
+        thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
+        tags: ['tagA', 'tagB', 'tagC'],
+        created_at: '2022-12-30',
+        updated_at: '2022-12-31',
+        comments: 23,
+        likes: 45,
+        is_private: false,
+      },
+    },
+    {
+      series_id: 2,
+      post: {
+        id: 2,
+        title: '두 번째 포스트 제목입니다',
+        author: exampleUser,
+        url: 'post-title-2',
+        preview: '포스트를 소개해주세요.',
+        thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
+        tags: ['tagA', 'tagB', 'tagC'],
+        created_at: '2022-12-30',
+        updated_at: '2022-12-31',
+        comments: 23,
+        likes: 45,
+        is_private: false,
+      },
+    },
+    {
+      series_id: 3,
+      post: {
+        id: 3,
+        title: '세 번째 포스트 제목입니다',
+        author: exampleUser,
+        url: 'post-title-3',
+        preview: '포스트를 소개해주세요.',
+        thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
+        tags: ['tagA', 'tagB', 'tagC'],
+        created_at: '2022-12-30',
+        updated_at: '2022-12-31',
+        comments: 23,
+        likes: 45,
+        is_private: false,
+      },
+    },
+  ],
 };
-interface post {
-  id: number;
-  title: string;
-  url: string;
-  intro: string;
-  thumbnail: string;
-  seriesTitle: string;
-  seriesId: number;
-  tags: string[];
-  date: string;
-  comments: number;
-  authorId: string;
-  authorImg: string;
-  heart: number;
-}
-const seriesPosts: post[] = [
-  {
-    id: 1,
-    title: '포스트 제목입니다',
-    url: 'post-title-1',
-    intro: '포스트를 소개해주세요.',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    seriesTitle: 'series1',
-    seriesId: 1,
-    tags: ['tagA', 'tagB', 'tagC'],
-    date: '2022년 10월 31일',
-    comments: 10,
-    authorId: '2-0-is',
-    authorImg: '',
-    heart: 10,
-  },
-  {
-    id: 2,
-    title: '포스트 제목입니다',
-    url: 'post-title-2',
-    intro: '포스트를 소개해주세요.',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    seriesTitle: 'series1',
-    seriesId: 2,
-    tags: ['tagA', 'tagB', 'tagC'],
-    date: '2022년 10월 31일',
-    comments: 10,
-    authorId: '2-0-is',
-    authorImg: '',
-    heart: 10,
-  },
-  {
-    id: 3,
-    title: '포스트 제목입니다',
-    url: 'post-title-3',
-    intro: '포스트를 소개해주세요.',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    seriesTitle: 'series1',
-    seriesId: 3,
-    tags: ['tagA', 'tagB', 'tagC'],
-    date: '2022년 10월 31일',
-    comments: 10,
-    authorId: '2-0-is',
-    authorImg: '',
-    heart: 10,
-  },
-];
 
 function PersonalSeriesName() {
   const [rotate, setRotate] = useState(false);
 
+  const [sortedList, setList] = useState(
+    rotate ? detailedSeries.postList : detailedSeries.postList.reverse()
+  );
   const changeOrder = () => {
     setRotate(!rotate);
+    const reverseList = sortedList.reverse();
+    setList(reverseList);
   };
+
   return (
     <div className={cx('page')}>
       <Header />
       <div className={cx('pageBody')}>
         <div>
           <span className={cx('label')}>시리즈</span>
-          <h1>{series.title}</h1>
+          <h1>{detailedSeries.title}</h1>
           <div className={cx('line')} />
           <section>
             <div className={cx('sortRule')}>
@@ -118,21 +130,27 @@ function PersonalSeriesName() {
               </button>
             </div>
             <div className={cx('postList')}>
-              {seriesPosts.map((postInfo: post) => (
-                <div className={cx('postDiv')}>
+              {sortedList.map((postInfo: seriesPost) => (
+                <div className={cx('postDiv')} key={postInfo.series_id}>
                   <h2>
-                    <span>{postInfo.seriesId}.</span>
-                    <a href={`/@${postInfo.authorId}/${postInfo.url}`}>
-                      {postInfo.title}
+                    <span>{postInfo.series_id}.</span>
+                    <a
+                      href={`/@${postInfo.post.author.id}/${postInfo.post.url}`}
+                    >
+                      {postInfo.post.title}
                     </a>
                   </h2>
                   <section>
-                    <a href={`/@${postInfo.authorId}/${postInfo.url}`}>
-                      <img src={postInfo.thumbnail} alt="post-thumbnail" />
+                    <a
+                      href={`/@${postInfo.post.author.id}/${postInfo.post.url}`}
+                    >
+                      <img src={postInfo.post.thumbnail} alt="post-thumbnail" />
                     </a>
                     <div className={cx('postInfo')}>
-                      <p>{postInfo.intro}</p>
-                      <div className={cx('date')}>{postInfo.date}</div>
+                      <p>{postInfo.post.preview}</p>
+                      <div className={cx('date')}>
+                        {postInfo.post.created_at}
+                      </div>
                     </div>
                   </section>
                 </div>

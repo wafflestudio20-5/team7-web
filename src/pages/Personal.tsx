@@ -9,11 +9,14 @@ import UserIntro from '../components/UserIntro';
 import BigPostComp from '../components/BigPostComp';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './Personal.module.scss';
+// eslint-disable-next-line import/extensions,import/no-unresolved,camelcase
+import { post, user, user_detail } from '../contexts/types';
 
 const cx = classNames.bind(styles);
-
-const user = {
-  username: '2-0-is',
+const currentUser: user = {
+  id: '2-0-is',
+  velog_name: '2-0-is_velog',
+  username: '이영은',
   userImg: '',
   description: '이영은의 벨로그',
   github: '2-0-is',
@@ -21,93 +24,91 @@ const user = {
   facebook: 'facebook',
   homepage: 'https://localhost:3000',
   mail: 'yuye2002@snu.ac.kr',
-  tags: ['새태그'],
+};
+
+// eslint-disable-next-line camelcase
+const detailedUser: user_detail = {
+  id: '2-0-is',
+  velog_name: '2-0-is_velog',
+  username: '이영은',
+  userImg: '',
+  description: '이영은의 벨로그',
+  github: '2-0-is',
+  twitter: 'twitter',
+  facebook: 'facebook',
+  homepage: 'https://localhost:3000',
+  mail: 'yuye2002@snu.ac.kr',
+  tags: ['tagA', 'tagB', 'tagC'],
   posts: [
     {
       id: 1,
       title: '포스트 제목입니다',
+      author: currentUser,
       url: 'post-title-1',
-      intro: '포스트를 소개해주세요.',
+      preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      seriesTitle: 'series1',
-      seriesId: 1,
       tags: ['tagA', 'tagB', 'tagC'],
-      date: '2022년 10월 31일',
-      comments: 10,
-      authorId: '2-0-is',
-      authorImg: '',
-      heart: 10,
-      public: true,
+      created_at: '2022-12-30',
+      updated_at: '2022-12-31',
+      comments: 23,
+      likes: 45,
+      is_private: false,
     },
     {
       id: 2,
       title: '포스트 제목입니다',
+      author: currentUser,
       url: 'post-title-2',
-      intro: '포스트를 소개해주세요.',
+      preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      seriesTitle: 'series1',
-      seriesId: 2,
       tags: ['tagA', 'tagB', 'tagC'],
-      date: '2022년 10월 31일',
-      comments: 10,
-      authorId: '2-0-is',
-      authorImg: '',
-      heart: 10,
-      public: true,
+      created_at: '2022-12-30',
+      updated_at: '2022-12-31',
+      comments: 23,
+      likes: 45,
+      is_private: false,
     },
     {
       id: 3,
       title: '포스트 제목입니다',
+      author: currentUser,
       url: 'post-title-3',
-      intro: '포스트를 소개해주세요.',
+      preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      seriesTitle: 'series1',
-      seriesId: 3,
       tags: ['tagA', 'tagB', 'tagC'],
-      date: '2022년 10월 31일',
-      comments: 10,
-      authorId: '2-0-is',
-      authorImg: '',
-      heart: 10,
-      public: true,
+      created_at: '2022-12-30',
+      updated_at: '2022-12-31',
+      comments: 23,
+      likes: 45,
+      is_private: false,
     },
     {
       id: 4,
       title: '포스트 제목입니다',
+      author: currentUser,
       url: 'post-title-4',
-      intro: '포스트를 소개해주세요.',
+      preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      seriesTitle: '',
-      seriesId: 0,
-      tags: [],
-      date: '2022년 10월 31일',
-      comments: 10,
-      authorId: '2-0-is',
-      authorImg: '',
-      heart: 10,
-      public: false,
+      tags: ['tagA', 'tagB', 'tagC'],
+      created_at: '2022-12-30',
+      updated_at: '2022-12-31',
+      comments: 23,
+      likes: 45,
+      is_private: true,
     },
   ],
-  series: [],
-  about: '<h1>벨로그에 오신 것을 환영합니다.</h1>',
+  series: [
+    {
+      id: 1,
+      title: '내 시리즈',
+      photo: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
+      update: '2022-12-21',
+      authorId: '2-0-is',
+      postNum: 12,
+    },
+  ],
+  about: '<h1>내 벨로그입니다.</h1>',
 };
-
-interface post {
-  id: number;
-  title: string;
-  url: string;
-  intro: string;
-  thumbnail: string;
-  seriesTitle: string;
-  seriesId: number;
-  tags: string[];
-  date: string;
-  comments: number;
-  authorId: string;
-  authorImg: string;
-  heart: number;
-  public: boolean;
-}
 
 function Personal() {
   const [query, setQuery] = useState('');
@@ -120,16 +121,16 @@ function Personal() {
     <div className={cx('page')}>
       <Header />
       <div className={cx('pageContent')}>
-        <UserIntro userInfo={user} />
+        <UserIntro userInfo={currentUser} />
         <div>
           <div className={cx('pageIndex')}>
-            <a href={`/@${user.username}`} className={cx('index', 'active')}>
+            <a href={`/@${currentUser.id}`} className={cx('index', 'active')}>
               글
             </a>
-            <a href={`/@${user.username}/series`} className={cx('index')}>
+            <a href={`/@${currentUser.id}/series`} className={cx('index')}>
               시리즈
             </a>
-            <a href={`/@${user.username}/about`} className={cx('index')}>
+            <a href={`/@${currentUser.id}/about`} className={cx('index')}>
               소개
             </a>
             <div className={cx('activeLine')} />
@@ -167,17 +168,17 @@ function Personal() {
                         tagQuery === null ? 'tagActive' : 'none'
                       )}
                     >
-                      <a href={`/@${user.username}`}>전체보기</a>
+                      <a href={`/@${currentUser.id}`}>전체보기</a>
                       <span>({getPostnum('')})</span>
                     </li>
-                    {user.tags.map((tag: string) => (
+                    {detailedUser.tags.map((tag: string) => (
                       <li
                         className={cx(
                           'tagElem',
                           tagQuery === tag ? 'tagActive' : 'none'
                         )}
                       >
-                        <a href={`/@${user.username}?tag=${tag}`}>{tag}</a>
+                        <a href={`/@${currentUser.id}?tag=${tag}`}>{tag}</a>
                         <span>({getPostnum(tag)})</span>
                       </li>
                     ))}
@@ -189,11 +190,11 @@ function Personal() {
 
           <div>
             <div className="postList">
-              {user.posts.map((postComp: post) => (
+              {detailedUser.posts.map((postComp: post) => (
                 <BigPostComp
                   key={postComp.id}
                   postInfo={postComp}
-                  username={user.username}
+                  username={currentUser.id}
                 />
               ))}
             </div>

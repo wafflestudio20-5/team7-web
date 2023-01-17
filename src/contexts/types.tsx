@@ -93,3 +93,10 @@ export type user_detail = {
   series: series[];
   about: string;
 }; // '내 벨로그' 탭에서 필요한 user 정보
+
+export type tag = {
+  name: string;
+  thumbnail: string;
+  intro: string;
+  postCount: number;
+};

@@ -23,7 +23,6 @@ export default function PublishModal({
   setModalActive,
 }: PublishModalProps) {
   const [thumbnailActive, setThumbnailActive] = useState(false);
-  const [isPublic, setPublic] = useState(true);
   const [seriesActive, setSeriesActive] = useState(false);
   const [curSeries, setCurSeries] = useState(0);
   const [newSeriesActive, setNewSeriesActive] = useState(false);
@@ -69,11 +68,21 @@ export default function PublishModal({
   };
 
   const onPublicClick = () => {
-    setPublic(true);
+    setPost(post => {
+      return {
+        ...post,
+        is_private: false,
+      };
+    });
   };
 
   const onPrivateClick = () => {
-    setPublic(false);
+    setPost(post => {
+      return {
+        ...post,
+        is_private: true,
+      };
+    });
   };
 
   const onSeriesClick = () => {
@@ -251,7 +260,7 @@ export default function PublishModal({
                   <button
                     type="button"
                     className={cx(
-                      isPublic ? 'active_button' : 'deactive_button'
+                      post.is_private ? 'deactive_button' : 'active_button'
                     )}
                     onClick={onPublicClick}
                   >
@@ -262,7 +271,7 @@ export default function PublishModal({
                     type="button"
                     className={cx(
                       'private_button',
-                      isPublic ? 'deactive_button' : 'active_button'
+                      post.is_private ? 'active_button' : 'deactive_button'
                     )}
                     onClick={onPrivateClick}
                   >

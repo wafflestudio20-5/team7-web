@@ -12,6 +12,7 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react/lib';
 import classNames from 'classnames/bind';
+import { useNavigate } from 'react-router-dom';
 import useCodemirror from '../../hooks/useCodemirror';
 import styles from './Write.module.scss';
 import { ReactComponent as BoldIcon } from '../../assets/markdown_bold.svg';
@@ -24,23 +25,34 @@ import { ReactComponent as CodeblockIcon } from '../../assets/markdown_codeblock
 import { ReactComponent as BackIcon } from '../../assets/back.svg';
 import { showToast } from '../../components/Toast';
 import PublishModal from './PublishModal';
+import {
+  commentListType,
+  postDetail,
+  presetBtn,
+  user,
+} from '../../contexts/types';
+
+const dummyUser: user = {
+  id: 'id',
+  velog_name: 'velog',
+  username: 'name',
+  userImg:
+    'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',
+  description: 'desc',
+  github: 'git',
+  twitter: 'twit',
+  facebook: 'face',
+  homepage: 'home',
+  mail: 'mail',
+};
+
+const initialCommentList: commentListType = {
+  comments: [],
+  length: 0,
+};
 
 let treeData: any;
 const cx = classNames.bind(styles);
-
-export enum presetBtn {
-  h1 = 1,
-  h2,
-  h3,
-  h4,
-  bold,
-  italic,
-  strike,
-  blockquote,
-  link,
-  image,
-  codeblock,
-}
 
 const wrapperToRegExp = (wrapper: string) => {
   switch (wrapper) {
@@ -64,17 +76,37 @@ const wrapperToRegExp = (wrapper: string) => {
 };
 
 function Write() {
-  const [doc, setDoc] = useState('# Hello byome');
+  const [post, setPost] = useState<postDetail>({
+    id: 2,
+    title: '',
+    author: dummyUser,
+    url: '',
+    preview: '',
+    thumbnail: '',
+    tags: [],
+    created_at: '',
+    updated_at: '',
+    content: '',
+    series: null,
+    prev_post: null,
+    next_post: null,
+    comments: initialCommentList,
+    likes: 0,
+    is_private: false,
+  });
   const [isHide, setHide] = useState(false);
   const [modalActive, setModalActive] = useState(false);
   const [imageLink, setImageLink] = useState<string | null>('');
+  const [tagDescActive, setTagDescActive] = useState(false);
+  const [tagDescVisible, setTagDescVisible] = useState(false);
   const { ref: editorRef, view: editorView } = useCodemirror({
-    initialDoc: doc,
-    setDoc,
+    initialDoc: post.content,
+    setPost,
   });
   const previewRef = useRef<HTMLDivElement>(null);
   const mouseIsOn = useRef<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate();
 
   const defaultPlugin = () => (tree: any) => {
     treeData = tree; // treeData length corresponds to previewer's childNodes length
@@ -203,10 +235,70 @@ function Write() {
     .use(remarkRehype)
     .use(rehypeReact, { createElement, Fragment })
     .use(defaultPlugin)
-    .processSync(doc).result;
+    .processSync(post.content).result;
 
   const setMouseIsOn = (target: string) => {
     mouseIsOn.current = target;
+  };
+
+  const onTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPost(post => {
+      return { ...post, title: e.target.value };
+    });
+  };
+
+  const onTagFocus = () => {
+    setTagDescVisible(true);
+    setTimeout(() => setTagDescActive(true), 1);
+  };
+
+  const onTagBlur = () => {
+    setTagDescActive(false);
+    setTimeout(() => setTagDescVisible(false), 125);
+  };
+
+  // 쉼표 입력 시 태그 추가
+  const handleTagInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
+    if (text.match(',$')) {
+      const newTag = text.slice(0, -1);
+
+      if (
+        newTag.length > 0 &&
+        post.tags.find(tag => tag === newTag) === undefined
+      ) {
+        setPost(post => {
+          return { ...post, tags: [...post.tags, newTag] };
+        });
+      }
+
+      e.target.value = '';
+    }
+  };
+
+  // 엔터 입력 시 태그 추가
+  const onTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement;
+    const text = target.value;
+    if (e.key === 'Enter') {
+      if (
+        text.length > 0 &&
+        post.tags.find(tag => tag === text) === undefined
+      ) {
+        setPost(post => {
+          return { ...post, tags: [...post.tags, text] };
+        });
+      }
+
+      target.value = '';
+    } else if (e.key === 'Backspace') {
+      const tempTags = post.tags;
+      if (tempTags.pop() === undefined) return;
+
+      setPost(post => {
+        return { ...post, tag: [...tempTags] };
+      });
+    }
   };
 
   const onImageLinkClick = () => {
@@ -397,11 +489,26 @@ function Write() {
   };
 
   const onSaveClick = () => {
-    showToast({ type: 'success', message: '포스트가 임시저장되었습니다' });
+    if (post.title && post.content) {
+      showToast({ type: 'success', message: '포스트가 임시저장되었습니다.' });
+    } else {
+      showToast({ type: 'error', message: '제목 또는 내용이 비어있습니다.' });
+    }
   };
 
   const onPublishClick = () => {
     setModalActive(true);
+    setPost(post => {
+      return {
+        ...post,
+        preview: post.content.slice(0, 150),
+        url: post.title,
+      };
+    });
+  };
+
+  const onExitClick = () => {
+    navigate(-1);
   };
 
   return (
@@ -411,12 +518,35 @@ function Write() {
           <textarea
             placeholder="제목을 입력하세요"
             className={styles.md_title}
-            defaultValue="title"
+            value={post.title}
+            onChange={onTitleChange}
           />
           <div className={styles.md_title_underline} />
           <div className={styles.md_tag_container}>
-            <input placeholder="태그를 입력하세요" className={styles.md_tag} />
-            <div className={styles.md_tag_underline} />
+            {post.tags.map(tag => {
+              return (
+                <div className={styles.md_tag} key={tag}>
+                  {tag}
+                </div>
+              );
+            })}
+            <input
+              placeholder="태그를 입력하세요"
+              className={styles.md_tag_input}
+              onFocus={onTagFocus}
+              onBlur={onTagBlur}
+              onChange={handleTagInput}
+              onKeyDown={onTagKeyDown}
+            />
+            <div className={styles.md_tag_underline}>
+              {tagDescVisible && (
+                <div className={cx('inside', { active: tagDescActive })}>
+                  쉼표 혹은 엔터를 입력하여 태그를 등록 할 수 있습니다.
+                  <br />
+                  등록된 태그를 클릭하면 삭제됩니다.
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <div className={cx('md_toolbar', { hide: isHide })}>
@@ -477,7 +607,11 @@ function Write() {
           onMouseEnter={() => setMouseIsOn('markdown')}
         />
         <div className={styles.md_footer}>
-          <button type="button" className={styles.md_footer_back}>
+          <button
+            type="button"
+            className={styles.md_footer_back}
+            onClick={onExitClick}
+          >
             <BackIcon />
             <span>나가기</span>
           </button>
@@ -500,7 +634,7 @@ function Write() {
         </div>
       </div>
       <div className={styles.pv_container}>
-        <h1 className={cx('pv_title', { hide: isHide })}>ff</h1>
+        <h1 className={cx('pv_title', { hide: isHide })}>{post.title}</h1>
         <div
           id={styles.preview}
           ref={previewRef}
@@ -511,7 +645,12 @@ function Write() {
           <div className={styles.pv_footer} />
         </div>
       </div>
-      <PublishModal modalActive={modalActive} setModalActive={setModalActive} />
+      <PublishModal
+        post={post}
+        setPost={setPost}
+        modalActive={modalActive}
+        setModalActive={setModalActive}
+      />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
-// @ts-ignore
-import { user } from './types.tsx';
+import { user } from './types';
 
 type loginValue = {
   isLogin: boolean;
@@ -28,7 +27,7 @@ export default function LoginProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [valueSet, setLoginValue] = useState({
+  const [valueSet, setLoginValue] = useState<loginValue>({
     isLogin: true,
     user: null,
     access_token: '',

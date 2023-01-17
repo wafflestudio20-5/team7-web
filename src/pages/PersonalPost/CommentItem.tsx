@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import moment from 'moment';
+import Moment from 'react-moment';
+import 'moment/locale/ko';
 import styles from './Comment.module.scss';
 import { ReactComponent as PlusIcon } from '../../assets/plus_box.svg';
 import { ReactComponent as MinusIcon } from '../../assets/minus_box.svg';
-import { commentType } from '.';
+import { commentType } from '../../contexts/types';
 import Comment from './Comment';
 import { useModalActions } from '../../contexts/ModalProvider';
 
@@ -76,17 +79,16 @@ function CommentItem({ comment, rank }: commentProps) {
     <div className={styles.comment}>
       <div className={styles.comment_head}>
         <div className={styles.profile}>
-          <a href="/@username">
-            <img
-              src="https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png"
-              alt="profile"
-            />
+          <a href={`/@${comment.writer.id}`}>
+            <img src={comment.writer.userImg} alt="profile" />
           </a>
           <div className={styles.comment_info}>
             <div className={styles.username}>
-              <a href="/@username">username</a>
+              <a href={`/@${comment.writer.id}`}>{comment.writer.username}</a>
             </div>
-            <div className={styles.date}>약 1시간 전</div>
+            <div className={styles.date}>
+              <Moment fromNow>{comment.updated_at}</Moment>
+            </div>
           </div>
         </div>
         <div className={styles.actions}>

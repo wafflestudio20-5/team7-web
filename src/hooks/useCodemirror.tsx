@@ -4,10 +4,11 @@ import { EditorView } from '@codemirror/view';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { syntaxHighlighting, HighlightStyle } from '@codemirror/language';
 import { tags } from '@lezer/highlight';
+import { postDetail } from '../contexts/types';
 
 interface useCodemirrorParamsType {
   initialDoc: string;
-  setDoc: React.Dispatch<React.SetStateAction<string>>;
+  setPost: React.Dispatch<React.SetStateAction<postDetail>>;
 }
 
 const markdownHighlighting = HighlightStyle.define([
@@ -28,7 +29,7 @@ const markdownHighlighting = HighlightStyle.define([
   },
 ]);
 
-function useCodemirror({ initialDoc, setDoc }: useCodemirrorParamsType) {
+function useCodemirror({ initialDoc, setPost }: useCodemirrorParamsType) {
   const ref = useRef<HTMLDivElement>(null);
   const [view, setView] = useState<EditorView | null>(null);
 
@@ -49,7 +50,9 @@ function useCodemirror({ initialDoc, setDoc }: useCodemirrorParamsType) {
         EditorView.lineWrapping,
         EditorView.updateListener.of(update => {
           if (update.docChanged) {
-            setDoc(update.state.doc.toString());
+            setPost(post => {
+              return { ...post, content: update.state.doc.toString() };
+            });
           }
         }),
       ],

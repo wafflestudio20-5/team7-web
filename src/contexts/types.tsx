@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-use-before-define */
 import React from 'react';
 
 export type user = {
@@ -28,26 +30,34 @@ export type post = {
   is_private: boolean;
 }; // component를 위한 post 정보
 
-export interface commentType {
+export type commentType = {
+  id: number;
+  writer: user;
   content: string;
-  // eslint-disable-next-line no-use-before-define
+  created_at: string;
+  updated_at: string;
   children?: commentListType;
-}
-export interface commentListType {
+}; // 댓글 상세 정보
+
+export type commentListType = {
   comments: commentType[];
   length: number;
-}
+}; // 포스트의 트리 구조 댓글 목록
 
-export type post_detail = {
+export type postDetail = {
   id: number;
   title: string;
   author: user;
   url: string;
+  preview: string;
+  thumbnail: string;
   tags: string[];
   created_at: string;
   updated_at: string;
-  prev_post: post;
-  next_post: post;
+  content: string;
+  series: seriesDetail | null;
+  prev_post: post | null;
+  next_post: post | null;
   comments: commentListType;
   likes: number;
   is_private: boolean;
@@ -61,13 +71,14 @@ export type seriesPost = {
 export type series = {
   id: number;
   title: string;
+  url: string;
   photo: string;
   update: string;
   authorId: string;
   postNum: number;
 }; // series 목록에서 필요한 series 정보
 
-export type series_detail = {
+export type seriesDetail = {
   id: number;
   title: string;
   photo: string;
@@ -100,3 +111,23 @@ export type tag = {
   intro: string;
   postCount: number;
 };
+
+export type mdElementType = {
+  key: string;
+  rank: number;
+  content: string;
+}; // 마크다운 heading 요소 타입, (프론트에서만 사용)
+
+export enum presetBtn {
+  h1 = 1,
+  h2,
+  h3,
+  h4,
+  bold,
+  italic,
+  strike,
+  blockquote,
+  link,
+  image,
+  codeblock,
+} // 마크다운 프리셋 버튼 종류

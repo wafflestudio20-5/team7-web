@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { mdElementType } from '../PersonalPost';
+import { mdElementType } from '../../contexts/types';
 
 const useTitleObserver = (
   // 넘겨받은 setActiveId 를 통해 화면 상단의 제목 element를 set해준다.

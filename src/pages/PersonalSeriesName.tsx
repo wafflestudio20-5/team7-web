@@ -5,8 +5,8 @@ import classNames from 'classnames/bind';
 import Header from '../components/Header';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './PersonalSeriesName.module.scss';
-// eslint-disable-next-line import/extensions,import/no-unresolved,camelcase
-import { user, series_detail, seriesPost } from '../contexts/types';
+// eslint-disable-next-line import/extensions,import/no-unresolved
+import { user, seriesDetail, seriesPost } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
@@ -22,8 +22,8 @@ const exampleUser: user = {
   homepage: 'https://localhost:3000',
   mail: 'yuye2002@snu.ac.kr',
 };
-// eslint-disable-next-line camelcase
-const detailedSeries: series_detail = {
+
+const detailedSeries: seriesDetail = {
   id: 1,
   title: '내 시리즈',
   photo: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',

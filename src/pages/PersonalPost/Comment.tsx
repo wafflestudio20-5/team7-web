@@ -1,5 +1,5 @@
 import React from 'react';
-import { commentListType } from '.';
+import { commentListType } from '../../contexts/types';
 import CommentItem from './CommentItem';
 
 interface commentProps {
@@ -13,7 +13,7 @@ function Comment({ commentList, rank }: commentProps) {
       {commentList.comments.map(comment => {
         return (
           // 키는 임시로 설정
-          <CommentItem key={comment.content} comment={comment} rank={rank} />
+          <CommentItem key={comment.id} comment={comment} rank={rank} />
         );
       })}
     </div>

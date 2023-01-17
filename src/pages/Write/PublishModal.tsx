@@ -85,6 +85,15 @@ export default function PublishModal({
     });
   };
 
+  const onUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPost(post => {
+      return {
+        ...post,
+        url: e.target.value,
+      };
+    });
+  };
+
   const onSeriesClick = () => {
     setSeriesActive(true);
   };
@@ -284,8 +293,12 @@ export default function PublishModal({
                 <h3>URL 설정</h3>
                 <div className={styles.contents}>
                   <div className={styles.url_box}>
-                    <div className={styles.username}>/@username/</div>
-                    <input className={styles.url} />
+                    <div className={styles.username}>/@{post.author.id}/</div>
+                    <input
+                      className={styles.url}
+                      value={post.url}
+                      onChange={onUrlChange}
+                    />
                   </div>
                 </div>
               </section>

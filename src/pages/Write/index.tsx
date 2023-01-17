@@ -502,6 +502,7 @@ function Write() {
       return {
         ...post,
         preview: post.content.slice(0, 150),
+        url: post.title,
       };
     });
   };

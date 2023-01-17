@@ -71,6 +71,7 @@ export type seriesPost = {
 export type series = {
   id: number;
   title: string;
+  url: string;
   photo: string;
   update: string;
   authorId: string;

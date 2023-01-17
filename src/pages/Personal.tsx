@@ -101,6 +101,7 @@ const detailedUser: user_detail = {
     {
       id: 1,
       title: '내 시리즈',
+      url: 'url',
       photo: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
       update: '2022-12-21',
       authorId: '2-0-is',

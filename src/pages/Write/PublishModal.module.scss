@@ -286,6 +286,67 @@
           margin-top: 0px;
         }
 
+        .name_container {
+          height: 3rem;
+          width: 100%;
+          display: flex;
+          border-radius: 4px;
+          box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 4px 0px;
+          overflow: hidden;
+
+          .name_wrapper {
+            min-width: 0px;
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            background: var(--bg-element1);
+            font-size: 1.125rem;
+            line-height: 1;
+            color: var(--text2);
+            flex: 1 1 0%;
+          }
+
+          .name {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+
+          button {
+            outline: none;
+            color: white;
+            background: var(--primary1);
+            font-size: 1.25rem;
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            justify-content: center;
+            width: 48px;
+            border: none;
+            cursor: pointer;
+          }
+        }
+
+        .series_delete {
+          margin-top: 8px;
+          display: flex;
+          -webkit-box-pack: end;
+          justify-content: flex-end;
+
+          button {
+            outline: none;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            color: rgb(255, 107, 107);
+            padding: 0px;
+            cursor: pointer;
+          }
+        }
+
         .series_add_button {
           background: var(--bg-element7);
           height: 3rem;

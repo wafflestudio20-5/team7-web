@@ -12,6 +12,7 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react/lib';
 import classNames from 'classnames/bind';
+import { useNavigate } from 'react-router-dom';
 import useCodemirror from '../../hooks/useCodemirror';
 import styles from './Write.module.scss';
 import { ReactComponent as BoldIcon } from '../../assets/markdown_bold.svg';
@@ -62,6 +63,7 @@ function Write() {
   const previewRef = useRef<HTMLDivElement>(null);
   const mouseIsOn = useRef<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate();
 
   const defaultPlugin = () => (tree: any) => {
     treeData = tree; // treeData length corresponds to previewer's childNodes length
@@ -391,6 +393,10 @@ function Write() {
     setModalActive(true);
   };
 
+  const onExitClick = () => {
+    navigate(-1);
+  };
+
   return (
     <div id={styles.editor_wrapper}>
       <div className={styles.md_container}>
@@ -464,7 +470,11 @@ function Write() {
           onMouseEnter={() => setMouseIsOn('markdown')}
         />
         <div className={styles.md_footer}>
-          <button type="button" className={styles.md_footer_back}>
+          <button
+            type="button"
+            className={styles.md_footer_back}
+            onClick={onExitClick}
+          >
             <BackIcon />
             <span>나가기</span>
           </button>

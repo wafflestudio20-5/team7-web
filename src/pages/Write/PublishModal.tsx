@@ -55,6 +55,19 @@ export default function PublishModal({
     });
   };
 
+  const onPreviewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.target.value.length > 150) {
+      e.target.value = e.target.value.slice(0, 150);
+    }
+
+    setPost(post => {
+      return {
+        ...post,
+        preview: e.target.value,
+      };
+    });
+  };
+
   const onPublicClick = () => {
     setPublic(true);
   };
@@ -139,8 +152,12 @@ export default function PublishModal({
                 <textarea
                   className={styles.summary}
                   placeholder="당신의 포스트를 짧게 소개해보세요."
+                  value={post.preview}
+                  onChange={onPreviewChange}
                 />
-                <div className={styles.summary_counter}>33/343</div>
+                <div className={styles.summary_counter}>
+                  {post.preview.length}/150
+                </div>
               </div>
             </div>
           </section>

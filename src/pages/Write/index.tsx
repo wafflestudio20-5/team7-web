@@ -100,6 +100,7 @@ function Write() {
   const [imageLink, setImageLink] = useState<string | null>('');
   const [tagDescActive, setTagDescActive] = useState(false);
   const [tagDescVisible, setTagDescVisible] = useState(false);
+  const [tagDescDamp, setTagDescDamp] = useState(false);
   const { ref: editorRef, view: editorView } = useCodemirror({
     initialDoc: post.content,
     setPost,
@@ -251,11 +252,13 @@ function Write() {
   const onTagFocus = () => {
     setTagDescVisible(true);
     setTimeout(() => setTagDescActive(true), 1);
+    setTimeout(() => setTagDescDamp(true), 250);
   };
 
   const onTagBlur = () => {
     setTagDescActive(false);
-    setTimeout(() => setTagDescVisible(false), 125);
+    setTagDescDamp(false);
+    setTimeout(() => setTagDescVisible(false), 251);
   };
 
   // 쉼표 입력 시 태그 추가
@@ -541,7 +544,13 @@ function Write() {
             />
             <div className={styles.md_tag_underline}>
               {tagDescVisible && (
-                <div className={cx('inside', { active: tagDescActive })}>
+                <div
+                  className={cx(
+                    'inside',
+                    { active: tagDescActive },
+                    { damp: tagDescDamp }
+                  )}
+                >
                   쉼표 혹은 엔터를 입력하여 태그를 등록 할 수 있습니다.
                   <br />
                   등록된 태그를 클릭하면 삭제됩니다.

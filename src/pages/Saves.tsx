@@ -27,6 +27,7 @@ const dummyUser: user = {
   facebook: 'face',
   homepage: 'home',
   mail: 'mail',
+  email: 'email',
 };
 
 const dummyPost: post = {

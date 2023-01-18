@@ -112,6 +112,10 @@
               cursor: pointer;
               transition: all 0.125s ease-in 0s;
               font-weight: bold;
+
+              &:hover {
+                background: var(--bg-element2);
+              }
             }
           }
         }
@@ -204,6 +208,10 @@
           border-radius: 4px;
           cursor: pointer;
           border: 1px solid transparent;
+
+          &:hover {
+            opacity: 0.7;
+          }
         }
 
         .description {
@@ -327,6 +335,10 @@
             width: 48px;
             border: none;
             cursor: pointer;
+
+            &:hover {
+              background: var(--primary2);
+            }
           }
         }
 
@@ -344,6 +356,10 @@
             color: rgb(255, 107, 107);
             padding: 0px;
             cursor: pointer;
+
+            &:hover {
+              text-decoration: underline;
+            }
           }
         }
 
@@ -392,6 +408,10 @@
           padding: 0px 1.125rem;
           height: 2.5rem;
           font-size: 1.125rem;
+
+          &:hover {
+            background: var(--bg-element3);
+          }
         }
 
         .publish_button {
@@ -411,6 +431,10 @@
           padding: 0px 1.125rem;
           height: 2.5rem;
           font-size: 1.125rem;
+
+          &:hover {
+            background: var(--primary2);
+          }
         }
       }
 
@@ -515,6 +539,10 @@
                     padding: 0px 1.25rem;
                     height: 2rem;
                     font-size: 1rem;
+
+                    &:hover {
+                      background: var(--bg-element4);
+                    }
                   }
 
                   .add_button {
@@ -534,6 +562,10 @@
                     height: 2rem;
                     font-size: 1rem;
                     margin-left: 0.875rem;
+
+                    &:hover {
+                      background: var(--primary2);
+                    }
                   }
                 }
               }
@@ -590,6 +622,10 @@
             padding: 0px 1.125rem;
             height: 2.5rem;
             font-size: 1.125rem;
+
+            &:hover {
+              background: var(--bg-element3);
+            }
           }
 
           .select_button {
@@ -609,6 +645,10 @@
             height: 2.5rem;
             font-size: 1.125rem;
             margin-left: 0.875rem;
+
+            &:hover {
+              background: var(--primary2);
+            }
 
             &:disabled {
               cursor: not-allowed;

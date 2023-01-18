@@ -123,12 +123,15 @@ export default function Header() {
                 새 글 작성
               </button>
             </a>
-            <button
-              type="button"
-              className={isLogin ? cx('blind') : cx('login-button')}
-            >
-              로그인
-            </button>
+            <a href="/login">
+              <button
+                type="button"
+                className={isLogin ? cx('blind') : cx('login-button')}
+              >
+                로그인
+              </button>
+            </a>
+
             <div>
               <div
                 className={isLogin ? cx('user') : cx('blind')}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
@@ -12,8 +12,6 @@ export default function Header() {
   const { isLogin, user } = useLoginValue();
   const { logout } = useLoginSetting();
 
-  const [modalOn, setModalOn] = useState(false);
-
   const path = useLocation().pathname;
 
   function openMenu() {
@@ -21,14 +19,6 @@ export default function Header() {
       setMenuOn(true);
     } else {
       setMenuOn(false);
-    }
-  }
-
-  function changeModal() {
-    if (modalOn === false) {
-      setModalOn(true);
-    } else {
-      setModalOn(false);
     }
   }
 
@@ -67,12 +57,14 @@ export default function Header() {
                 새 글 작성
               </button>
             </a>
-            <button
-              type="button"
-              className={isLogin ? cx('blind') : cx('login-button')}
-            >
-              로그인
-            </button>
+            <a href="/login">
+              <button
+                type="button"
+                className={isLogin ? cx('blind') : cx('login-button')}
+              >
+                로그인
+              </button>
+            </a>
             <div>
               <div
                 className={isLogin ? cx('user') : cx('blind')}

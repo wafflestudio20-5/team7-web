@@ -1,0 +1,67 @@
+.register-form {
+  width: 768px;
+  margin: 100px auto 0px;
+  line-height: 1.5;
+  .contents {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    section {
+      label {
+        font-weight: bold;
+        font-size: 1.125rem;
+        color: black;
+        margin-bottom: 1rem;
+        transition: all 0.125s ease-in 0s;
+        display: block;
+      }
+      .group {
+        display: inline-block;
+        .wrapper {
+          padding-bottom: 0.5rem;
+          border-bottom: 1px solid #adb5bd;
+          display: flex;
+          -webkit-box-align: center;
+          align-items: center;
+          input {
+            background: transparent;
+            font-size: 1.5rem;
+            border: none;
+            outline: none;
+            color: #495057;
+            transition: all 0.125s ease-in 0s;
+          }
+        }
+        .hidden-placeholder {
+          font-size: 1.5rem;
+          visibility: hidden;
+        }
+      }
+      margin-bottom: 2rem;
+    }
+    .bottom {
+      margin-top: 6rem;
+      .buttons {
+        button {
+          height: 3rem;
+          font-size: 1.5rem;
+          padding-left: 2rem;
+          padding-right: 2rem;
+          border-radius: 1.5rem;
+          border: none;
+          outline: none;
+          font-weight: bold;
+          word-break: keep-all;
+          background: #dee2e6;
+          color: #212529;
+          transition: all 0.125s ease-in 0s;
+          cursor: pointer;
+        }
+        button:nth-child(2) {
+          margin-left: 1rem;
+          background: #12b886;
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}

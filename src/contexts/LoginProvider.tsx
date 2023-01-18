@@ -29,7 +29,19 @@ export default function LoginProvider({
 }) {
   const [valueSet, setLoginValue] = useState<loginValue>({
     isLogin: true,
-    user: null,
+    user: {
+      id: 'abcd12@naver.com',
+      velog_name: 'abcd12의 velog',
+      username: 'Kim',
+      userImg:
+        'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
+      description: '벨로그 설명',
+      github: '깃허브 링크',
+      twitter: '트위터 링크',
+      facebook: '페이스북 링크',
+      homepage: '홈페이지 링크',
+      mail: '메일 링크',
+    },
     access_token: '',
   });
 

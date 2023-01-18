@@ -19,6 +19,7 @@ function Search() {
     id: '2-0-is',
     velog_name: '2-0-is_velog',
     username: '이영은',
+    email: 'mail',
     userImg: '',
     description: '이영은의 벨로그',
     github: '2-0-is',

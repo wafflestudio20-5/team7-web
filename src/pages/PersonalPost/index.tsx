@@ -40,6 +40,7 @@ const cx = classNames.bind(styles);
 const dummyUser: user = {
   id: 'id',
   velog_name: 'velog',
+  email: 'mail',
   username: 'name',
   userImg:
     'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',

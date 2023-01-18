@@ -17,6 +17,7 @@ const cx = classNames.bind(styles);
 const currentUser: user = {
   id: '2-0-is',
   velog_name: '2-0-is_velog',
+  email: 'mail',
   username: '이영은',
   userImg: '',
   description: '이영은의 벨로그',
@@ -30,6 +31,7 @@ const currentUser: user = {
 const detailedUser: userDetail = {
   id: '2-0-is',
   velog_name: '2-0-is_velog',
+  email: 'mail',
   username: '이영은',
   userImg: '',
   description: '이영은의 벨로그',

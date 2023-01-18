@@ -12,6 +12,7 @@ function Recent() {
       author: {
         id: 'abcd12',
         velog_name: 'abcd12의 velog',
+        email: 'mail',
         username: 'abcd',
         userImg:
           'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
@@ -39,6 +40,7 @@ function Recent() {
       author: {
         id: 'abcd12',
         velog_name: 'abcd12의 velog',
+        email: 'mail',
         username: 'abcd',
         userImg:
           'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
@@ -66,6 +68,7 @@ function Recent() {
       author: {
         id: 'abcd12',
         velog_name: 'abcd12의 velog',
+        email: 'mail',
         username: 'abcd',
         userImg:
           'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
@@ -93,6 +96,7 @@ function Recent() {
       author: {
         id: 'abcd12',
         velog_name: 'abcd12의 velog',
+        email: 'mail',
         username: 'abcd',
         userImg:
           'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
@@ -120,6 +124,7 @@ function Recent() {
       author: {
         id: 'abcd12',
         velog_name: 'abcd12의 velog',
+        email: 'mail',
         username: 'abcd',
         userImg:
           'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
@@ -147,6 +152,7 @@ function Recent() {
       author: {
         id: 'abcd12',
         velog_name: 'abcd12의 velog',
+        email: 'mail',
         username: 'abcd',
         userImg:
           'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',

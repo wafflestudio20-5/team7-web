@@ -5,6 +5,7 @@ import React from 'react';
 export type user = {
   id: string;
   velog_name: string;
+  email: string;
   username: string;
   userImg: string;
   description: string;
@@ -91,6 +92,7 @@ export type seriesDetail = {
 export type userDetail = {
   id: string;
   velog_name: string;
+  email: string;
   username: string;
   userImg: string;
   description: string;

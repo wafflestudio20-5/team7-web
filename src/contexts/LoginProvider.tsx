@@ -32,6 +32,7 @@ export default function LoginProvider({
     user: {
       id: 'abcd12@naver.com',
       velog_name: 'abcd12의 velog',
+      email: 'mail',
       username: 'Kim',
       userImg:
         'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',

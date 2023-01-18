@@ -18,6 +18,8 @@ import PersonalSeries from './pages/PersonalSeries';
 import PersonalSeriesName from './pages/PersonalSeriesName';
 import PersonalAbout from './pages/PersonalAbout';
 import PersonalPost from './pages/PersonalPost';
+import Register from './pages/Register';
+import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import ModalProvider from './contexts/ModalProvider';
 import LoginProvider from './contexts/LoginProvider';
@@ -36,6 +38,8 @@ function App() {
     <AppProvider>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/recent" element={<Recent />} />
         <Route path="/search" element={<Search />} />
         <Route path="/write" element={<Write />} />

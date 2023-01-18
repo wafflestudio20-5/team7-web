@@ -88,7 +88,7 @@ export type seriesDetail = {
   postList: seriesPost[];
 }; // 각 series별 페이지에서 필요한 series 정보 (series + seriesPost)
 
-export type user_detail = {
+export type userDetail = {
   id: string;
   velog_name: string;
   username: string;

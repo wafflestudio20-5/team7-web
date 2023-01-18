@@ -10,7 +10,7 @@ import BigPostComp from '../components/BigPostComp';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './Personal.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved,camelcase
-import { post, user, user_detail } from '../contexts/types';
+import { post, user, userDetail } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 const currentUser: user = {
@@ -26,8 +26,7 @@ const currentUser: user = {
   mail: 'yuye2002@snu.ac.kr',
 };
 
-// eslint-disable-next-line camelcase
-const detailedUser: user_detail = {
+const detailedUser: userDetail = {
   id: '2-0-is',
   velog_name: '2-0-is_velog',
   username: '이영은',

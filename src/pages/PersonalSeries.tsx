@@ -8,11 +8,11 @@ import UserIntro from '../components/UserIntro';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './PersonalSeries.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved
-import { series } from '../contexts/types';
+import { series, user, userDetail } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
-const currentUser = {
+const currentUser: user = {
   id: '2-0-is',
   velog_name: '2-0-is_velog',
   username: '이영은',
@@ -25,7 +25,7 @@ const currentUser = {
   mail: 'yuye2002@snu.ac.kr',
 };
 
-const detailedUser = {
+const detailedUser: userDetail = {
   id: '2-0-is',
   velog_name: '2-0-is_velog',
   username: '이영은',
@@ -99,7 +99,7 @@ const detailedUser = {
     {
       id: 1,
       title: '내 시리즈',
-      url: 'url',
+      url: 'my-seires',
       photo: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
       update: '2022-01-01',
       authorId: '2-0-is',

@@ -32,6 +32,7 @@ import {
   seriesDetail,
   user,
   mdElementType,
+  commentType,
 } from '../../contexts/types';
 
 let treeData: any;
@@ -53,62 +54,46 @@ const dummyUser: user = {
 };
 
 const dummyCommentList: commentListType = {
-  comments: [
-    {
-      id: 1,
-      writer: dummyUser,
-      content: 'first',
-      created_at: '2020-02-20 20:20:20',
-      updated_at: '2020-02-20 20:20:20',
-      children: {
-        comments: [
-          {
-            id: 2,
-            writer: dummyUser,
-            content: 'second',
-            created_at: '2020-02-20 20:20:20',
-            updated_at: '2022-02-20 20:20:20',
-          },
-          {
-            id: 3,
-            writer: dummyUser,
-            content: 'third',
-            created_at: '2020-02-20 20:20:20',
-            updated_at: '2023-01-17 00:49:20',
-            children: {
-              comments: [
-                {
-                  id: 4,
-                  writer: dummyUser,
-                  content: 'fourth',
-                  created_at: '2020-02-20 20:20:20',
-                  updated_at: '2020-02-20 20:20:20',
-                },
-                {
-                  id: 5,
-                  writer: dummyUser,
-                  content: 'fifth',
-                  created_at: '2020-02-20 20:20:20',
-                  updated_at: '2020-02-20 20:20:20',
-                },
-              ],
-              length: 2,
-            },
-          },
-        ],
-        length: 2,
-      },
-    },
-    {
-      id: 6,
-      writer: dummyUser,
-      content: 'sixth',
-      created_at: '2020-02-20 20:20:20',
-      updated_at: '2020-02-20 20:20:20',
-    },
-  ],
-  length: 2,
+  comments: [],
+  length: 0,
 };
+
+let i;
+for (i = 1; i < 107; i += 1) {
+  const dummyComment: commentType = {
+    id: i,
+    writer: dummyUser,
+    content: i.toString(),
+    created_at: '2020-02-20 20:20:20',
+    updated_at: '2020-02-20 20:20:20',
+    children: {
+      comments: [],
+      length: 0,
+    },
+  };
+
+  dummyCommentList.comments.push(dummyComment);
+  dummyCommentList.length += 1;
+}
+
+for (i = 100; i < 137; i += 1) {
+  const dummyComment: commentType = {
+    id: i,
+    writer: dummyUser,
+    content: i.toString(),
+    created_at: '2020-02-20 20:20:20',
+    updated_at: '2020-02-20 20:20:20',
+    children: {
+      comments: [],
+      length: 0,
+    },
+  };
+
+  dummyCommentList.comments[1].children?.comments.push(dummyComment);
+  if (dummyCommentList.comments[1].children) {
+    dummyCommentList.comments[1].children.length += 1;
+  }
+}
 
 const dummyPost: post = {
   id: 1,

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import classNames from 'classnames/bind';
 import { commentListType } from '../../contexts/types';
 import CommentItem from './CommentItem';
 import styles from './Comment.module.scss';
@@ -6,6 +7,7 @@ import { ReactComponent as LeftMarkIcon } from '../../assets/left_mark.svg';
 import { ReactComponent as RightMarkIcon } from '../../assets/right_mark.svg';
 
 const commentPerPage = 10;
+const cx = classNames.bind(styles);
 
 interface commentProps {
   commentList: commentListType;
@@ -65,11 +67,11 @@ function Comment({ commentList, rank }: commentProps) {
           );
         })}
       <div className={styles.pagenation}>
-        <button type="button" onClick={onLLClick}>
-          <LeftMarkIcon />
-          <LeftMarkIcon />
+        <button type="button" className={styles.end_point} onClick={onLLClick}>
+          <LeftMarkIcon className={styles.left_svg} />
+          <LeftMarkIcon className={styles.right_svg} />
         </button>
-        <button type="button" onClick={onLeftClick}>
+        <button type="button" className={styles.left} onClick={onLeftClick}>
           <LeftMarkIcon />
         </button>
         {Array(numPages)
@@ -77,16 +79,21 @@ function Comment({ commentList, rank }: commentProps) {
           .map((x, y) => x + y)
           .slice(range[0] - 1, range[1])
           .map(n => (
-            <button type="button" key={n} onClick={() => onPageClick(n)}>
+            <button
+              type="button"
+              className={cx({ current: n === page })}
+              key={n}
+              onClick={() => onPageClick(n)}
+            >
               {n}
             </button>
           ))}
-        <button type="button" onClick={onRightClick}>
+        <button type="button" className={styles.right} onClick={onRightClick}>
           <RightMarkIcon />
         </button>
-        <button type="button" onClick={onRRClick}>
-          <RightMarkIcon />
-          <RightMarkIcon />
+        <button type="button" className={styles.end_point} onClick={onRRClick}>
+          <RightMarkIcon className={styles.left_svg} />
+          <RightMarkIcon className={styles.right_svg} />
         </button>
       </div>
     </div>

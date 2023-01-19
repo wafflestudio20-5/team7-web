@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import moment from 'moment';
 import Moment from 'react-moment';
 import 'moment/locale/ko';
 import styles from './Comment.module.scss';

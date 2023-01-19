@@ -19,7 +19,6 @@ import { ReactComponent as RightArrowIcon } from '../../assets/right_arrow.svg';
 import Toc from './Toc';
 import UtilBar from './UtilBar';
 import Comment from './Comment';
-import Modal from '../../components/Modal';
 import { useModalActions } from '../../contexts/ModalProvider';
 import Header from '../../components/Header';
 import HeaderMoving from '../../components/HeaderMoving';
@@ -345,7 +344,6 @@ function PersonalPost() {
         </div>
       </div>
       <InterestPost />
-      <Modal />
     </div>
   );
 }

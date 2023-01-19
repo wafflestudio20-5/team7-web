@@ -24,6 +24,7 @@ import NotFound from './pages/NotFound';
 import ModalProvider from './contexts/ModalProvider';
 import LoginProvider from './contexts/LoginProvider';
 import Toast from './components/Toast';
+import Modal from './components/Modal';
 
 function AppProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -68,6 +69,7 @@ function App() {
         <Route path="/*" element={<NotFound />} />
       </Routes>
       <Toast />
+      <Modal />
     </AppProvider>
   );
 }

@@ -12,6 +12,7 @@ import {
   seriesPost,
   user,
 } from '../contexts/types';
+import { useModalActions } from '../contexts/ModalProvider';
 
 const cx = classNames.bind(styles);
 
@@ -82,6 +83,15 @@ const dummyTempPosts: postDetail[] = [
 ];
 
 function Saves() {
+  const { open } = useModalActions();
+
+  const onDeleteClick = () => {
+    open(
+      '임시 글 삭제',
+      '임시 저장한 글을 삭제하시겠습니까?\n삭제한 글은 복구할 수 없습니다.'
+    );
+  };
+
   return (
     <div className={styles.page_container}>
       <Header />
@@ -100,7 +110,11 @@ function Saves() {
                 </p>
                 <section>
                   <Moment format="YYYY년 MM월 DD일">{post.updated_at}</Moment>
-                  <button type="button" className={styles.remove}>
+                  <button
+                    type="button"
+                    className={styles.remove}
+                    onClick={onDeleteClick}
+                  >
                     삭제
                   </button>
                 </section>

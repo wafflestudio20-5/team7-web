@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 
 function Modal() {
   const [closeStart, setCloseStart] = useState(false);
-  const { visible, title, message } = useModalValue();
+  const { visible, title, message, handleClick } = useModalValue();
   const { close } = useModalActions();
 
   useEffect(() => {
@@ -37,7 +37,11 @@ function Modal() {
               >
                 취소
               </button>
-              <button type="button" className={styles.comfirm_button}>
+              <button
+                type="button"
+                className={styles.comfirm_button}
+                onClick={handleClick}
+              >
                 확인
               </button>
             </div>

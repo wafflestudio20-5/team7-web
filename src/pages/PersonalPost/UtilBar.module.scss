@@ -99,6 +99,11 @@
     cursor: pointer;
     z-index: 5;
 
+    &:hover {
+      color: var(--text1);
+      border-color: var(--text1);
+    }
+
     svg {
       width: 24px;
       height: 24px;
@@ -121,6 +126,11 @@
   cursor: pointer;
   z-index: 5;
   position: relative;
+
+  &:hover {
+    color: var(--text1);
+    border-color: var(--text1);
+  }
 
   svg {
     width: 20px;

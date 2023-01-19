@@ -12,13 +12,13 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react/lib';
 import Moment from 'react-moment';
+import { useNavigate } from 'react-router-dom';
 import styles from './PersonalPost.module.scss';
 import { ReactComponent as LeftArrowIcon } from '../../assets/left_arrow.svg';
 import { ReactComponent as RightArrowIcon } from '../../assets/right_arrow.svg';
 import Toc from './Toc';
 import UtilBar from './UtilBar';
 import Comment from './Comment';
-import Modal from '../../components/Modal';
 import { useModalActions } from '../../contexts/ModalProvider';
 import Header from '../../components/Header';
 import HeaderMoving from '../../components/HeaderMoving';
@@ -158,6 +158,7 @@ function PersonalPost() {
   const tocRef = useRef<HTMLDivElement>(null);
   const utilRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const { open } = useModalActions();
 
   const defaultPlugin = () => (tree: any) => {
@@ -203,6 +204,10 @@ function PersonalPost() {
     return () => window.removeEventListener('scroll', findTocUtilPosition);
   }, [tocFixed]);
 
+  const onReviseClick = () => {
+    navigate('/write');
+  };
+
   const onDeleteClick = () => {
     open('포스트 삭제', '정말로 삭제하시겠습니까?');
   };
@@ -216,7 +221,9 @@ function PersonalPost() {
           <h1>{dummyPostDetail.title}</h1>
           <div className={styles.actions}>
             <button type="button">통계</button>
-            <button type="button">수정</button>
+            <button type="button" onClick={onReviseClick}>
+              수정
+            </button>
             <button type="button" onClick={onDeleteClick}>
               삭제
             </button>
@@ -337,7 +344,6 @@ function PersonalPost() {
         </div>
       </div>
       <InterestPost />
-      <Modal />
     </div>
   );
 }

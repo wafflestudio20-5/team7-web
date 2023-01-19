@@ -2,17 +2,15 @@ import React, { useState, useRef } from 'react';
 import classNames from 'classnames/bind';
 import styles from './SettingSetter.module.scss';
 import { useLoginValue } from '../contexts/LoginProvider';
+import { useModalActions } from '../contexts/ModalProvider';
 
 const cx = classNames.bind(styles);
 
-type SettingSetterProps = {
-  openQuitModal: () => void;
-};
-
-export default function SettingSetter({ openQuitModal }: SettingSetterProps) {
+export default function SettingSetter() {
   const [nameEdit, setNameEdit] = useState(false);
   const [titleEdit, setTitleEdit] = useState(false);
   const [socialEdit, setSocialEdit] = useState(false);
+  const { open } = useModalActions();
 
   const { user } = useLoginValue();
   const {
@@ -70,6 +68,10 @@ export default function SettingSetter({ openQuitModal }: SettingSetterProps) {
       setSocialEdit(false);
     }
   }
+
+  const handleQuit = () => {
+    open('회원 탈퇴', '정말로 탈퇴 하시겠습니까?');
+  };
 
   return (
     <div className={cx('setter')}>
@@ -261,7 +263,7 @@ export default function SettingSetter({ openQuitModal }: SettingSetterProps) {
                 <button
                   className={cx('quit')}
                   type="button"
-                  onClick={openQuitModal}
+                  onClick={handleQuit}
                 >
                   회원 탈퇴
                 </button>

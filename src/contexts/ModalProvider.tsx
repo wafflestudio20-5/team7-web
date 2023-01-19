@@ -1,15 +1,25 @@
 /* eslint-disable no-unused-vars */
 import React, { createContext, useContext, useMemo, useState } from 'react';
 
-type modalType = { visible: boolean; title: string; message: string };
-const initialModal = { visible: false, title: '', message: '' };
+type modalType = {
+  visible: boolean;
+  title: string;
+  message: string;
+  handleClick?: () => void;
+};
+const initialModal = {
+  visible: false,
+  title: '',
+  message: '',
+  handleClick: undefined,
+};
 
 type actionsType = {
-  open: (title: string, message: string) => void;
+  open: (title: string, message: string, handleClick?: () => void) => void;
   close: () => void;
 };
 const initialActions: actionsType = {
-  open: (title: string, message: string) => undefined,
+  open: (title: string, message: string, handleClick?: () => void) => undefined,
   close: () => undefined,
 };
 
@@ -21,18 +31,20 @@ export default function ModalProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [modal, setModal] = useState({
+  const [modal, setModal] = useState<modalType>({
     visible: false,
     title: '',
     message: '',
+    handleClick: undefined,
   });
 
   const actions = useMemo(
     () => ({
-      open(title: string, message: string) {
+      open(title: string, message: string, handleClick?: () => void) {
         setModal({
           title,
           message,
+          handleClick,
           visible: true,
         });
       },

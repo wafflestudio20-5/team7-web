@@ -211,3 +211,78 @@
     }
   }
 }
+
+.pagenation {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 2rem 0 3rem;
+
+  button {
+    height: 2rem;
+    width: 2rem;
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    background: var(--bg-element1);
+    border: 1px solid var(--border3);
+    border-radius: 1rem;
+    color: var(--text3);
+    cursor: pointer;
+    z-index: 5;
+
+    &:hover {
+      color: var(--text1);
+      border-color: var(--text1);
+    }
+
+    + button {
+      margin-left: 0.25rem;
+    }
+
+    &.current {
+      height: 2rem;
+      width: 2rem;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 5;
+      color: var(--button-text);
+      border-radius: 1rem;
+      background: var(--primary2);
+      border-color: var(--primary2);
+
+      &:hover {
+        background: rgb(56, 217, 169);
+        border-color: rgb(56, 217, 169);
+        color: var(--button-text);
+      }
+    }
+  }
+
+  .left {
+    margin-right: 0.75rem;
+  }
+
+  .right {
+    margin-left: 0.75rem;
+  }
+
+  .end_point {
+    .left_svg {
+      position: absolute;
+      left: 0.4rem;
+    }
+
+    .right_svg {
+      position: absolute;
+      right: 0.4rem;
+    }
+  }
+}

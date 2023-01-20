@@ -66,36 +66,46 @@ function Comment({ commentList, rank }: commentProps) {
             <CommentItem key={comment.id} comment={comment} rank={rank} />
           );
         })}
-      <div className={styles.pagenation}>
-        <button type="button" className={styles.end_point} onClick={onLLClick}>
-          <LeftMarkIcon className={styles.left_svg} />
-          <LeftMarkIcon className={styles.right_svg} />
-        </button>
-        <button type="button" className={styles.left} onClick={onLeftClick}>
-          <LeftMarkIcon />
-        </button>
-        {Array(numPages)
-          .fill(1)
-          .map((x, y) => x + y)
-          .slice(range[0] - 1, range[1])
-          .map(n => (
-            <button
-              type="button"
-              className={cx({ current: n === page })}
-              key={n}
-              onClick={() => onPageClick(n)}
-            >
-              {n}
-            </button>
-          ))}
-        <button type="button" className={styles.right} onClick={onRightClick}>
-          <RightMarkIcon />
-        </button>
-        <button type="button" className={styles.end_point} onClick={onRRClick}>
-          <RightMarkIcon className={styles.left_svg} />
-          <RightMarkIcon className={styles.right_svg} />
-        </button>
-      </div>
+      {commentList.length > 0 && (
+        <div className={styles.pagenation}>
+          <button
+            type="button"
+            className={styles.end_point}
+            onClick={onLLClick}
+          >
+            <LeftMarkIcon className={styles.left_svg} />
+            <LeftMarkIcon className={styles.right_svg} />
+          </button>
+          <button type="button" className={styles.left} onClick={onLeftClick}>
+            <LeftMarkIcon />
+          </button>
+          {Array(numPages)
+            .fill(1)
+            .map((x, y) => x + y)
+            .slice(range[0] - 1, range[1])
+            .map(n => (
+              <button
+                type="button"
+                className={cx({ current: n === page })}
+                key={n}
+                onClick={() => onPageClick(n)}
+              >
+                {n}
+              </button>
+            ))}
+          <button type="button" className={styles.right} onClick={onRightClick}>
+            <RightMarkIcon />
+          </button>
+          <button
+            type="button"
+            className={styles.end_point}
+            onClick={onRRClick}
+          >
+            <RightMarkIcon className={styles.left_svg} />
+            <RightMarkIcon className={styles.right_svg} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

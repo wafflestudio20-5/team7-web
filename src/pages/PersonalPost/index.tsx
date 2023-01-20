@@ -66,15 +66,34 @@ for (i = 1; i < 107; i += 1) {
     content: i.toString(),
     created_at: '2020-02-20 20:20:20',
     updated_at: '2020-02-20 20:20:20',
-    children: {
-      comments: [],
-      length: 0,
-    },
   };
 
   dummyCommentList.comments.push(dummyComment);
   dummyCommentList.length += 1;
 }
+
+dummyCommentList.comments[0].children = {
+  comments: [],
+  length: 0,
+};
+
+const dummyComment: commentType = {
+  id: i,
+  writer: dummyUser,
+  content: i.toString(),
+  created_at: '2020-02-20 20:20:20',
+  updated_at: '2020-02-20 20:20:20',
+};
+
+dummyCommentList.comments[0].children?.comments.push(dummyComment);
+if (dummyCommentList.comments[0].children) {
+  dummyCommentList.comments[0].children.length += 1;
+}
+
+dummyCommentList.comments[1].children = {
+  comments: [],
+  length: 0,
+};
 
 for (i = 100; i < 137; i += 1) {
   const dummyComment: commentType = {
@@ -83,10 +102,6 @@ for (i = 100; i < 137; i += 1) {
     content: i.toString(),
     created_at: '2020-02-20 20:20:20',
     updated_at: '2020-02-20 20:20:20',
-    children: {
-      comments: [],
-      length: 0,
-    },
   };
 
   dummyCommentList.comments[1].children?.comments.push(dummyComment);

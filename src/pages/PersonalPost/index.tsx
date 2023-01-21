@@ -119,7 +119,7 @@ const dummyPost: post = {
   thumbnail: 'thm',
   tags: ['tag1', 'tag2', 'tag3'],
   created_at: '2020-02-20 20:20:20',
-  updated_at: '2020-02-20 20:20:20',
+  updated_at: '2020-02-20 20:20:22',
   comments: 2,
   likes: 77,
   is_private: false,

@@ -143,7 +143,8 @@ const dummySeriesDetail: seriesDetail = {
 const dummyPostDetail: postDetail = {
   ...dummyPost,
   content:
-    '# title\n ## title2\n ### title3\n\n other title\n ---\n\n content\n # title\n ## title2\n ### title3\n\n other title\n ---\n\n content\n',
+    '# title\n **bold**\n ## title2\n _italic_\n ### title3\n ~~strike~~\n\n other title\n ---\n >quote\n bash\n\n [link](/id)\n\n ```\ncode' +
+    '-----------------------------------------------------------------------------------------------------------------------block\n```',
   series: dummySeriesDetail,
   prev_post: dummyPost,
   next_post: dummyPost,

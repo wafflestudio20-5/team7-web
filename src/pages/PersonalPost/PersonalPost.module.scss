@@ -12,7 +12,7 @@
     line-height: 1.5;
     letter-spacing: -0.004em;
     margin-top: 0px;
-    font-weight: 800;
+    font-weight: bold;
     color: var(--text1);
     margin-bottom: 2rem;
     word-break: keep-all;
@@ -133,8 +133,73 @@
     transition: color 0.125s ease-in 0s;
     line-height: 1.7;
     letter-spacing: -0.004em;
-    word-break: keep-all;
+    word-break: break-word;
     overflow-wrap: break-word;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+  h3 {
+    font-size: 1.5rem;
+  }
+  h4 {
+    font-size: 1.125rem;
+  }
+
+  blockquote {
+    margin: 2rem 0px;
+    border-left: 4px solid var(--primary2);
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background: var(--bg-element2);
+    padding: 1rem 1rem 1rem 2rem;
+    color: var(--text1);
+
+    :last-child {
+      margin-bottom: 0px;
+    }
+
+    :first-child {
+      margin-top: 0px;
+    }
+  }
+
+  a {
+    color: var(--primary1);
+    text-decoration: none;
+  }
+
+  pre {
+    font-family: 'Fira Mono', source-code-pro, Menlo, Monaco, Consolas,
+      'Courier New', monospace;
+    font-size: 0.875rem;
+    padding: 1rem;
+    border-radius: 4px;
+    line-height: 1.5;
+    letter-spacing: 0px;
+    background: var(--prism-code-block-bg);
+    margin: 0.5em 0px;
+    overflow: auto;
+    color: var(--prism-default-text);
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    tab-size: 4;
+    hyphens: none;
   }
 }
 

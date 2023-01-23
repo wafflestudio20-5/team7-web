@@ -315,7 +315,7 @@ function Write() {
 
   useEffect(() => {
     // 원래는 업로드 완료 후 링크 넣기
-    if (!editorView) return;
+    if (!editorView || !imageLink) return;
     const cursor = editorView.state.selection.main;
 
     editorView.dispatch({

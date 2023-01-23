@@ -13,19 +13,62 @@ interface useCodemirrorParamsType {
 
 const markdownHighlighting = HighlightStyle.define([
   {
+    tag: tags.heading,
+    lineHeight: '1.5',
+    color: 'var(--text1)',
+  },
+  {
     tag: tags.heading1,
-    fontSize: '1.6em',
+    fontSize: '2.5rem',
     fontWeight: 'bold',
   },
   {
     tag: tags.heading2,
-    fontSize: '1.4em',
+    fontSize: '2rem',
     fontWeight: 'bold',
   },
   {
     tag: tags.heading3,
-    fontSize: '1.2em',
+    fontSize: '1.5rem',
     fontWeight: 'bold',
+  },
+  {
+    tag: tags.heading4,
+    fontSize: '1.3125rem',
+    fontWeight: 'bold',
+  },
+  {
+    tag: tags.heading5,
+    fontSize: '1.3125rem',
+    fontWeight: 'bold',
+  },
+  {
+    tag: tags.heading6,
+    fontSize: '1.3125rem',
+    fontWeight: 'bold',
+  },
+  {
+    tag: tags.strong,
+    fontWeight: 'bold',
+  },
+  {
+    tag: tags.emphasis,
+    fontStyle: 'italic',
+  },
+  {
+    tag: tags.quote,
+    color: '#9d9d9f',
+    fontStyle: 'italic',
+  },
+  {
+    tag: tags.monospace,
+    color: '#9d9d9f',
+    fontStyle: 'italic',
+  },
+  {
+    tag: tags.link,
+    color: '#50a14f',
+    borderBottom: '1px solid #50a14f',
   },
 ]);
 
@@ -41,7 +84,6 @@ function useCodemirror({ initialDoc, setPost }: useCodemirrorParamsType) {
 
     const startState = EditorState.create({
       doc: initialDoc,
-      // contentHeight: '100%',
       extensions: [
         markdown({
           base: markdownLanguage, // Support GFM
@@ -54,6 +96,15 @@ function useCodemirror({ initialDoc, setPost }: useCodemirrorParamsType) {
               return { ...post, content: update.state.doc.toString() };
             });
           }
+        }),
+        EditorView.baseTheme({
+          '.cm-content': {
+            fontFamily: "'Fira Mono', monospace",
+            padding: '4px 0px 3rem',
+            fontSize: '1.125rem',
+            lineHeight: '1.5',
+          },
+          '.cm-line': { padding: '0 3rem' },
         }),
       ],
     });

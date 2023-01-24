@@ -11,7 +11,7 @@
 
 .md_container {
   height: 100%;
-  flex: 0 0 50%;
+  flex: 1 1 0%;
   display: flex;
   flex-direction: column;
 
@@ -401,5 +401,58 @@
 
   .pv_footer {
     margin-bottom: 3rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .md_container {
+    .md_header {
+      padding: 1rem;
+    }
+
+    .md_title {
+      font-size: 1.8rem;
+      height: 43px;
+    }
+
+    .md_title_underline {
+      margin-top: 1rem;
+      margin-bottom: 0.66rem;
+    }
+
+    .md_tag {
+      height: 1.5rem;
+      font-size: 0.75rem;
+      border-radius: 0.75rem;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .md_tag_input {
+      line-height: 1.5rem;
+      font-size: 0.75rem;
+    }
+
+    .md_toolbar {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      flex-wrap: unset;
+      overflow-x: auto;
+
+      button {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.45rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .pv_container {
+    display: none;
+    width: 0;
   }
 }

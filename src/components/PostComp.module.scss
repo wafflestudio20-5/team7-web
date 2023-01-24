@@ -135,5 +135,13 @@
   .post {
     margin: 0px;
     width: 100%;
+
+    &:hover {
+      top: 0px;
+    }
+
+    & + .post {
+      margin-top: 1rem;
+    }
   }
 }

@@ -354,6 +354,13 @@
       font-size: 1.125rem;
     }
 
+    p + h1,
+    p + h2,
+    p + h3,
+    p + h4 {
+      margin-top: 2.5rem;
+    }
+
     blockquote {
       margin: 2rem 0px;
       border-left: 4px solid var(--primary2);

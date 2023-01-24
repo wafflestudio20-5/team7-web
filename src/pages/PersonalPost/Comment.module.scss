@@ -140,6 +140,10 @@
     padding: 1.5rem;
     border-radius: 4px;
     margin-top: 1.3125rem;
+
+    .reply_margin_top {
+      margin-top: -1.5rem;
+    }
   }
 
   .comment_write {
@@ -155,6 +159,7 @@
     color: var(--text1);
     line-height: 1.75;
     background: var(--bg-element1);
+    font-family: inherit;
   }
 
   .write_buttons_wrapper {
@@ -283,6 +288,43 @@
     .right_svg {
       position: absolute;
       right: 0.4rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .comment {
+    .comment_head {
+      .profile {
+        img {
+          width: 2.5rem;
+          height: 2.5rem;
+        }
+
+        .comment_info {
+          margin-left: 0.5rem;
+        }
+
+        .username {
+          font-size: 0.875rem;
+        }
+
+        .date {
+          font-size: 0.75rem;
+        }
+      }
+
+      .actions {
+        font-size: 0.75rem;
+      }
+    }
+
+    .comment_text {
+      font-size: 1rem;
+    }
+
+    .reply_container {
+      padding: 1rem;
     }
   }
 }

@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './PersonalPost.module.scss';
 import { ReactComponent as LeftArrowIcon } from '../../assets/left_arrow.svg';
 import { ReactComponent as RightArrowIcon } from '../../assets/right_arrow.svg';
+import { ReactComponent as LikeIcon } from '../../assets/like.svg';
 import Toc from './Toc';
 import UtilBar from './UtilBar';
 import Comment from './Comment';
@@ -155,6 +156,7 @@ function PersonalPost() {
   const [doc] = useState(dummyPostDetail.content);
   const [tocFixed, setTocFixed] = useState(false);
   const [utilFixed, setUtilFixed] = useState(false);
+  const [likeClicked, setLikeClicked] = useState(false);
   const [commentList] = useState<commentListType>(dummyCommentList);
   const tocRef = useRef<HTMLDivElement>(null);
   const utilRef = useRef<HTMLDivElement>(null);
@@ -213,6 +215,10 @@ function PersonalPost() {
     open('포스트 삭제', '정말로 삭제하시겠습니까?');
   };
 
+  const onLikeClick = () => {
+    setLikeClicked(x => !x);
+  };
+
   return (
     <div className={styles.page_container}>
       <Header />
@@ -243,6 +249,16 @@ function PersonalPost() {
                 </Moment>
               </span>
             </div>
+            <div className={styles.like_container}>
+              <button
+                type="button"
+                className={cx({ active: likeClicked })}
+                onClick={onLikeClick}
+              >
+                <LikeIcon />
+                <span>0</span>
+              </button>
+            </div>
           </div>
           <div className={styles.tag_container}>
             {dummyPostDetail.tags.map(tag => {
@@ -251,7 +267,12 @@ function PersonalPost() {
           </div>
           <div className={styles.util_positioner} ref={utilRef}>
             <div className={styles.util_container}>
-              <UtilBar utilFixed={utilFixed} likes={dummyPostDetail.likes} />
+              <UtilBar
+                utilFixed={utilFixed}
+                likes={dummyPostDetail.likes}
+                likeClicked={likeClicked}
+                setLikeClicked={setLikeClicked}
+              />
             </div>
           </div>
           <div className={styles.toc_positioner} ref={tocRef}>
@@ -273,7 +294,7 @@ function PersonalPost() {
         </div>
       </div>
       <div className={cx('name_card_container', 'hori_size')}>
-        <div>
+        <div className={styles.name_card_box}>
           <div className={styles.name_card}>
             <a href={`/@${dummyPostDetail.author.username}`}>
               <img src={dummyPostDetail.author.userImg} alt="profile" />

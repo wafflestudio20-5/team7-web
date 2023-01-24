@@ -127,6 +127,7 @@ function CommentItem({ comment, rank }: commentProps) {
         )}
         {replyVisible && (
           <div className={styles.reply_container}>
+            {comment.children && <div className={styles.reply_margin_top} />}
             {comment.children && (
               <Comment commentList={comment.children} rank={rank + 1} />
             )}

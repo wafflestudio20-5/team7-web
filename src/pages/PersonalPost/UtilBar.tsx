@@ -12,13 +12,13 @@ const cx = classNames.bind(styles);
 interface utilProps {
   utilFixed: boolean;
   likes: number;
+  likeClicked: boolean;
+  setLikeClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function UtilBar({ utilFixed, likes }: utilProps) {
-  const [likeClicked, setLikeClicked] = useState(false);
+function UtilBar({ utilFixed, likes, likeClicked, setLikeClicked }: utilProps) {
   const [likeScale, setLikeScale] = useState(1.0);
   const [likeTransit, setLikeTransit] = useState(150);
-
   const [linkClicked, setLinkClicked] = useState(false);
   const [facePos, setFacePos] = useState([0, 0]);
   const [twitPos, setTwitPos] = useState(0);

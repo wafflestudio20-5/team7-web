@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Moment from 'react-moment';
 import 'moment/locale/ko';
+import moment from 'moment';
 import styles from './Comment.module.scss';
 import { ReactComponent as PlusIcon } from '../../assets/plus_box.svg';
 import { ReactComponent as MinusIcon } from '../../assets/minus_box.svg';
@@ -49,6 +50,8 @@ function CommentItem({ comment, rank }: commentProps) {
   const [replyWrite, setReplyWrite] = useState(false);
   const [replyRevise, setReplyRevise] = useState(false);
   const { open } = useModalActions();
+  const timeNow = moment();
+  const timeComment = moment(comment.updated_at);
 
   const toggleReply = () => {
     setReplyVisible(x => !x);
@@ -86,7 +89,11 @@ function CommentItem({ comment, rank }: commentProps) {
               <a href={`/@${comment.writer.id}`}>{comment.writer.username}</a>
             </div>
             <div className={styles.date}>
-              <Moment fromNow>{comment.updated_at}</Moment>
+              {moment.duration(timeNow.diff(timeComment)).asDays() > 7 ? (
+                <Moment format="YYYY년 MM월 DD일">{comment.updated_at}</Moment>
+              ) : (
+                <Moment fromNow>{comment.updated_at}</Moment>
+              )}
             </div>
           </div>
         </div>

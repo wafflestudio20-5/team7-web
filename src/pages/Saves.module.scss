@@ -67,3 +67,26 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+@media (max-width: 1024px) {
+  .page_box {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .page_box {
+    width: 100%;
+    margin-top: 2rem;
+
+    > h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .hori_size {
+    width: 100%;
+  }
+}

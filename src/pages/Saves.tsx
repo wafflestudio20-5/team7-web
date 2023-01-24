@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import Moment from 'react-moment';
+import moment from 'moment';
 import styles from './Saves.module.scss';
 import Header from '../components/Header';
 import HeaderMoving from '../components/HeaderMoving';
@@ -40,7 +41,7 @@ const dummyPost: post = {
   thumbnail: 'thm',
   tags: ['tag1', 'tag2', 'tag3'],
   created_at: '2020-02-20 20:20:20',
-  updated_at: '2020-02-20 20:20:20',
+  updated_at: '2023-01-22 20:20:20',
   comments: 2,
   likes: 77,
   is_private: false,
@@ -84,6 +85,8 @@ const dummyTempPosts: postDetail[] = [
 
 function Saves() {
   const { open } = useModalActions();
+  const timeNow = moment();
+  const timePost = moment(dummyPostDetail.updated_at);
 
   const onDeleteClick = () => {
     open(
@@ -109,7 +112,13 @@ function Saves() {
                   <a href={post.url}>{post.content}</a>
                 </p>
                 <section>
-                  <Moment format="YYYY년 MM월 DD일">{post.updated_at}</Moment>
+                  {moment.duration(timeNow.diff(timePost)).asDays() > 7 ? (
+                    <Moment format="YYYY년 MM월 DD일">
+                      {dummyPostDetail.updated_at}
+                    </Moment>
+                  ) : (
+                    <Moment fromNow>{dummyPostDetail.updated_at}</Moment>
+                  )}
                   <button
                     type="button"
                     className={styles.remove}

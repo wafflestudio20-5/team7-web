@@ -27,3 +27,35 @@
   margin: -1rem;
   flex-wrap: wrap;
 }
+
+@media (max-width: 1440px) {
+  .container {
+    width: 1024px;
+  }
+}
+
+@media (max-width: 1376px) {
+  .background {
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 1056px) {
+  .container {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .post_container {
+    margin: 0px;
+  }
+}

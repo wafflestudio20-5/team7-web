@@ -13,9 +13,11 @@ import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react/lib';
 import Moment from 'react-moment';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 import styles from './PersonalPost.module.scss';
 import { ReactComponent as LeftArrowIcon } from '../../assets/left_arrow.svg';
 import { ReactComponent as RightArrowIcon } from '../../assets/right_arrow.svg';
+import { ReactComponent as LikeIcon } from '../../assets/like.svg';
 import Toc from './Toc';
 import UtilBar from './UtilBar';
 import Comment from './Comment';
@@ -81,8 +83,8 @@ const dummyComment: commentType = {
   id: i,
   writer: dummyUser,
   content: i.toString(),
-  created_at: '2020-02-20 20:20:20',
-  updated_at: '2020-02-20 20:20:20',
+  created_at: '2023-01-20 20:20:20',
+  updated_at: '2023-01-20 20:20:20',
 };
 
 dummyCommentList.comments[0].children?.comments.push(dummyComment);
@@ -119,7 +121,7 @@ const dummyPost: post = {
   thumbnail: 'thm',
   tags: ['tag1', 'tag2', 'tag3'],
   created_at: '2020-02-20 20:20:20',
-  updated_at: '2020-02-20 20:20:22',
+  updated_at: '2023-01-24 10:20:20',
   comments: 2,
   likes: 77,
   is_private: false,
@@ -134,7 +136,7 @@ const dummySeriesDetail: seriesDetail = {
   id: 1,
   title: 'series',
   photo: 'photo',
-  update: '2020-02-20 20:20:20',
+  update: '2023-01-24 10:20:20',
   authorId: 'id',
   postNum: 2,
   postList: [dummySeriesPost, dummySeriesPost],
@@ -143,7 +145,8 @@ const dummySeriesDetail: seriesDetail = {
 const dummyPostDetail: postDetail = {
   ...dummyPost,
   content:
-    '# title\n ## title2\n ### title3\n\n other title\n ---\n\n content\n # title\n ## title2\n ### title3\n\n other title\n ---\n\n content\n',
+    '# title\n **bold**\n ## title2\n _italic_\n ### title3\n ~~strike~~\n\n other title\n ---\n >quote\n bash\n\n [link](/id)\n\n ```\ncode' +
+    '-----------------------------------------------------------------------------------------------------------------------block\n```',
   series: dummySeriesDetail,
   prev_post: dummyPost,
   next_post: dummyPost,
@@ -154,12 +157,15 @@ function PersonalPost() {
   const [doc] = useState(dummyPostDetail.content);
   const [tocFixed, setTocFixed] = useState(false);
   const [utilFixed, setUtilFixed] = useState(false);
+  const [likeClicked, setLikeClicked] = useState(false);
   const [commentList] = useState<commentListType>(dummyCommentList);
   const tocRef = useRef<HTMLDivElement>(null);
   const utilRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { open } = useModalActions();
+  const timeNow = moment();
+  const timePost = moment(dummyPostDetail.updated_at);
 
   const defaultPlugin = () => (tree: any) => {
     treeData = tree; // treeData length corresponds to previewer's childNodes length
@@ -212,6 +218,10 @@ function PersonalPost() {
     open('포스트 삭제', '정말로 삭제하시겠습니까?');
   };
 
+  const onLikeClick = () => {
+    setLikeClicked(x => !x);
+  };
+
   return (
     <div className={styles.page_container}>
       <Header />
@@ -237,10 +247,24 @@ function PersonalPost() {
               </span>
               <span className={styles.separator}>·</span>
               <span>
-                <Moment format="YYYY년 MM월 DD일">
-                  {dummyPostDetail.updated_at}
-                </Moment>
+                {moment.duration(timeNow.diff(timePost)).asDays() > 7 ? (
+                  <Moment format="YYYY년 MM월 DD일">
+                    {dummyPostDetail.updated_at}
+                  </Moment>
+                ) : (
+                  <Moment fromNow>{dummyPostDetail.updated_at}</Moment>
+                )}
               </span>
+            </div>
+            <div className={styles.like_container}>
+              <button
+                type="button"
+                className={cx({ active: likeClicked })}
+                onClick={onLikeClick}
+              >
+                <LikeIcon />
+                <span>0</span>
+              </button>
             </div>
           </div>
           <div className={styles.tag_container}>
@@ -250,7 +274,12 @@ function PersonalPost() {
           </div>
           <div className={styles.util_positioner} ref={utilRef}>
             <div className={styles.util_container}>
-              <UtilBar utilFixed={utilFixed} likes={dummyPostDetail.likes} />
+              <UtilBar
+                utilFixed={utilFixed}
+                likes={dummyPostDetail.likes}
+                likeClicked={likeClicked}
+                setLikeClicked={setLikeClicked}
+              />
             </div>
           </div>
           <div className={styles.toc_positioner} ref={tocRef}>
@@ -272,7 +301,7 @@ function PersonalPost() {
         </div>
       </div>
       <div className={cx('name_card_container', 'hori_size')}>
-        <div>
+        <div className={styles.name_card_box}>
           <div className={styles.name_card}>
             <a href={`/@${dummyPostDetail.author.username}`}>
               <img src={dummyPostDetail.author.userImg} alt="profile" />

@@ -662,6 +662,19 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .background {
+    align-items: flex-start;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    overflow: auto;
+  }
+
+  .modal_container {
+    width: 704px;
+  }
+}
+
 @media (max-width: 767px) {
   .background {
     align-items: flex-start;
@@ -679,18 +692,5 @@
     .right_container > .button_container {
       margin-top: 2rem;
     }
-  }
-}
-
-@media (max-width: 1024px) {
-  .background {
-    align-items: flex-start;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    overflow: auto;
-  }
-
-  .modal_container {
-    width: 704px;
   }
 }

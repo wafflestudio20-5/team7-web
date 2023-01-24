@@ -411,6 +411,13 @@
   }
 }
 
+@media (max-width: 1024px) {
+  .pv_container {
+    display: none;
+    width: 0;
+  }
+}
+
 @media (max-width: 767px) {
   .md_container {
     .md_header {
@@ -454,12 +461,5 @@
         font-size: 1.45rem;
       }
     }
-  }
-}
-
-@media (max-width: 1024px) {
-  .pv_container {
-    display: none;
-    width: 0;
   }
 }

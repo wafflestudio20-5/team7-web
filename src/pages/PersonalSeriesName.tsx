@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import moment from 'moment/moment';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -12,17 +13,17 @@ import { user, seriesDetail, seriesPost } from '../contexts/types';
 const cx = classNames.bind(styles);
 
 const exampleUser: user = {
-  id: '2-0-is',
-  velog_name: '2-0-is_velog',
+  id: 'myId',
+  velog_name: 'my_velog',
   email: 'mail',
-  username: '이영은',
+  username: '이름',
   userImg: '',
-  description: '이영은의 벨로그',
-  github: '2-0-is',
+  description: '내 벨로그',
+  github: 'github',
   twitter: 'twitter',
   facebook: 'facebook',
   homepage: 'https://localhost:3000',
-  mail: 'yuye2002@snu.ac.kr',
+  mail: 'myId@snu.ac.kr',
 };
 
 const detailedSeries: seriesDetail = {
@@ -30,7 +31,7 @@ const detailedSeries: seriesDetail = {
   title: '내 시리즈',
   photo: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
   update: '2022년 12월 6일',
-  authorId: '2-0-is',
+  authorId: 'myId',
   postNum: 25,
   postList: [
     {
@@ -43,8 +44,8 @@ const detailedSeries: seriesDetail = {
         preview: '포스트를 소개해주세요.',
         thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
         tags: ['tagA', 'tagB', 'tagC'],
-        created_at: '2022-12-30',
-        updated_at: '2022-12-31',
+        created_at: '2022-01-26 12:30:10',
+        updated_at: '2022-01-26 12:30:10',
         comments: 23,
         likes: 45,
         is_private: false,
@@ -60,8 +61,8 @@ const detailedSeries: seriesDetail = {
         preview: '포스트를 소개해주세요.',
         thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
         tags: ['tagA', 'tagB', 'tagC'],
-        created_at: '2022-12-30',
-        updated_at: '2022-12-31',
+        created_at: '2023-01-23 12:30:10',
+        updated_at: '2023-01-23 12:30:10',
         comments: 23,
         likes: 45,
         is_private: false,
@@ -77,8 +78,8 @@ const detailedSeries: seriesDetail = {
         preview: '포스트를 소개해주세요.',
         thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
         tags: ['tagA', 'tagB', 'tagC'],
-        created_at: '2022-12-30',
-        updated_at: '2022-12-31',
+        created_at: '2023-01-26 12:30:10',
+        updated_at: '2023-01-26 12:30:10',
         comments: 23,
         likes: 45,
         is_private: false,
@@ -98,6 +99,25 @@ function PersonalSeriesName() {
     const reverseList = sortedList.reverse();
     setList(reverseList);
   };
+
+  const timeNow = moment();
+
+  function timeSetting(timeComp: string) {
+    const timeSeries = moment(timeComp);
+    const [agoFormat, setAgoFormat] = useState('YYYY-MM-DD');
+    const timeDiff = timeNow.diff(timeSeries);
+
+    useEffect(() => {
+      if (timeDiff < 1000 * 60 * 60)
+        setAgoFormat(`${Math.floor(timeDiff / (1000 * 60))}분 전`);
+      else if (timeDiff < 1000 * 60 * 60 * 24)
+        setAgoFormat(`${Math.floor(timeDiff / (1000 * 60 * 60))}시간 전`);
+      else if (timeDiff < 1000 * 60 * 60 * 24 * 7)
+        setAgoFormat(`${Math.floor(timeDiff / (1000 * 60 * 60 * 24))}일 전`);
+      else setAgoFormat(timeSeries.format('YYYY년 MM월 DD일'));
+    }, [rotate]);
+    return agoFormat;
+  }
 
   return (
     <div className={cx('page')}>
@@ -151,7 +171,7 @@ function PersonalSeriesName() {
                     <div className={cx('postInfo')}>
                       <p>{postInfo.post.preview}</p>
                       <div className={cx('date')}>
-                        {postInfo.post.created_at}
+                        {timeSetting(postInfo.post.created_at)}
                       </div>
                     </div>
                   </section>

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -15,6 +16,22 @@ type post_type = {
 };
 
 function BigPostComp({ postInfo, username }: post_type) {
+  const timeNow = moment();
+  const timePost = moment(postInfo.created_at);
+
+  const [agoFormat, setAgoFormat] = useState('YYYY-MM-DD');
+  const timeDiff = timeNow.diff(timePost);
+
+  useEffect(() => {
+    if (timeDiff < 1000 * 60 * 60)
+      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60))}분 전`);
+    else if (timeDiff < 1000 * 60 * 60 * 24)
+      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60 * 60))}시간 전`);
+    else if (timeDiff < 1000 * 60 * 60 * 24 * 7)
+      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60 * 60 * 24))}일 전`);
+    else setAgoFormat(timePost.format('YYYY년 MM월 DD일'));
+  }, []);
+
   return (
     <div className={cx('postDiv')}>
       {username === '' && (
@@ -44,7 +61,7 @@ function BigPostComp({ postInfo, username }: post_type) {
         ))}
       </div>
       <div className={cx('subInfo')}>
-        <span>{postInfo.created_at}</span>
+        <span>{agoFormat}</span>
         <span className={cx('dot')}>·</span>
         <span>{postInfo.comments}개의 댓글</span>
         <span className={cx('dot')}>·</span>

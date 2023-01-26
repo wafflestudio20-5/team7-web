@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import classNames from 'classnames/bind';
 import styles from './RegisterForm.module.scss';
+import { showToast } from './Toast';
 
 const cx = classNames.bind(styles);
 
@@ -34,8 +35,11 @@ export default function RegisterForm() {
         introduction: description,
       });
       setDone(true);
-    } catch (error) {
-      console.log(error);
+    } catch (error: Error | any) {
+      const keys = Object.keys(error.response.data);
+      const key = keys[0];
+      const message = error.response.data[key][0];
+      showToast({ type: 'error', message: `${key}: `.concat(message) });
     }
   };
 

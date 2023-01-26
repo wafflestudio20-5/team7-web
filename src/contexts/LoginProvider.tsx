@@ -67,9 +67,13 @@ export default function LoginProvider({
       },
       async logout() {
         try {
-          await axios.post('/api/v1/accounts/logout/', {
-            refresh: valueSet.refreshToken,
-          });
+          await axios.post(
+            '/api/v1/accounts/logout/',
+            {
+              refresh: valueSet.refreshToken,
+            },
+            { withCredentials: true }
+          );
           setLoginValue({
             isLogin: false,
             user: null,

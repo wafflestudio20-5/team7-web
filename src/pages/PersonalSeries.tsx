@@ -160,7 +160,7 @@ function PersonalSeries() {
             {detailedUser.series.map((seriesInfo: series) => (
               <div className={cx('seriesDiv')}>
                 <Link
-                  to={`/@${seriesInfo.authorId}/series/${seriesInfo.title}`}
+                  to={`/@${seriesInfo.authorId}/series/${seriesInfo.url}`}
                   className={cx('link')}
                 >
                   <div>
@@ -169,7 +169,7 @@ function PersonalSeries() {
                 </Link>
                 <h4>
                   <Link
-                    to={`/@${seriesInfo.authorId}/series/${seriesInfo.title}`}
+                    to={`/@${seriesInfo.authorId}/series/${seriesInfo.url}`}
                     className={cx('link')}
                   >
                     {seriesInfo.title}

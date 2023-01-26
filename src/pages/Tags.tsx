@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -46,24 +47,24 @@ function Tags() {
       <main>
         <div className={cx('sortDiv')}>
           <div className={cx('tabWrapper')}>
-            <a
-              href="/tags?sort=trending"
+            <Link
+              to="/tags?sort=trending"
               className={cx(
                 'tab',
                 sortTab !== 'alphabetical' ? 'active' : 'none'
               )}
             >
               인기순
-            </a>
-            <a
-              href="/tags?sort=alphabetical"
+            </Link>
+            <Link
+              to="/tags?sort=alphabetical"
               className={cx(
                 'tab',
                 sortTab === 'alphabetical' ? 'active' : 'none'
               )}
             >
               이름순
-            </a>
+            </Link>
             <div
               className={cx(
                 'line',
@@ -76,9 +77,9 @@ function Tags() {
           {tagList.map((tagInfo: tag) => (
             <div className={cx('tagComp')}>
               <div>
-                <a href={`/tags/${tagInfo.name}`} className={cx('title')}>
+                <Link to={`/tags/${tagInfo.name}`} className={cx('title')}>
                   {tagInfo.name}
-                </a>
+                </Link>
                 <p>{tagInfo.intro}</p>
               </div>
               <div className={cx('count')}>

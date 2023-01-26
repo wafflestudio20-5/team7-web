@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -16,12 +17,12 @@ function UserIntro({ userInfo }: user_type) {
   return (
     <div className={cx('user')}>
       <div className={cx('intro')}>
-        <a href={`/@${userInfo.id}`}>
+        <Link to={`/@${userInfo.id}`}>
           <img src={userInfo.userImg} alt="profile" />
-        </a>
+        </Link>
         <div className={cx('textIntro')}>
           <div className={cx('name')}>
-            <a href={`/@${userInfo.id}`}>{userInfo.id}</a>
+            <Link to={`/@${userInfo.id}`}>{userInfo.id}</Link>
           </div>
           <div className={cx('description')}>{userInfo.description}</div>
         </div>
@@ -29,7 +30,7 @@ function UserIntro({ userInfo }: user_type) {
       <div className={cx('line')} />
       <div className={cx('snsPages')}>
         {userInfo.github !== '' && (
-          <a href={`https://github.com/${userInfo.github}`}>
+          <Link to={`https://github.com/${userInfo.github}`}>
             <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
               <mask
                 id="github"
@@ -50,30 +51,30 @@ function UserIntro({ userInfo }: user_type) {
                 <path fill="currentColor" d="M0 0h20v20H0z" />
               </g>
             </svg>
-          </a>
+          </Link>
         )}
         {userInfo.twitter !== '' && (
-          <a href={`https://twitter.com/${userInfo.twitter}`}>
+          <Link to={`https://twitter.com/${userInfo.twitter}`}>
             <svg width="32" height="32" fill="none" viewBox="0 0 32 32">
               <path
                 fill="currentColor"
                 d="M32 6.076a13.108 13.108 0 0 1-3.77 1.033 6.576 6.576 0 0 0 2.886-3.632 13.151 13.151 0 0 1-4.17 1.594 6.554 6.554 0 0 0-4.791-2.074c-4.239 0-7.354 3.955-6.396 8.06C10.304 10.784 5.467 8.171 2.228 4.2a6.574 6.574 0 0 0 2.03 8.765 6.538 6.538 0 0 1-2.971-.821c-.072 3.041 2.108 5.886 5.265 6.52-.924.25-1.936.309-2.965.112a6.57 6.57 0 0 0 6.133 4.558A13.2 13.2 0 0 1 0 26.053a18.585 18.585 0 0 0 10.064 2.95c12.19 0 19.076-10.295 18.66-19.528A13.366 13.366 0 0 0 32 6.076z"
               />
             </svg>
-          </a>
+          </Link>
         )}
         {userInfo.facebook !== '' && (
-          <a href={`https://facebook.com/${userInfo.facebook}`}>
+          <Link to={`https://facebook.com/${userInfo.facebook}`}>
             <svg width="32" height="32" fill="none" viewBox="0 0 32 32">
               <path
                 fill="currentColor"
                 d="M32 5.334C32 2.53 29.47 0 26.667 0H5.333C2.53 0 0 2.531 0 5.334v21.332C0 29.47 2.53 32 5.334 32H16V19.911h-3.911v-5.333H16V12.5c0-3.584 2.69-6.811 6-6.811h4.311v5.333H22c-.472 0-1.022.573-1.022 1.431v2.125h5.333v5.333h-5.333V32h5.689C29.47 32 32 29.469 32 26.666V5.334z"
               />
             </svg>
-          </a>
+          </Link>
         )}
         {userInfo.homepage !== '' && (
-          <a href={userInfo.homepage}>
+          <Link to={userInfo.homepage}>
             <svg
               stroke="currentColor"
               fill="currentColor"
@@ -85,10 +86,10 @@ function UserIntro({ userInfo }: user_type) {
             >
               <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
             </svg>
-          </a>
+          </Link>
         )}
         {userInfo.mail !== '' && (
-          <a href={`mailto:${userInfo.mail}`}>
+          <Link to={`mailto:${userInfo.mail}`}>
             <svg
               width="32"
               height="32"
@@ -101,7 +102,7 @@ function UserIntro({ userInfo }: user_type) {
                 d="M16 16.871L1.019 5H30.98L16 16.871zm0 3.146L1 8.131V27h30V8.131L16 20.017z"
               />
             </svg>
-          </a>
+          </Link>
         )}
       </div>
     </div>

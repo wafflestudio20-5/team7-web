@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -126,15 +127,15 @@ function Personal() {
         <UserIntro userInfo={currentUser} />
         <div>
           <div className={cx('pageIndex')}>
-            <a href={`/@${currentUser.id}`} className={cx('index', 'active')}>
+            <Link to={`/@${currentUser.id}`} className={cx('index', 'active')}>
               글
-            </a>
-            <a href={`/@${currentUser.id}/series`} className={cx('index')}>
+            </Link>
+            <Link to={`/@${currentUser.id}/series`} className={cx('index')}>
               시리즈
-            </a>
-            <a href={`/@${currentUser.id}/about`} className={cx('index')}>
+            </Link>
+            <Link to={`/@${currentUser.id}/about`} className={cx('index')}>
               소개
-            </a>
+            </Link>
             <div className={cx('activeLine')} />
           </div>
         </div>
@@ -170,7 +171,7 @@ function Personal() {
                         tagQuery === null ? 'tagActive' : 'none'
                       )}
                     >
-                      <a href={`/@${currentUser.id}`}>전체보기</a>
+                      <Link to={`/@${currentUser.id}`}>전체보기</Link>
                       <span>({getPostnum('')})</span>
                     </li>
                     {detailedUser.tags.map((tag: string) => (
@@ -180,7 +181,7 @@ function Personal() {
                           tagQuery === tag ? 'tagActive' : 'none'
                         )}
                       >
-                        <a href={`/@${currentUser.id}?tag=${tag}`}>{tag}</a>
+                        <Link to={`/@${currentUser.id}?tag=${tag}`}>{tag}</Link>
                         <span>({getPostnum(tag)})</span>
                       </li>
                     ))}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -135,18 +136,18 @@ function PersonalSeriesName() {
                 <div className={cx('postDiv')} key={postInfo.series_id}>
                   <h2>
                     <span>{postInfo.series_id}.</span>
-                    <a
-                      href={`/@${postInfo.post.author.id}/${postInfo.post.url}`}
+                    <Link
+                      to={`/@${postInfo.post.author.id}/${postInfo.post.url}`}
                     >
                       {postInfo.post.title}
-                    </a>
+                    </Link>
                   </h2>
                   <section>
-                    <a
-                      href={`/@${postInfo.post.author.id}/${postInfo.post.url}`}
+                    <Link
+                      to={`/@${postInfo.post.author.id}/${postInfo.post.url}`}
                     >
                       <img src={postInfo.post.thumbnail} alt="post-thumbnail" />
-                    </a>
+                    </Link>
                     <div className={cx('postInfo')}>
                       <p>{postInfo.post.preview}</p>
                       <div className={cx('date')}>

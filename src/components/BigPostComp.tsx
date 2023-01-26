@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -18,28 +19,28 @@ function BigPostComp({ postInfo, username }: post_type) {
     <div className={cx('postDiv')}>
       {username === '' && (
         <div className={cx('userInfo')}>
-          <a href={`/@${postInfo.author.id}`}>
+          <Link to={`/@${postInfo.author.id}`}>
             <img src={postInfo.author.userImg} alt="thumbnail" />
-          </a>
+          </Link>
           <div className={cx('username')}>
-            <a href={`/@${postInfo.author.id}`}>{postInfo.author.id}</a>
+            <Link to={`/@${postInfo.author.id}`}>{postInfo.author.id}</Link>
           </div>
         </div>
       )}
-      <a href={`/@${postInfo.author.id}/${postInfo.title}`}>
+      <Link to={`/@${postInfo.author.id}/${postInfo.title}`}>
         <div className={cx('thumbnail')}>
           <img src={postInfo.thumbnail} alt="post-thumbnail" />
         </div>
-      </a>
-      <a href={`/@${postInfo.author.id}/${postInfo.title}`}>
+      </Link>
+      <Link to={`/@${postInfo.author.id}/${postInfo.title}`}>
         <h2>{postInfo.title}</h2>
-      </a>
+      </Link>
       <p>{postInfo.preview}</p>
       <div className={cx('tagWrapper')}>
         {postInfo.tags.map((tag: string) => (
-          <a href={`/tags/${tag}`} className={cx('tag')}>
+          <Link to={`/tags/${tag}`} className={cx('tag')}>
             {tag}
-          </a>
+          </Link>
         ))}
       </div>
       <div className={cx('subInfo')}>

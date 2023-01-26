@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -119,18 +120,18 @@ function PersonalSeries() {
         <UserIntro userInfo={currentUser} />
         <div>
           <div className={cx('pageIndex')}>
-            <a href={`/@${currentUser.id}`} className={cx('index')}>
+            <Link to={`/@${currentUser.id}`} className={cx('index')}>
               글
-            </a>
-            <a
-              href={`/@${currentUser.id}/series`}
+            </Link>
+            <Link
+              to={`/@${currentUser.id}/series`}
               className={cx('index', 'active')}
             >
               시리즈
-            </a>
-            <a href={`/@${currentUser.id}/about`} className={cx('index')}>
+            </Link>
+            <Link to={`/@${currentUser.id}/about`} className={cx('index')}>
               소개
-            </a>
+            </Link>
             <div className={cx('activeLine')} />
           </div>
         </div>
@@ -138,21 +139,21 @@ function PersonalSeries() {
           <div className={cx('seriesList')}>
             {detailedUser.series.map((seriesInfo: series) => (
               <div className={cx('seriesDiv')}>
-                <a
-                  href={`/@${seriesInfo.authorId}/series/${seriesInfo.title}`}
+                <Link
+                  to={`/@${seriesInfo.authorId}/series/${seriesInfo.title}`}
                   className={cx('link')}
                 >
                   <div>
                     <img src={seriesInfo.photo} alt="thumbnail" />
                   </div>
-                </a>
+                </Link>
                 <h4>
-                  <a
-                    href={`/@${seriesInfo.authorId}/series/${seriesInfo.title}`}
+                  <Link
+                    to={`/@${seriesInfo.authorId}/series/${seriesInfo.title}`}
                     className={cx('link')}
                   >
                     {seriesInfo.title}
-                  </a>
+                  </Link>
                 </h4>
                 <div className={cx('subInfo')}>
                   <span className={cx('count')}>

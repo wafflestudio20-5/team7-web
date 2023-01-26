@@ -12,8 +12,6 @@ export default function Header() {
   const { isLogin, user, accessToken, refreshToken } = useLoginValue();
   const { logout } = useLoginSetting();
 
-  console.log(user, accessToken, refreshToken);
-
   const path = useLocation().pathname;
 
   function openMenu() {

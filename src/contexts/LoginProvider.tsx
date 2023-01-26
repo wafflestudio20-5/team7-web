@@ -19,12 +19,12 @@ const initialValue = {
 type loginSetting = {
   login: (email: string | undefined, password: string | undefined) => void;
   logout: (refreshToken: string) => void;
-  resetToken: (token: string) => void;
+  resetToken: () => void;
 };
 const initialSetting: loginSetting = {
   login: (email: string | undefined, password: string | undefined) => undefined,
   logout: (refreshToken: string) => undefined,
-  resetToken: (token: string) => undefined,
+  resetToken: () => undefined,
 };
 
 const loginValueContext = createContext<loginValue>(initialValue);
@@ -83,13 +83,13 @@ export default function LoginProvider({
       async resetToken() {
         try {
           const response = await axios.post('/api/v1/accounts/token/refresh/', {
-            refresh: valueSet.refreshToken,
+            Refresh: valueSet.refreshToken,
           });
-          setLoginValue({
-            isLogin: true,
-            user: null,
-            accessToken: response.data.access_token,
-            refreshToken: valueSet.refreshToken,
+          setLoginValue(valueSet => {
+            return {
+              ...valueSet,
+              accessToken: response.data.access,
+            };
           });
         } catch (error) {
           console.log(error);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './HeaderFilter.module.scss';
 
@@ -38,7 +38,7 @@ export default function HeaderFilter() {
             path === '/' || path === '/recent' ? cx('devider') : cx('blind')
           }
         >
-          <a href="/" className={path === '/' ? cx('highlight') : ''}>
+          <Link to="/" className={path === '/' ? cx('highlight') : ''}>
             <svg
               stroke="currentColor"
               fill="currentColor"
@@ -51,8 +51,8 @@ export default function HeaderFilter() {
               <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" />
             </svg>
             트렌딩
-          </a>
-          <a href="/recent" className={path === '/' ? '' : cx('highlight')}>
+          </Link>
+          <Link to="/recent" className={path === '/' ? '' : cx('highlight')}>
             <svg
               stroke="currentColor"
               fill="currentColor"
@@ -65,31 +65,31 @@ export default function HeaderFilter() {
               <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
             </svg>
             최신
-          </a>
+          </Link>
         </div>
         <div
           className={
             path === '/' || path === '/recent' ? cx('blind') : cx('devider')
           }
         >
-          <a
-            href="/lists/liked"
+          <Link
+            to="/lists/liked"
             className={
               path === '/lists/liked' ? cx('highlight', 'wider') : cx('wider')
             }
           >
             좋아한 포스트
-          </a>
-          <a
-            href="/lists/read"
+          </Link>
+          <Link
+            to="/lists/read"
             className={
               path === '/lists/read' ? cx('highlight', 'wider') : cx('wider')
             }
           >
             최근 읽은 포스트
-          </a>
-          <a
-            href="/lists/following"
+          </Link>
+          <Link
+            to="/lists/following"
             className={
               path === '/lists/following'
                 ? cx('highlight', 'wider')
@@ -97,7 +97,7 @@ export default function HeaderFilter() {
             }
           >
             구독한 포스트
-          </a>
+          </Link>
         </div>
         <div
           className={path === '/' ? cx('filter') : cx('blind')}
@@ -146,9 +146,9 @@ export default function HeaderFilter() {
         </div>
       </div>
       <div className={cx('right')}>
-        <a className={cx('tag-button')} href="/tags">
+        <Link className={cx('tag-button')} to="/tags">
           # 태그 목록
-        </a>
+        </Link>
       </div>
     </div>
   );

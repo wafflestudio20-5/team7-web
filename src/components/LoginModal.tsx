@@ -1,10 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
 import styles from './LoginModal.module.scss';
+import { useLoginSetting, useLoginValue } from '../contexts/LoginProvider';
 
 const cx = classNames.bind(styles);
 
+// const githubUrl =
+// 'https://github.com/login/oauth/authorize?client_id=c6d4c32547dbe4263ea7&scope=user';
+// const googleUrl =
+//   'https://accounts.google.com/o/oauth2/auth?client_id=583150238500-td364pcrgj438lfdkkl061g3pssec3i0.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&redirect_uri=http://localhost:3000/login&response_type=code';
+
+const githubUrl =
+  'https://github.com/login/oauth/authorize?client_id=e59b63fb2c54247d72f9&scope=user';
+const googleUrl =
+  'https://accounts.google.com/o/oauth2/auth?client_id=1057423908982-0e1v495ji7p6sh0mdbds1nq0h6s3vn5b.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&redirect_uri=http://localhost:3000/login&response_type=code';
+
 export default function Login() {
+  //   const authCode = new URL(window.location.href).searchParams.get('code');
+  //   console.log(authCode);
+
+  const inputEmail = useRef<HTMLInputElement>(null);
+  const inputPassword = useRef<HTMLInputElement>(null);
+
+  const { login } = useLoginSetting();
+
+  const postGoogleLogin = async () => {
+    try {
+      const response = await axios.get('/api/v1/accounts/google/login');
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className={cx('login')}>
       <div className={cx('background')} />
@@ -20,9 +50,9 @@ export default function Login() {
             </div>
           </div>
           <div className={cx('white-block')}>
-            <a className={cx('exit')} href="/">
+            <Link className={cx('exit')} to="/">
               <span>×</span>
-            </a>
+            </Link>
             <div className={cx('content')}>
               <div className={cx('container')}>
                 <div className={cx('upper')}>
@@ -30,14 +60,34 @@ export default function Login() {
                   <section className={cx('by-email')}>
                     <h4>이메일로 로그인</h4>
                     <form>
-                      <input placeholder="이메일을 입력하세요" />
-                      <button type="button">로그인</button>
+                      <div>
+                        <input
+                          placeholder="이메일을 입력하세요"
+                          ref={inputEmail}
+                        />
+                        <input
+                          placeholder="패스워드를 입력하세요"
+                          type="password"
+                          ref={inputPassword}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          login(
+                            inputEmail.current?.value,
+                            inputPassword.current?.value
+                          );
+                        }}
+                      >
+                        로그인
+                      </button>
                     </form>
                   </section>
                   <section className={cx('by-social')}>
                     <h4>소셜 계정으로 로그인</h4>
                     <div>
-                      <a href="github">
+                      <a href={githubUrl}>
                         <svg
                           width="20"
                           height="20"
@@ -64,7 +114,7 @@ export default function Login() {
                           </g>
                         </svg>
                       </a>
-                      <a href="goggle">
+                      <a href={googleUrl}>
                         <svg
                           width="20"
                           height="20"
@@ -121,7 +171,9 @@ export default function Login() {
                 </div>
                 <div className={cx('footer')}>
                   <span>아직 회원이 아니신가요?</span>
-                  <div>회원가입</div>
+                  <Link to="/register">
+                    <div>회원가입</div>
+                  </Link>
                 </div>
               </div>
             </div>

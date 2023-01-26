@@ -99,14 +99,15 @@
               form {
                 width: 100%;
                 display: flex;
-                height: 3rem;
+                align-items: flex-end;
                 input {
                   flex: 1 1 0%;
-                  padding: 1rem;
+                  padding: 0.5rem;
                   background: #ffffff;
                   outline: none;
                   border: 1px solid gray;
                   font-size: 1rem;
+                  width: 100%;
                 }
                 button {
                   background: #12b886;
@@ -120,6 +121,7 @@
                   width: 6rem;
                   word-break: keep-all;
                   cursor: pointer;
+                  height: 4.5rem;
                 }
               }
               .submitted {

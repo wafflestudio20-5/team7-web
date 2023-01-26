@@ -1,22 +1,30 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { user } from './types';
 
 type loginValue = {
   isLogin: boolean;
   user: user | null;
-  access_token: string;
+  accessToken: string;
+  refreshToken: string;
 };
-const initialValue = { isLogin: true, user: null, access_token: '' };
+const initialValue = {
+  isLogin: true,
+  user: null,
+  accessToken: '',
+  refreshToken: '',
+};
 
 type loginSetting = {
-  login: (newUser: user, token: string) => void;
-  logout: () => void;
-  resetToken: (token: string) => void;
+  login: (email: string | undefined, password: string | undefined) => void;
+  logout: (refreshToken: string) => void;
+  resetToken: () => void;
 };
 const initialSetting: loginSetting = {
-  login: (newUser: user, token: string) => undefined,
-  logout: () => undefined,
-  resetToken: (token: string) => undefined,
+  login: (email: string | undefined, password: string | undefined) => undefined,
+  logout: (refreshToken: string) => undefined,
+  resetToken: () => undefined,
 };
 
 const loginValueContext = createContext<loginValue>(initialValue);
@@ -28,46 +36,68 @@ export default function LoginProvider({
   children: React.ReactNode;
 }) {
   const [valueSet, setLoginValue] = useState<loginValue>({
-    isLogin: true,
-    user: {
-      id: 'abcd12@naver.com',
-      velog_name: 'abcd12의 velog',
-      email: 'mail',
-      username: 'Kim',
-      userImg:
-        'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
-      github: '깃허브 링크',
-      twitter: '트위터 링크',
-      facebook: '페이스북 링크',
-      homepage: '홈페이지 링크',
-      mail: '메일 링크',
-    },
-    access_token: '',
+    isLogin: false,
+    user: null,
+    accessToken: '',
+    refreshToken: '',
   });
+
+  const navigate = useNavigate();
+  axios.defaults.xsrfCookieName = 'csrftoken';
+  axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
   const setting = useMemo(
     () => ({
-      login(newUser: user, accessToken: string) {
-        setLoginValue({
-          isLogin: true,
-          user: newUser,
-          access_token: accessToken,
-        });
+      async login(email: string | undefined, password: string | undefined) {
+        try {
+          const response = await axios.post('/api/v1/accounts/login/', {
+            email,
+            password,
+          });
+          setLoginValue({
+            isLogin: true,
+            user: response.data.user,
+            accessToken: response.data.access_token,
+            refreshToken: response.data.refresh_token,
+          });
+          navigate('/');
+        } catch (error) {
+          console.log(error);
+        }
       },
-      logout() {
-        setLoginValue({
-          isLogin: false,
-          user: null,
-          access_token: '',
-        });
+      async logout() {
+        try {
+          await axios.post(
+            '/api/v1/accounts/logout/',
+            {
+              refresh: valueSet.refreshToken,
+            },
+            { withCredentials: true }
+          );
+          setLoginValue({
+            isLogin: false,
+            user: null,
+            accessToken: '',
+            refreshToken: '',
+          });
+        } catch (error) {
+          console.log(error);
+        }
       },
-      resetToken(accessToken: string) {
-        setLoginValue({
-          isLogin: valueSet.isLogin,
-          user: valueSet.user,
-          access_token: accessToken,
-        });
+      async resetToken() {
+        try {
+          const response = await axios.post('/api/v1/accounts/token/refresh/', {
+            Refresh: valueSet.refreshToken,
+          });
+          setLoginValue(valueSet => {
+            return {
+              ...valueSet,
+              accessToken: response.data.access,
+            };
+          });
+        } catch (error) {
+          console.log(error);
+        }
       },
     }),
     []

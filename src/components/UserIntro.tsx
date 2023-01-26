@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
@@ -14,6 +14,10 @@ interface user_type {
 }
 
 function UserIntro({ userInfo }: user_type) {
+  const [isFollowing, setFollowing] = useState(false);
+  const toggleFollowing = () => {
+    setFollowing(!isFollowing);
+  };
   return (
     <div className={cx('user')}>
       <div className={cx('intro')}>
@@ -23,6 +27,24 @@ function UserIntro({ userInfo }: user_type) {
         <div className={cx('textIntro')}>
           <div className={cx('name')}>
             <Link to={`/@${userInfo.id}`}>{userInfo.id}</Link>
+            {!isFollowing && (
+              <button
+                type="button"
+                className={cx('follow', 'non-following')}
+                onClick={toggleFollowing}
+              >
+                팔로우
+              </button>
+            )}
+            {isFollowing && (
+              <button
+                type="button"
+                className={cx('follow', 'following')}
+                onClick={toggleFollowing}
+              >
+                팔로잉
+              </button>
+            )}
           </div>
           <div className={cx('description')}>{userInfo.description}</div>
         </div>

@@ -1,4 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
+import Moment from 'react-moment';
 import classNames from 'classnames/bind';
 import styles from './PostComp.module.scss';
 import { post } from '../contexts/types';
@@ -10,28 +13,37 @@ type postCompProps = {
 };
 
 export default function PostComp({ post }: postCompProps) {
+  const timeNow = moment();
+  const timePost = moment(post.updated_at);
+
   return (
     <div className={cx('post')}>
-      <a className={cx('image-link')} href={post.url}>
+      <Link className={cx('image-link')} to={post.url}>
         <div className={cx('image-container')}>
           <img src={post.thumbnail} alt="post" />
         </div>
-      </a>
+      </Link>
       <div className={cx('body')}>
-        <a className={cx('content')} href={post.url}>
+        <Link className={cx('content')} to={post.url}>
           <h4>{post.title}</h4>
           <div>
             <p>{post.preview}</p>
           </div>
-        </a>
+        </Link>
         <div className={cx('sub-info')}>
-          <span>{post.created_at}</span>
+          <span>
+            {moment.duration(timeNow.diff(timePost)).asDays() > 7 ? (
+              <Moment format="YYYY년 MM월 DD일">{post.updated_at}</Moment>
+            ) : (
+              <Moment fromNow>{post.updated_at}</Moment>
+            )}
+          </span>
           <span> · </span>
           <span>{post.comments}개의 댓글</span>
         </div>
       </div>
       <div className={cx('footer')}>
-        <a href={'@'.concat(post.author.id)}>
+        <Link to={'@'.concat(post.author.id)}>
           <img
             className={cx('profile')}
             src={post.author.userImg}
@@ -39,7 +51,7 @@ export default function PostComp({ post }: postCompProps) {
           />
           by
           <span>{post.author.id}</span>
-        </a>
+        </Link>
         <div className={cx('likes')}>{'♥ '.concat(String(post.likes))}</div>
       </div>
     </div>

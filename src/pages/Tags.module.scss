@@ -61,7 +61,7 @@ main {
   -webkit-box-pack: justify;
   justify-content: space-between;
   padding: 1rem;
-  width: 22%;
+  width: 25%;
   p {
     margin-top: 0.125rem;
     display: -webkit-box;
@@ -72,6 +72,7 @@ main {
     font-size: 0.875rem;
     color: var(--text2);
     line-height: 1.5;
+    width: 100%;
   }
   .count {
     font-size: 0.875rem;

@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+  useEffect,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { user } from './types';
@@ -45,6 +51,9 @@ export default function LoginProvider({
   const navigate = useNavigate();
   axios.defaults.xsrfCookieName = 'csrftoken';
   axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+  axios.defaults.baseURL =
+    process.env.NODE_ENV === 'development' ? '' : 'https://api.7elog.store';
+  axios.defaults.withCredentials = true;
 
   const setting = useMemo(
     () => ({
@@ -60,6 +69,7 @@ export default function LoginProvider({
             accessToken: response.data.access_token,
             refreshToken: response.data.refresh_token,
           });
+          localStorage.setItem('refreshToken', response.data.refresh_token);
           navigate('/');
         } catch (error) {
           console.log(error);
@@ -67,13 +77,9 @@ export default function LoginProvider({
       },
       async logout() {
         try {
-          await axios.post(
-            '/api/v1/accounts/logout/',
-            {
-              refresh: valueSet.refreshToken,
-            },
-            { withCredentials: true }
-          );
+          await axios.post('/api/v1/accounts/logout/', {
+            refresh: valueSet.refreshToken,
+          });
           setLoginValue({
             isLogin: false,
             user: null,

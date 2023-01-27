@@ -13,23 +13,21 @@ type loginValue = {
   isLogin: boolean;
   user: user | null;
   accessToken: string;
-  refreshToken: string;
 };
 const initialValue = {
   isLogin: true,
   user: null,
   accessToken: '',
-  refreshToken: '',
 };
 
 type loginSetting = {
   login: (email: string | undefined, password: string | undefined) => void;
-  logout: (refreshToken: string) => void;
+  logout: () => void;
   resetToken: () => void;
 };
 const initialSetting: loginSetting = {
   login: (email: string | undefined, password: string | undefined) => undefined,
-  logout: (refreshToken: string) => undefined,
+  logout: () => undefined,
   resetToken: () => undefined,
 };
 
@@ -45,7 +43,6 @@ export default function LoginProvider({
     isLogin: false,
     user: null,
     accessToken: '',
-    refreshToken: '',
   });
 
   const navigate = useNavigate();
@@ -67,7 +64,6 @@ export default function LoginProvider({
             isLogin: true,
             user: response.data.user,
             accessToken: response.data.access_token,
-            refreshToken: response.data.refresh_token,
           });
           localStorage.setItem('refreshToken', response.data.refresh_token);
           navigate('/');
@@ -78,14 +74,14 @@ export default function LoginProvider({
       async logout() {
         try {
           await axios.post('/api/v1/accounts/logout/', {
-            refresh: valueSet.refreshToken,
+            refresh: localStorage.getItem('refreshToken'),
           });
           setLoginValue({
             isLogin: false,
             user: null,
             accessToken: '',
-            refreshToken: '',
           });
+          localStorage.removeItem('refreshToken');
         } catch (error) {
           console.log(error);
         }
@@ -93,7 +89,7 @@ export default function LoginProvider({
       async resetToken() {
         try {
           const response = await axios.post('/api/v1/accounts/token/refresh/', {
-            Refresh: valueSet.refreshToken,
+            Refresh: localStorage.refreshToken,
           });
           setLoginValue(valueSet => {
             return {
@@ -120,7 +116,6 @@ export default function LoginProvider({
         const response2 = await axios.get('/api/v1/accounts/user');
         setLoginValue(valueSet => {
           return {
-            ...valueSet,
             isLogin: true,
             user: response2.data,
             accessToken: newAccessToken,

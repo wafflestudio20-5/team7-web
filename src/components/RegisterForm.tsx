@@ -46,7 +46,7 @@ export default function RegisterForm() {
   return (
     <>
       {done && (
-        <p>
+        <p className={cx('confirm')}>
           입력하신 이메일 주소로 인증 메일이 전송되었습니다.
           <br />
           메일에 포함된 인증 링크를 클릭하면 회원가입이 완료됩니다.

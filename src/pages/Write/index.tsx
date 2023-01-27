@@ -149,9 +149,7 @@ function Write() {
         tags,
       }: postGetType = response.data;
 
-      console.log(user?.id, author);
-
-      if (!user || user.id !== author.toString()) {
+      if (!user || user.id.toString() !== author.toString()) {
         showToast({ type: 'error', message: '권한이 없습니다.' });
         navigate(-1);
       }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Moment from 'react-moment';
 import 'moment/locale/ko';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 import styles from './Comment.module.scss';
 import { ReactComponent as PlusIcon } from '../../assets/plus_box.svg';
 import { ReactComponent as MinusIcon } from '../../assets/minus_box.svg';
@@ -81,12 +82,14 @@ function CommentItem({ comment, rank }: commentProps) {
     <div className={styles.comment}>
       <div className={styles.comment_head}>
         <div className={styles.profile}>
-          <a href={`/@${comment.writer.id}`}>
+          <Link to={`/@${comment.writer.id}`}>
             <img src={comment.writer.userImg} alt="profile" />
-          </a>
+          </Link>
           <div className={styles.comment_info}>
             <div className={styles.username}>
-              <a href={`/@${comment.writer.id}`}>{comment.writer.username}</a>
+              <Link to={`/@${comment.writer.id}`}>
+                {comment.writer.username}
+              </Link>
             </div>
             <div className={styles.date}>
               {moment.duration(timeNow.diff(timeComment)).asDays() > 7 ? (

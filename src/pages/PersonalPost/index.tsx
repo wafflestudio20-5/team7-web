@@ -13,7 +13,7 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react/lib';
 import Moment from 'react-moment';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
 import axios from 'axios';
 import styles from './PersonalPost.module.scss';
@@ -245,7 +245,9 @@ function PersonalPost() {
           <div className={styles.info_container}>
             <div className={styles.information}>
               <span className={styles.username}>
-                <a href={`/@${post.author.username}`}>{post.author.username}</a>
+                <Link to={`/@${post.author.username}`}>
+                  {post.author.username}
+                </Link>
               </span>
               <span className={styles.separator}>·</span>
               <span>
@@ -270,9 +272,9 @@ function PersonalPost() {
           <div className={styles.tag_container}>
             {post.tags.map(tag => {
               return (
-                <a href={`/tags/${tag}`} key={tag}>
+                <Link to={`/tags/${tag}`} key={tag}>
                   {tag}
-                </a>
+                </Link>
               );
             })}
           </div>
@@ -307,12 +309,14 @@ function PersonalPost() {
       <div className={cx('name_card_container', 'hori_size')}>
         <div className={styles.name_card_box}>
           <div className={styles.name_card}>
-            <a href={`/@${post.author.username}`}>
+            <Link to={`/@${post.author.username}`}>
               <img src={post.author.userImg} alt="profile" />
-            </a>
+            </Link>
             <div className={styles.name_desc}>
               <div className={styles.name}>
-                <a href={`/@${post.author.username}`}>{post.author.username}</a>
+                <Link to={`/@${post.author.username}`}>
+                  {post.author.username}
+                </Link>
               </div>
               <div className={styles.description}>
                 {post.author.description}
@@ -325,8 +329,8 @@ function PersonalPost() {
       </div>
       <div className={cx('post_links_container', 'hori_size')}>
         <div className={styles.link_box}>
-          <a
-            href={`/@${dummyUser.id}/${post.title}`}
+          <Link
+            to={`/@${dummyUser.id}/${post.title}`}
             className={styles.left_link}
           >
             <div className={styles.arrow_container}>
@@ -338,11 +342,11 @@ function PersonalPost() {
                 <h3>{post.prev_post.title}</h3>
               </div>
             )}
-          </a>
+          </Link>
         </div>
         <div className={styles.link_box}>
-          <a
-            href={`/@${dummyUser.id}/${post.title}`}
+          <Link
+            to={`/@${dummyUser.id}/${post.title}`}
             className={styles.right_link}
           >
             <div className={styles.arrow_container}>
@@ -354,7 +358,7 @@ function PersonalPost() {
                 <h3>{post.next_post.title}</h3>
               </div>
             )}
-          </a>
+          </Link>
         </div>
       </div>
       <div className={cx('comment_container', 'hori_size')}>

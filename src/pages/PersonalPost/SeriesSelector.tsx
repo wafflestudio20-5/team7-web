@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './SeriesSelector.module.scss';
 import { ReactComponent as SeriesIcon } from '../../assets/series_mark.svg';
 import { ReactComponent as UpTriangleIcon } from '../../assets/up_triangle.svg';
@@ -66,11 +67,11 @@ export default function SeriesSelector() {
   return (
     <div className={styles.series_container}>
       <h2>
-        <a
-          href={`/@${dummySeriesDetail.authorId}/series/${dummySeriesDetail.title}`}
+        <Link
+          to={`/@${dummySeriesDetail.authorId}/series/${dummySeriesDetail.title}`}
         >
           {dummySeriesDetail.title}
-        </a>
+        </Link>
       </h2>
       <SeriesIcon className={styles.series_mark} />
       {listVisible && (
@@ -78,8 +79,8 @@ export default function SeriesSelector() {
           {dummySeriesDetail.postList.map(seriesPost => {
             return (
               <li key={seriesPost.series_id}>
-                <a
-                  href={`/@${dummySeriesDetail.authorId}/${seriesPost.post.title}`}
+                <Link
+                  to={`/@${dummySeriesDetail.authorId}/${seriesPost.post.title}`}
                   style={
                     seriesPost.series_id === dummySeriesDetail.id
                       ? { color: 'var(--primary1)', fontWeight: 'bold' }
@@ -87,7 +88,7 @@ export default function SeriesSelector() {
                   }
                 >
                   {seriesPost.post.title}
-                </a>
+                </Link>
               </li>
             );
           })}

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -9,7 +10,6 @@ import Header from '../components/Header';
 import { tag } from '../contexts/types';
 
 const cx = classNames.bind(styles);
-const sortTab = new URLSearchParams(window.location.search).get('sort');
 
 const tagList: tag[] = [
   {
@@ -40,30 +40,38 @@ const tagList: tag[] = [
 ]; // sortTab 이용해서 불러오기
 
 function Tags() {
+  const [sortTab, setSortTab] = useState('trending');
+  function toggle() {
+    if (sortTab === 'alphabetical') setSortTab('trending');
+    else setSortTab('alphabetical');
+  }
+
   return (
     <div className={cx('page')}>
       <Header />
       <main>
         <div className={cx('sortDiv')}>
           <div className={cx('tabWrapper')}>
-            <a
-              href="/tags?sort=trending"
+            <div
+              onClick={toggle}
               className={cx(
                 'tab',
                 sortTab !== 'alphabetical' ? 'active' : 'none'
               )}
+              role="presentation"
             >
               인기순
-            </a>
-            <a
-              href="/tags?sort=alphabetical"
+            </div>
+            <div
+              onClick={toggle}
               className={cx(
                 'tab',
                 sortTab === 'alphabetical' ? 'active' : 'none'
               )}
+              role="presentation"
             >
               이름순
-            </a>
+            </div>
             <div
               className={cx(
                 'line',
@@ -76,9 +84,9 @@ function Tags() {
           {tagList.map((tagInfo: tag) => (
             <div className={cx('tagComp')}>
               <div>
-                <a href={`/tags/${tagInfo.name}`} className={cx('title')}>
+                <Link to={`/tags/${tagInfo.name}`} className={cx('title')}>
                   {tagInfo.name}
-                </a>
+                </Link>
                 <p>{tagInfo.intro}</p>
               </div>
               <div className={cx('count')}>

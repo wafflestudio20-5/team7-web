@@ -39,6 +39,34 @@
     color: var(--text2);
     letter-spacing: -0.004em;
   }
+  .follow {
+    margin-left: 50px;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    border: none;
+  }
+  .non-following {
+    background: var(--bg-page1);
+    color: var(--primary1);
+    border-radius: 4px;
+    padding: 0 1.25rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+  .following {
+    background: var(--primary1);
+    color: var(--button-text);
+    border-radius: 4px;
+    padding: 0 1.25rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
 }
 
 .line {

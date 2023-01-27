@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -14,36 +16,52 @@ type post_type = {
 };
 
 function BigPostComp({ postInfo, username }: post_type) {
+  const timeNow = moment();
+  const timePost = moment(postInfo.created_at);
+
+  const [agoFormat, setAgoFormat] = useState('YYYY-MM-DD');
+  const timeDiff = timeNow.diff(timePost);
+
+  useEffect(() => {
+    if (timeDiff < 1000 * 60 * 60)
+      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60))}분 전`);
+    else if (timeDiff < 1000 * 60 * 60 * 24)
+      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60 * 60))}시간 전`);
+    else if (timeDiff < 1000 * 60 * 60 * 24 * 7)
+      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60 * 60 * 24))}일 전`);
+    else setAgoFormat(timePost.format('YYYY년 MM월 DD일'));
+  }, []);
+
   return (
     <div className={cx('postDiv')}>
       {username === '' && (
         <div className={cx('userInfo')}>
-          <a href={`/@${postInfo.author.id}`}>
+          <Link to={`/@${postInfo.author.id}`}>
             <img src={postInfo.author.userImg} alt="thumbnail" />
-          </a>
+          </Link>
           <div className={cx('username')}>
-            <a href={`/@${postInfo.author.id}`}>{postInfo.author.id}</a>
+            <Link to={`/@${postInfo.author.id}`}>{postInfo.author.id}</Link>
           </div>
         </div>
       )}
-      <a href={`/@${postInfo.author.id}/${postInfo.title}`}>
+      <Link to={`/@${postInfo.author.id}/${postInfo.title}`}>
         <div className={cx('thumbnail')}>
           <img src={postInfo.thumbnail} alt="post-thumbnail" />
         </div>
-      </a>
-      <a href={`/@${postInfo.author.id}/${postInfo.title}`}>
+      </Link>
+      <Link to={`/@${postInfo.author.id}/${postInfo.title}`}>
         <h2>{postInfo.title}</h2>
-      </a>
+      </Link>
       <p>{postInfo.preview}</p>
       <div className={cx('tagWrapper')}>
         {postInfo.tags.map((tag: string) => (
-          <a href={`/tags/${tag}`} className={cx('tag')}>
+          <Link to={`/tags/${tag}`} className={cx('tag')}>
             {tag}
-          </a>
+          </Link>
         ))}
       </div>
       <div className={cx('subInfo')}>
-        <span>{postInfo.created_at}</span>
+        <span>{agoFormat}</span>
         <span className={cx('dot')}>·</span>
         <span>{postInfo.comments}개의 댓글</span>
         <span className={cx('dot')}>·</span>

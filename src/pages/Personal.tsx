@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -14,31 +15,31 @@ import { post, user, userDetail } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 const currentUser: user = {
-  id: '2-0-is',
-  velog_name: '2-0-is_velog',
+  id: 'myId',
+  velog_name: 'my_velog',
   email: 'mail',
-  username: '이영은',
+  username: '이름',
   userImg: '',
-  description: '이영은의 벨로그',
-  github: '2-0-is',
+  description: '내 벨로그',
+  github: 'github',
   twitter: 'twitter',
   facebook: 'facebook',
   homepage: 'https://localhost:3000',
-  mail: 'yuye2002@snu.ac.kr',
+  mail: 'myId@snu.ac.kr',
 };
 
 const detailedUser: userDetail = {
-  id: '2-0-is',
-  velog_name: '2-0-is_velog',
+  id: 'myId',
+  velog_name: 'my_velog',
   email: 'mail',
-  username: '이영은',
+  username: '이름',
   userImg: '',
-  description: '이영은의 벨로그',
-  github: '2-0-is',
+  description: '내 벨로그',
+  github: 'github',
   twitter: 'twitter',
   facebook: 'facebook',
   homepage: 'https://localhost:3000',
-  mail: 'yuye2002@snu.ac.kr',
+  mail: 'myId@snu.ac.kr',
   tags: ['tagA', 'tagB', 'tagC'],
   posts: [
     {
@@ -49,8 +50,8 @@ const detailedUser: userDetail = {
       preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
       tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2022-12-30',
-      updated_at: '2022-12-31',
+      created_at: '2023-01-26 12:30:10',
+      updated_at: '2023-01-26 12:30:10',
       comments: 23,
       likes: 45,
       is_private: false,
@@ -63,8 +64,8 @@ const detailedUser: userDetail = {
       preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
       tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2022-12-30',
-      updated_at: '2022-12-31',
+      created_at: '2023-01-23 12:30:10',
+      updated_at: '2023-01-23 12:30:10',
       comments: 23,
       likes: 45,
       is_private: false,
@@ -77,8 +78,8 @@ const detailedUser: userDetail = {
       preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
       tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2022-12-30',
-      updated_at: '2022-12-31',
+      created_at: '2023-01-26 16:10:10',
+      updated_at: '2023-01-26 16:10:10',
       comments: 23,
       likes: 45,
       is_private: false,
@@ -91,8 +92,8 @@ const detailedUser: userDetail = {
       preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
       tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2022-12-30',
-      updated_at: '2022-12-31',
+      created_at: '2023-01-26 12:30:10',
+      updated_at: '2023-01-26 12:30:10',
       comments: 23,
       likes: 45,
       is_private: true,
@@ -104,8 +105,8 @@ const detailedUser: userDetail = {
       title: '내 시리즈',
       url: 'url',
       photo: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      update: '2022-12-21',
-      authorId: '2-0-is',
+      update: '2022-12-30 10:10:10',
+      authorId: 'myId',
       postNum: 12,
     },
   ],
@@ -126,15 +127,15 @@ function Personal() {
         <UserIntro userInfo={currentUser} />
         <div>
           <div className={cx('pageIndex')}>
-            <a href={`/@${currentUser.id}`} className={cx('index', 'active')}>
+            <Link to={`/@${currentUser.id}`} className={cx('index', 'active')}>
               글
-            </a>
-            <a href={`/@${currentUser.id}/series`} className={cx('index')}>
+            </Link>
+            <Link to={`/@${currentUser.id}/series`} className={cx('index')}>
               시리즈
-            </a>
-            <a href={`/@${currentUser.id}/about`} className={cx('index')}>
+            </Link>
+            <Link to={`/@${currentUser.id}/about`} className={cx('index')}>
               소개
-            </a>
+            </Link>
             <div className={cx('activeLine')} />
           </div>
         </div>
@@ -170,7 +171,7 @@ function Personal() {
                         tagQuery === null ? 'tagActive' : 'none'
                       )}
                     >
-                      <a href={`/@${currentUser.id}`}>전체보기</a>
+                      <Link to={`/@${currentUser.id}`}>전체보기</Link>
                       <span>({getPostnum('')})</span>
                     </li>
                     {detailedUser.tags.map((tag: string) => (
@@ -180,7 +181,7 @@ function Personal() {
                           tagQuery === tag ? 'tagActive' : 'none'
                         )}
                       >
-                        <a href={`/@${currentUser.id}?tag=${tag}`}>{tag}</a>
+                        <Link to={`/@${currentUser.id}?tag=${tag}`}>{tag}</Link>
                         <span>({getPostnum(tag)})</span>
                       </li>
                     ))}

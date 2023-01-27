@@ -112,6 +112,7 @@ function Write() {
     likes: 0,
     is_private: false,
   });
+  const [isLoad, setLoad] = useState(false);
   const [isHide, setHide] = useState(false);
   const [modalActive, setModalActive] = useState(false);
   const [imageLink, setImageLink] = useState<string | null>('');
@@ -165,6 +166,7 @@ function Write() {
         content,
         is_private: isPrivate,
       });
+      setLoad(true);
     } catch (error) {
       showToast({ type: 'error', message: '글이 존재하지 않습니다.' });
       navigate(-1);
@@ -174,6 +176,19 @@ function Write() {
   useEffect(() => {
     getCurPost();
   }, [getCurPost]);
+
+  // content 갖고 온 후 codemirror에 반영
+  useEffect(() => {
+    if (editorView) {
+      const change = {
+        from: 0,
+        insert: post.content,
+      };
+      editorView.dispatch({
+        changes: change,
+      });
+    }
+  }, [isLoad]);
 
   const defaultPlugin = () => (tree: any) => {
     treeData = tree; // treeData length corresponds to previewer's childNodes length

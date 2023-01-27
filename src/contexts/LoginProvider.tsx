@@ -109,6 +109,30 @@ export default function LoginProvider({
     []
   );
 
+  useEffect(() => {
+    async function autoLogin() {
+      const refreshToken = localStorage.getItem('refreshToken');
+      try {
+        const response = await axios.post('/api/v1/accounts/token/refresh/', {
+          Refresh: refreshToken,
+        });
+        const newAccessToken = response.data.access;
+        const response2 = await axios.get('/api/v1/accounts/user');
+        setLoginValue(valueSet => {
+          return {
+            ...valueSet,
+            isLogin: true,
+            user: response2.data,
+            accessToken: newAccessToken,
+          };
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    autoLogin();
+  }, []);
+
   return (
     <loginValueContext.Provider value={valueSet}>
       <loginSettingContext.Provider value={setting}>

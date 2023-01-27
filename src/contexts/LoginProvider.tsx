@@ -65,6 +65,7 @@ export default function LoginProvider({
             user: response.data.user,
             accessToken: response.data.access_token,
           });
+          axios.defaults.headers.common.Authorization = `Bearer ${response.data.access_token}`;
           localStorage.setItem('refreshToken', response.data.refresh_token);
           navigate('/');
         } catch (error) {
@@ -112,15 +113,13 @@ export default function LoginProvider({
         const response = await axios.post('/api/v1/accounts/token/refresh/', {
           Refresh: refreshToken,
         });
-        const newAccessToken = response.data.access;
         const response2 = await axios.get('/api/v1/accounts/user');
-        setLoginValue(valueSet => {
-          return {
-            isLogin: true,
-            user: response2.data,
-            accessToken: newAccessToken,
-          };
+        setLoginValue({
+          isLogin: true,
+          user: response2.data,
+          accessToken: response.data.access,
         });
+        axios.defaults.headers.common.Authorization = `Bearer ${response.data.access}`;
       } catch (e) {
         console.log(e);
       }

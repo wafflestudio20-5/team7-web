@@ -4,6 +4,7 @@ import React, {
   Fragment,
   useRef,
   useEffect,
+  useCallback,
 } from 'react';
 import classNames from 'classnames/bind';
 import { unified } from 'unified';
@@ -12,8 +13,9 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react/lib';
 import Moment from 'react-moment';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
+import axios from 'axios';
 import styles from './PersonalPost.module.scss';
 import { ReactComponent as LeftArrowIcon } from '../../assets/left_arrow.svg';
 import { ReactComponent as RightArrowIcon } from '../../assets/right_arrow.svg';
@@ -36,6 +38,18 @@ import {
   mdElementType,
   commentType,
 } from '../../contexts/types';
+import { showToast } from '../../components/Toast';
+
+type postGetType = {
+  pid: number;
+  title: string;
+  tags: number[];
+  author: number;
+  created_at: string;
+  updated_at: string;
+  content: string;
+  like_count: string;
+};
 
 let treeData: any;
 const cx = classNames.bind(styles);
@@ -55,62 +69,10 @@ const dummyUser: user = {
   mail: 'mail',
 };
 
-const dummyCommentList: commentListType = {
+const initialCommentList: commentListType = {
   comments: [],
   length: 0,
 };
-
-let i;
-for (i = 1; i < 107; i += 1) {
-  const dummyComment: commentType = {
-    id: i,
-    writer: dummyUser,
-    content: i.toString(),
-    created_at: '2020-02-20 20:20:20',
-    updated_at: '2020-02-20 20:20:20',
-  };
-
-  dummyCommentList.comments.push(dummyComment);
-  dummyCommentList.length += 1;
-}
-
-dummyCommentList.comments[0].children = {
-  comments: [],
-  length: 0,
-};
-
-const dummyComment: commentType = {
-  id: i,
-  writer: dummyUser,
-  content: i.toString(),
-  created_at: '2023-01-20 20:20:20',
-  updated_at: '2023-01-20 20:20:20',
-};
-
-dummyCommentList.comments[0].children?.comments.push(dummyComment);
-if (dummyCommentList.comments[0].children) {
-  dummyCommentList.comments[0].children.length += 1;
-}
-
-dummyCommentList.comments[1].children = {
-  comments: [],
-  length: 0,
-};
-
-for (i = 100; i < 137; i += 1) {
-  const dummyComment: commentType = {
-    id: i,
-    writer: dummyUser,
-    content: i.toString(),
-    created_at: '2020-02-20 20:20:20',
-    updated_at: '2020-02-20 20:20:20',
-  };
-
-  dummyCommentList.comments[1].children?.comments.push(dummyComment);
-  if (dummyCommentList.comments[1].children) {
-    dummyCommentList.comments[1].children.length += 1;
-  }
-}
 
 const dummyPost: post = {
   id: 1,
@@ -142,30 +104,70 @@ const dummySeriesDetail: seriesDetail = {
   postList: [dummySeriesPost, dummySeriesPost],
 };
 
-const dummyPostDetail: postDetail = {
-  ...dummyPost,
-  content:
-    '# title\n **bold**\n ## title2\n _italic_\n ### title3\n ~~strike~~\n\n other title\n ---\n >quote\n bash\n\n [link](/id)\n\n ```\ncode' +
-    '-----------------------------------------------------------------------------------------------------------------------block\n```',
-  series: dummySeriesDetail,
-  prev_post: dummyPost,
-  next_post: dummyPost,
-  comments: dummyCommentList,
-};
-
 function PersonalPost() {
-  const [doc] = useState(dummyPostDetail.content);
+  const [post, setPost] = useState<postDetail>({
+    id: 2,
+    title: '',
+    author: dummyUser,
+    url: '',
+    preview: '',
+    thumbnail: '',
+    tags: [],
+    created_at: '2000-02-02 02:02:02',
+    updated_at: '2000-02-02 02:02:02',
+    content: '',
+    series: null,
+    prev_post: null,
+    next_post: null,
+    comments: initialCommentList,
+    likes: 0,
+    is_private: false,
+  });
   const [tocFixed, setTocFixed] = useState(false);
   const [utilFixed, setUtilFixed] = useState(false);
   const [likeClicked, setLikeClicked] = useState(false);
-  const [commentList] = useState<commentListType>(dummyCommentList);
   const tocRef = useRef<HTMLDivElement>(null);
   const utilRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { open } = useModalActions();
+  const { id, postTitle } = useParams();
   const timeNow = moment();
-  const timePost = moment(dummyPostDetail.updated_at);
+  const timePost = moment(post.updated_at);
+
+  const getPost = useCallback(async () => {
+    try {
+      const response = await axios.get(`/api/v1/velog/${id}/${postTitle}`);
+      const {
+        pid,
+        title,
+        tags,
+        author,
+        created_at: createdAt,
+        updated_at: updatedAt,
+        content,
+        like_count: likeCount,
+      }: postGetType = response.data;
+      console.log(response);
+
+      setPost({
+        ...post,
+        id: pid,
+        title,
+        created_at: createdAt,
+        updated_at: updatedAt,
+        content,
+        likes: parseInt(likeCount, 10),
+      });
+    } catch (error) {
+      showToast({ type: 'error', message: '글이 존재하지 않습니다.' });
+      navigate(-1);
+    }
+  }, [id, postTitle]);
+
+  useEffect(() => {
+    getPost();
+  }, [getPost]);
 
   const defaultPlugin = () => (tree: any) => {
     treeData = tree; // treeData length corresponds to previewer's childNodes length
@@ -178,20 +180,22 @@ function PersonalPost() {
     .use(remarkRehype)
     .use(rehypeReact, { createElement, Fragment })
     .use(defaultPlugin)
-    .processSync(doc).result;
+    .processSync(post.content).result;
 
   const mdElements: mdElementType[] = md.props.children
-    .filter((child: any) => {
-      // extract h(n) elements
-      return child !== '\n' && child.type[0] === 'h';
-    })
-    .map((child: any) => {
-      const mdKey: string = child.key;
-      const mdRank: number = parseInt(child.type.slice(1), 10);
-      const mdContent: string = child.props.children[0];
+    ? md.props.children
+        .filter((child: any) => {
+          // extract h(n) elements
+          return child !== '\n' && child.type[0] === 'h';
+        })
+        .map((child: any) => {
+          const mdKey: string = child.key;
+          const mdRank: number = parseInt(child.type.slice(1), 10);
+          const mdContent: string = child.props.children[0];
 
-      return { key: mdKey, rank: mdRank, content: mdContent };
-    });
+          return { key: mdKey, rank: mdRank, content: mdContent };
+        })
+    : [];
 
   const findTocUtilPosition = () => {
     const windowPos = window.scrollY;
@@ -211,7 +215,7 @@ function PersonalPost() {
   }, [tocFixed]);
 
   const onReviseClick = () => {
-    navigate('/write');
+    navigate(`/write?id=${post.id}`);
   };
 
   const onDeleteClick = () => {
@@ -228,7 +232,7 @@ function PersonalPost() {
       <HeaderMoving />
       <div className={cx('head_container', 'hori_size')}>
         <div className={styles.head_wrapper}>
-          <h1>{dummyPostDetail.title}</h1>
+          <h1>{post.title}</h1>
           <div className={styles.actions}>
             <button type="button">통계</button>
             <button type="button" onClick={onReviseClick}>
@@ -241,18 +245,14 @@ function PersonalPost() {
           <div className={styles.info_container}>
             <div className={styles.information}>
               <span className={styles.username}>
-                <a href={`/@${dummyPostDetail.author.username}`}>
-                  {dummyPostDetail.author.username}
-                </a>
+                <a href={`/@${post.author.username}`}>{post.author.username}</a>
               </span>
               <span className={styles.separator}>·</span>
               <span>
                 {moment.duration(timeNow.diff(timePost)).asDays() > 7 ? (
-                  <Moment format="YYYY년 MM월 DD일">
-                    {dummyPostDetail.updated_at}
-                  </Moment>
+                  <Moment format="YYYY년 MM월 DD일">{post.updated_at}</Moment>
                 ) : (
-                  <Moment fromNow>{dummyPostDetail.updated_at}</Moment>
+                  <Moment fromNow>{post.updated_at}</Moment>
                 )}
               </span>
             </div>
@@ -268,15 +268,19 @@ function PersonalPost() {
             </div>
           </div>
           <div className={styles.tag_container}>
-            {dummyPostDetail.tags.map(tag => {
-              return <a href={`/tags/${tag}`}>{tag}</a>;
+            {post.tags.map(tag => {
+              return (
+                <a href={`/tags/${tag}`} key={tag}>
+                  {tag}
+                </a>
+              );
             })}
           </div>
           <div className={styles.util_positioner} ref={utilRef}>
             <div className={styles.util_container}>
               <UtilBar
                 utilFixed={utilFixed}
-                likes={dummyPostDetail.likes}
+                likes={post.likes}
                 likeClicked={likeClicked}
                 setLikeClicked={setLikeClicked}
               />
@@ -288,7 +292,7 @@ function PersonalPost() {
                 md={mdElements}
                 textRef={textRef}
                 tocFixed={tocFixed}
-                doc={doc}
+                doc={post.content}
               />
             </div>
           </div>
@@ -303,17 +307,15 @@ function PersonalPost() {
       <div className={cx('name_card_container', 'hori_size')}>
         <div className={styles.name_card_box}>
           <div className={styles.name_card}>
-            <a href={`/@${dummyPostDetail.author.username}`}>
-              <img src={dummyPostDetail.author.userImg} alt="profile" />
+            <a href={`/@${post.author.username}`}>
+              <img src={post.author.userImg} alt="profile" />
             </a>
             <div className={styles.name_desc}>
               <div className={styles.name}>
-                <a href={`/@${dummyPostDetail.author.username}`}>
-                  {dummyPostDetail.author.username}
-                </a>
+                <a href={`/@${post.author.username}`}>{post.author.username}</a>
               </div>
               <div className={styles.description}>
-                {dummyPostDetail.author.description}
+                {post.author.description}
               </div>
             </div>
           </div>
@@ -324,39 +326,39 @@ function PersonalPost() {
       <div className={cx('post_links_container', 'hori_size')}>
         <div className={styles.link_box}>
           <a
-            href={`/@${dummyUser.id}/${dummyPostDetail.title}`}
+            href={`/@${dummyUser.id}/${post.title}`}
             className={styles.left_link}
           >
             <div className={styles.arrow_container}>
               <LeftArrowIcon />
             </div>
-            {dummyPostDetail.prev_post && (
+            {post.prev_post && (
               <div className={styles.desc_container}>
                 <div className={styles.description}>이전 포스트</div>
-                <h3>{dummyPostDetail.prev_post.title}</h3>
+                <h3>{post.prev_post.title}</h3>
               </div>
             )}
           </a>
         </div>
         <div className={styles.link_box}>
           <a
-            href={`/@${dummyUser.id}/${dummyPostDetail.title}`}
+            href={`/@${dummyUser.id}/${post.title}`}
             className={styles.right_link}
           >
             <div className={styles.arrow_container}>
               <RightArrowIcon />
             </div>
-            {dummyPostDetail.next_post && (
+            {post.next_post && (
               <div className={styles.desc_container}>
                 <div className={styles.description}>다음 포스트</div>
-                <h3>{dummyPostDetail.next_post.title}</h3>
+                <h3>{post.next_post.title}</h3>
               </div>
             )}
           </a>
         </div>
       </div>
       <div className={cx('comment_container', 'hori_size')}>
-        <h4>{commentList.length}개의 댓글</h4>
+        <h4>{post.comments.length}개의 댓글</h4>
         <div>
           <div>
             <textarea
@@ -368,7 +370,7 @@ function PersonalPost() {
             </div>
           </div>
           <div className={styles.comment_list_container}>
-            <Comment commentList={commentList} rank={0} />
+            <Comment commentList={post.comments} rank={0} />
           </div>
         </div>
       </div>

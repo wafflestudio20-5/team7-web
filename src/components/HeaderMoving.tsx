@@ -10,7 +10,7 @@ const cx = classNames.bind(styles);
 export default function Header() {
   const [menuOn, setMenuOn] = useState(false);
 
-  const { isLogin, user, refreshToken } = useLoginValue();
+  const { isLogin, user } = useLoginValue();
   const { logout } = useLoginSetting();
 
   const [modalOn, setModalOn] = useState(false);
@@ -180,7 +180,7 @@ export default function Header() {
               </Link>
               <div
                 onClick={() => {
-                  logout(refreshToken);
+                  logout();
                   setMenuOn(false);
                 }}
                 role="presentation"

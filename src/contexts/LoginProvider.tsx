@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+  useEffect,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { user } from './types';
@@ -7,23 +13,21 @@ type loginValue = {
   isLogin: boolean;
   user: user | null;
   accessToken: string;
-  refreshToken: string;
 };
 const initialValue = {
   isLogin: true,
   user: null,
   accessToken: '',
-  refreshToken: '',
 };
 
 type loginSetting = {
   login: (email: string | undefined, password: string | undefined) => void;
-  logout: (refreshToken: string) => void;
+  logout: () => void;
   resetToken: () => void;
 };
 const initialSetting: loginSetting = {
   login: (email: string | undefined, password: string | undefined) => undefined,
-  logout: (refreshToken: string) => undefined,
+  logout: () => undefined,
   resetToken: () => undefined,
 };
 
@@ -39,12 +43,14 @@ export default function LoginProvider({
     isLogin: false,
     user: null,
     accessToken: '',
-    refreshToken: '',
   });
 
   const navigate = useNavigate();
   axios.defaults.xsrfCookieName = 'csrftoken';
   axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+  axios.defaults.baseURL =
+    process.env.NODE_ENV === 'development' ? '' : 'https://api.7elog.store';
+  axios.defaults.withCredentials = true;
 
   const setting = useMemo(
     () => ({
@@ -58,8 +64,9 @@ export default function LoginProvider({
             isLogin: true,
             user: response.data.user,
             accessToken: response.data.access_token,
-            refreshToken: response.data.refresh_token,
           });
+          axios.defaults.headers.common.Authorization = `Bearer ${response.data.access_token}`;
+          localStorage.setItem('refreshToken', response.data.refresh_token);
           navigate('/');
         } catch (error) {
           console.log(error);
@@ -67,19 +74,15 @@ export default function LoginProvider({
       },
       async logout() {
         try {
-          await axios.post(
-            '/api/v1/accounts/logout/',
-            {
-              refresh: valueSet.refreshToken,
-            },
-            { withCredentials: true }
-          );
+          await axios.post('/api/v1/accounts/logout/', {
+            refresh: localStorage.getItem('refreshToken'),
+          });
           setLoginValue({
             isLogin: false,
             user: null,
             accessToken: '',
-            refreshToken: '',
           });
+          localStorage.removeItem('refreshToken');
         } catch (error) {
           console.log(error);
         }
@@ -87,7 +90,7 @@ export default function LoginProvider({
       async resetToken() {
         try {
           const response = await axios.post('/api/v1/accounts/token/refresh/', {
-            Refresh: valueSet.refreshToken,
+            Refresh: localStorage.refreshToken,
           });
           setLoginValue(valueSet => {
             return {
@@ -102,6 +105,27 @@ export default function LoginProvider({
     }),
     []
   );
+
+  useEffect(() => {
+    async function autoLogin() {
+      const refreshToken = localStorage.getItem('refreshToken');
+      try {
+        const response = await axios.post('/api/v1/accounts/token/refresh/', {
+          Refresh: refreshToken,
+        });
+        const response2 = await axios.get('/api/v1/accounts/user');
+        setLoginValue({
+          isLogin: true,
+          user: response2.data,
+          accessToken: response.data.access,
+        });
+        axios.defaults.headers.common.Authorization = `Bearer ${response.data.access}`;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    autoLogin();
+  }, []);
 
   return (
     <loginValueContext.Provider value={valueSet}>

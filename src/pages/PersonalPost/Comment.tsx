@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-import { commentListType } from '../../contexts/types';
+import { commentType } from '../../contexts/types';
 import CommentItem from './CommentItem';
 import styles from './Comment.module.scss';
 import { ReactComponent as LeftMarkIcon } from '../../assets/left_mark.svg';
@@ -10,15 +10,23 @@ const commentPerPage = 10;
 const cx = classNames.bind(styles);
 
 interface commentProps {
-  commentList: commentListType;
+  commentList: commentType[];
+  parent: number | null;
   rank: number;
 }
 
-function Comment({ commentList, rank }: commentProps) {
+function Comment({ commentList, parent, rank }: commentProps) {
+  const [curComments, setCurComments] = useState<commentType[]>([]);
   const [page, setPage] = useState(1);
   const [range, setRange] = useState([page - 2, page + 2]);
-  const numPages = Math.ceil(commentList.length / commentPerPage);
+  const numPages = Math.ceil(curComments.length / commentPerPage);
   const offset = (page - 1) * commentPerPage;
+
+  useEffect(() => {
+    setCurComments(
+      commentList.filter(comment => comment.parent_comment === parent)
+    );
+  }, [commentList]);
 
   useEffect(() => {
     if (numPages <= 5) {
@@ -58,14 +66,16 @@ function Comment({ commentList, rank }: commentProps) {
 
   return (
     <div>
-      {commentList.comments
-        .slice(offset, offset + commentPerPage)
-        .map(comment => {
-          return (
-            // 키는 임시로 설정
-            <CommentItem key={comment.id} comment={comment} rank={rank} />
-          );
-        })}
+      {commentList.slice(offset, offset + commentPerPage).map(comment => {
+        return (
+          <CommentItem
+            key={comment.cid}
+            comment={comment}
+            rank={rank}
+            commentList={commentList}
+          />
+        );
+      })}
       {commentList.length > 0 && (
         <div className={styles.pagenation}>
           <button

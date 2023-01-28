@@ -29,7 +29,6 @@ import HeaderMoving from '../../components/HeaderMoving';
 import InterestPost from './InterestPost';
 import SeriesSelector from './SeriesSelector';
 import {
-  commentListType,
   post,
   postDetail,
   seriesPost,
@@ -67,11 +66,6 @@ const dummyUser: user = {
   facebook: 'face',
   homepage: 'home',
   mail: 'mail',
-};
-
-const initialCommentList: commentListType = {
-  comments: [],
-  length: 0,
 };
 
 const dummyPost: post = {
@@ -119,7 +113,7 @@ function PersonalPost() {
     series: null,
     prev_post: null,
     next_post: null,
-    comments: initialCommentList,
+    comments: [],
     likes: 0,
     is_private: false,
   });
@@ -148,7 +142,6 @@ function PersonalPost() {
         content,
         like_count: likeCount,
       }: postGetType = response.data;
-      console.log(response);
 
       setPost({
         ...post,
@@ -168,6 +161,19 @@ function PersonalPost() {
   useEffect(() => {
     getPost();
   }, [getPost]);
+
+  const getComment = useCallback(async () => {
+    try {
+      const response = await axios.get(`/api/v1/velog/${id}/comment/`);
+      setPost({ ...post, comments: response.data.results });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [post.id]);
+
+  useEffect(() => {
+    getComment();
+  }, [getComment]);
 
   const defaultPlugin = () => (tree: any) => {
     treeData = tree; // treeData length corresponds to previewer's childNodes length
@@ -328,38 +334,42 @@ function PersonalPost() {
         </div>
       </div>
       <div className={cx('post_links_container', 'hori_size')}>
-        <div className={styles.link_box}>
-          <Link
-            to={`/@${dummyUser.id}/${post.title}`}
-            className={styles.left_link}
-          >
-            <div className={styles.arrow_container}>
-              <LeftArrowIcon />
-            </div>
-            {post.prev_post && (
-              <div className={styles.desc_container}>
-                <div className={styles.description}>이전 포스트</div>
-                <h3>{post.prev_post.title}</h3>
+        {post.prev_post && (
+          <div className={styles.link_box}>
+            <Link
+              to={`/@${dummyUser.id}/${post.title}`}
+              className={styles.left_link}
+            >
+              <div className={styles.arrow_container}>
+                <LeftArrowIcon />
               </div>
-            )}
-          </Link>
-        </div>
-        <div className={styles.link_box}>
-          <Link
-            to={`/@${dummyUser.id}/${post.title}`}
-            className={styles.right_link}
-          >
-            <div className={styles.arrow_container}>
-              <RightArrowIcon />
-            </div>
-            {post.next_post && (
-              <div className={styles.desc_container}>
-                <div className={styles.description}>다음 포스트</div>
-                <h3>{post.next_post.title}</h3>
+              {post.prev_post && (
+                <div className={styles.desc_container}>
+                  <div className={styles.description}>이전 포스트</div>
+                  <h3>{post.prev_post.title}</h3>
+                </div>
+              )}
+            </Link>
+          </div>
+        )}
+        {post.next_post && (
+          <div className={styles.link_box}>
+            <Link
+              to={`/@${dummyUser.id}/${post.title}`}
+              className={styles.right_link}
+            >
+              <div className={styles.arrow_container}>
+                <RightArrowIcon />
               </div>
-            )}
-          </Link>
-        </div>
+              {post.next_post && (
+                <div className={styles.desc_container}>
+                  <div className={styles.description}>다음 포스트</div>
+                  <h3>{post.next_post.title}</h3>
+                </div>
+              )}
+            </Link>
+          </div>
+        )}
       </div>
       <div className={cx('comment_container', 'hori_size')}>
         <h4>{post.comments.length}개의 댓글</h4>
@@ -374,7 +384,7 @@ function PersonalPost() {
             </div>
           </div>
           <div className={styles.comment_list_container}>
-            <Comment commentList={post.comments} rank={0} />
+            <Comment commentList={post.comments} parent={null} rank={0} />
           </div>
         </div>
       </div>

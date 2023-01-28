@@ -27,12 +27,7 @@ import { ReactComponent as CodeblockIcon } from '../../assets/markdown_codeblock
 import { ReactComponent as BackIcon } from '../../assets/back.svg';
 import { showToast } from '../../components/Toast';
 import PublishModal from './PublishModal';
-import {
-  commentListType,
-  postDetail,
-  presetBtn,
-  user,
-} from '../../contexts/types';
+import { postDetail, presetBtn, user } from '../../contexts/types';
 import { useLoginValue } from '../../contexts/LoginProvider';
 
 const dummyUser: user = {
@@ -48,11 +43,6 @@ const dummyUser: user = {
   facebook: 'face',
   homepage: 'home',
   mail: 'mail',
-};
-
-const initialCommentList: commentListType = {
-  comments: [],
-  length: 0,
 };
 
 type postGetType = {
@@ -108,7 +98,7 @@ function Write() {
     series: null,
     prev_post: null,
     next_post: null,
-    comments: initialCommentList,
+    comments: [],
     likes: 0,
     is_private: false,
   });

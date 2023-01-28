@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Moment from 'react-moment';
 import 'moment/locale/ko';
 import moment from 'moment';
@@ -6,22 +6,38 @@ import { Link } from 'react-router-dom';
 import styles from './Comment.module.scss';
 import { ReactComponent as PlusIcon } from '../../assets/plus_box.svg';
 import { ReactComponent as MinusIcon } from '../../assets/minus_box.svg';
-import { commentType } from '../../contexts/types';
+import { commentType, user } from '../../contexts/types';
 import Comment from './Comment';
 import { useModalActions } from '../../contexts/ModalProvider';
 
 interface commentProps {
   comment: commentType;
   rank: number;
+  commentList: commentType[];
 }
 
+const dummyUser: user = {
+  id: 'id',
+  velog_name: 'velog',
+  email: 'mail',
+  username: 'name',
+  userImg:
+    'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',
+  description: 'desc',
+  github: 'git',
+  twitter: 'twit',
+  facebook: 'face',
+  homepage: 'home',
+  mail: 'mail',
+};
+
 // nested ternery 회피용
-const buttonText = (visible: boolean, comment: commentType) => {
+const buttonText = (visible: boolean, children: commentType[]) => {
   if (visible) {
     return <span>숨기기</span>;
   }
-  if (comment.children) {
-    return <span>{comment.children.length}개의 답글</span>;
+  if (children.length > 0) {
+    return <span>{children.length}개의 답글</span>;
   }
   return <span>답글 달기</span>;
 };
@@ -46,18 +62,25 @@ function ReplyWriteDiv({ text, toggle }: { text: string; toggle: () => void }) {
   );
 }
 
-function CommentItem({ comment, rank }: commentProps) {
+function CommentItem({ comment, rank, commentList }: commentProps) {
+  const [children, setChildren] = useState<commentType[]>([]);
   const [replyVisible, setReplyVisible] = useState(false);
   const [replyWrite, setReplyWrite] = useState(false);
   const [replyRevise, setReplyRevise] = useState(false);
   const { open } = useModalActions();
   const timeNow = moment();
-  const timeComment = moment(comment.updated_at);
+  const timeComment = moment(comment.created_at);
+
+  useEffect(() => {
+    setChildren(
+      commentList.filter(child => child.parent_comment === comment.cid)
+    );
+  }, [comment]);
 
   const toggleReply = () => {
     setReplyVisible(x => !x);
 
-    if (comment.children === undefined) {
+    if (children.length <= 0) {
       setReplyWrite(true);
     }
   };
@@ -65,7 +88,7 @@ function CommentItem({ comment, rank }: commentProps) {
   const toggleReplyWrite = () => {
     setReplyWrite(x => !x);
 
-    if (comment.children === undefined) {
+    if (children.length <= 0) {
       setReplyVisible(false);
     }
   };
@@ -82,20 +105,18 @@ function CommentItem({ comment, rank }: commentProps) {
     <div className={styles.comment}>
       <div className={styles.comment_head}>
         <div className={styles.profile}>
-          <Link to={`/@${comment.writer.id}`}>
-            <img src={comment.writer.userImg} alt="profile" />
+          <Link to={`/@${dummyUser.id}`}>
+            <img src={dummyUser.userImg} alt="profile" />
           </Link>
           <div className={styles.comment_info}>
             <div className={styles.username}>
-              <Link to={`/@${comment.writer.id}`}>
-                {comment.writer.username}
-              </Link>
+              <Link to={`/@${dummyUser.id}`}>{dummyUser.username}</Link>
             </div>
             <div className={styles.date}>
               {moment.duration(timeNow.diff(timeComment)).asDays() > 7 ? (
-                <Moment format="YYYY년 MM월 DD일">{comment.updated_at}</Moment>
+                <Moment format="YYYY년 MM월 DD일">{comment.created_at}</Moment>
               ) : (
-                <Moment fromNow>{comment.updated_at}</Moment>
+                <Moment fromNow>{comment.created_at}</Moment>
               )}
             </div>
           </div>
@@ -132,16 +153,20 @@ function CommentItem({ comment, rank }: commentProps) {
             role="presentation"
           >
             {replyVisible ? <MinusIcon /> : <PlusIcon />}
-            {buttonText(replyVisible, comment)}
+            {buttonText(replyVisible, children)}
           </div>
         )}
         {replyVisible && (
           <div className={styles.reply_container}>
-            {comment.children && <div className={styles.reply_margin_top} />}
-            {comment.children && (
-              <Comment commentList={comment.children} rank={rank + 1} />
+            {children.length > 0 && <div className={styles.reply_margin_top} />}
+            {children.length > 0 && (
+              <Comment
+                commentList={commentList}
+                parent={comment.cid}
+                rank={rank + 1}
+              />
             )}
-            {comment.children && <div className={styles.divider} />}
+            {children.length > 0 && <div className={styles.divider} />}
             {replyWrite ? (
               <ReplyWriteDiv text="댓글 작성" toggle={toggleReplyWrite} />
             ) : (

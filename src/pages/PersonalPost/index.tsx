@@ -38,6 +38,7 @@ import {
   commentType,
 } from '../../contexts/types';
 import { showToast } from '../../components/Toast';
+import CommentWrite from './CommentWrite';
 
 type postGetType = {
   pid: number;
@@ -117,6 +118,8 @@ function PersonalPost() {
     likes: 0,
     is_private: false,
   });
+  const [isLoad, setLoad] = useState(false);
+  const [commentLoadTrig, setCommentLoadTrig] = useState(false);
   const [tocFixed, setTocFixed] = useState(false);
   const [utilFixed, setUtilFixed] = useState(false);
   const [likeClicked, setLikeClicked] = useState(false);
@@ -152,6 +155,7 @@ function PersonalPost() {
         content,
         likes: parseInt(likeCount, 10),
       });
+      setLoad(true);
     } catch (error) {
       showToast({ type: 'error', message: '글이 존재하지 않습니다.' });
       navigate(-1);
@@ -163,9 +167,11 @@ function PersonalPost() {
   }, [getPost]);
 
   const getComment = useCallback(async () => {
+    if (!isLoad) return;
+
     try {
-      const response = await axios.get(`/api/v1/velog/${id}/comment/`);
-      setPost({ ...post, comments: response.data.results });
+      const response = await axios.get(`/api/v1/velog/${post.id}/comment/`);
+      setPost({ ...post, comments: response.data });
     } catch (error) {
       console.log(error);
     }
@@ -173,7 +179,8 @@ function PersonalPost() {
 
   useEffect(() => {
     getComment();
-  }, [getComment]);
+    setCommentLoadTrig(false);
+  }, [getComment, commentLoadTrig]);
 
   const defaultPlugin = () => (tree: any) => {
     treeData = tree; // treeData length corresponds to previewer's childNodes length
@@ -372,19 +379,23 @@ function PersonalPost() {
         )}
       </div>
       <div className={cx('comment_container', 'hori_size')}>
-        <h4>{post.comments.length}개의 댓글</h4>
+        <h4>{post.comments && post.comments.length}개의 댓글</h4>
         <div>
-          <div>
-            <textarea
-              placeholder="댓글을 작성하세요"
-              className={styles.comment_write}
-            />
-            <div className={styles.buttons_wrapper}>
-              <button type="button">댓글 작성</button>
-            </div>
-          </div>
+          <CommentWrite
+            text="댓글 작성"
+            pid={post.id}
+            setCommentLoadTrig={setCommentLoadTrig}
+            parent={null}
+            toggle={undefined}
+            cid={undefined}
+          />
           <div className={styles.comment_list_container}>
-            <Comment commentList={post.comments} parent={null} rank={0} />
+            <Comment
+              commentList={post.comments}
+              parent={null}
+              rank={0}
+              setCommentLoadTrig={setCommentLoadTrig}
+            />
           </div>
         </div>
       </div>

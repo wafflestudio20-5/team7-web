@@ -3,17 +3,21 @@ import Moment from 'react-moment';
 import 'moment/locale/ko';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import styles from './Comment.module.scss';
 import { ReactComponent as PlusIcon } from '../../assets/plus_box.svg';
 import { ReactComponent as MinusIcon } from '../../assets/minus_box.svg';
 import { commentType, user } from '../../contexts/types';
 import Comment from './Comment';
 import { useModalActions } from '../../contexts/ModalProvider';
+import CommentWrite from './CommentWrite';
+import { showToast } from '../../components/Toast';
 
 interface commentProps {
   comment: commentType;
   rank: number;
   commentList: commentType[];
+  setCommentLoadTrig: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const dummyUser: user = {
@@ -42,27 +46,12 @@ const buttonText = (visible: boolean, children: commentType[]) => {
   return <span>답글 달기</span>;
 };
 
-// 댓글 작성 창
-function ReplyWriteDiv({ text, toggle }: { text: string; toggle: () => void }) {
-  return (
-    <div>
-      <textarea
-        placeholder="댓글을 작성하세요"
-        className={styles.comment_write}
-      />
-      <div className={styles.write_buttons_wrapper}>
-        <button type="button" className={styles.cancel_button} onClick={toggle}>
-          취소
-        </button>
-        <button type="button" className={styles.ok_button}>
-          {text}
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function CommentItem({ comment, rank, commentList }: commentProps) {
+function CommentItem({
+  comment,
+  rank,
+  commentList,
+  setCommentLoadTrig,
+}: commentProps) {
   const [children, setChildren] = useState<commentType[]>([]);
   const [replyVisible, setReplyVisible] = useState(false);
   const [replyWrite, setReplyWrite] = useState(false);
@@ -97,8 +86,23 @@ function CommentItem({ comment, rank, commentList }: commentProps) {
     setReplyRevise(x => !x);
   };
 
+  const deleteComment = async (pid: number, cid: number) => {
+    try {
+      const response = await axios.delete(
+        `/api/v1/velog/${pid}/comment/${cid}`
+      );
+
+      setCommentLoadTrig(true);
+    } catch (error) {
+      showToast({ type: 'error', message: '다시 시도 해주세요.' });
+      console.log(error);
+    }
+  };
+
   const onDeleteClick = () => {
-    open('댓글 삭제', '댓글을 정말로 삭제하시겠습니까?');
+    open('댓글 삭제', '댓글을 정말로 삭제하시겠습니까?', () => {
+      deleteComment(comment.post, comment.cid);
+    });
   };
 
   return (
@@ -133,7 +137,14 @@ function CommentItem({ comment, rank, commentList }: commentProps) {
         </div>
       </div>
       {replyRevise ? (
-        <ReplyWriteDiv text="댓글 수정" toggle={toggleReplyRevise} />
+        <CommentWrite
+          text="댓글 수정"
+          pid={comment.post}
+          setCommentLoadTrig={setCommentLoadTrig}
+          parent={comment.parent_comment}
+          toggle={toggleReplyRevise}
+          cid={comment.cid}
+        />
       ) : (
         <div className={styles.comment_text}>
           <div>
@@ -164,11 +175,19 @@ function CommentItem({ comment, rank, commentList }: commentProps) {
                 commentList={commentList}
                 parent={comment.cid}
                 rank={rank + 1}
+                setCommentLoadTrig={setCommentLoadTrig}
               />
             )}
             {children.length > 0 && <div className={styles.divider} />}
             {replyWrite ? (
-              <ReplyWriteDiv text="댓글 작성" toggle={toggleReplyWrite} />
+              <CommentWrite
+                text="댓글 작성"
+                pid={comment.post}
+                setCommentLoadTrig={setCommentLoadTrig}
+                parent={comment.cid}
+                toggle={toggleReplyWrite}
+                cid={undefined}
+              />
             ) : (
               <button
                 type="button"

@@ -13,13 +13,20 @@ interface commentProps {
   commentList: commentType[];
   parent: number | null;
   rank: number;
+  setCommentLoadTrig: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Comment({ commentList, parent, rank }: commentProps) {
+function Comment({
+  commentList,
+  parent,
+  rank,
+  setCommentLoadTrig,
+}: commentProps) {
   const [curComments, setCurComments] = useState<commentType[]>([]);
   const [page, setPage] = useState(1);
   const [range, setRange] = useState([page - 2, page + 2]);
-  const numPages = Math.ceil(curComments.length / commentPerPage);
+  const [numPages, setNumPages] = useState(5);
+  const [pageArray, setPageArray] = useState([1, 2, 3, 4, 5]);
   const offset = (page - 1) * commentPerPage;
 
   useEffect(() => {
@@ -27,6 +34,20 @@ function Comment({ commentList, parent, rank }: commentProps) {
       commentList.filter(comment => comment.parent_comment === parent)
     );
   }, [commentList]);
+
+  useEffect(() => {
+    const tempNumPage = Math.ceil(curComments.length / commentPerPage);
+    setNumPages(tempNumPage);
+    setPageArray(
+      Array(tempNumPage)
+        .fill(1)
+        .map((x, y) => x + y)
+    );
+
+    if (page === tempNumPage - 1) {
+      setPage(x => x + 1);
+    }
+  }, [curComments]);
 
   useEffect(() => {
     if (numPages <= 5) {
@@ -66,17 +87,18 @@ function Comment({ commentList, parent, rank }: commentProps) {
 
   return (
     <div>
-      {commentList.slice(offset, offset + commentPerPage).map(comment => {
+      {curComments.slice(offset, offset + commentPerPage).map(comment => {
         return (
           <CommentItem
             key={comment.cid}
             comment={comment}
             rank={rank}
             commentList={commentList}
+            setCommentLoadTrig={setCommentLoadTrig}
           />
         );
       })}
-      {commentList.length > 0 && (
+      {curComments.length > 0 && (
         <div className={styles.pagenation}>
           <button
             type="button"
@@ -89,20 +111,16 @@ function Comment({ commentList, parent, rank }: commentProps) {
           <button type="button" className={styles.left} onClick={onLeftClick}>
             <LeftMarkIcon />
           </button>
-          {Array(numPages)
-            .fill(1)
-            .map((x, y) => x + y)
-            .slice(range[0] - 1, range[1])
-            .map(n => (
-              <button
-                type="button"
-                className={cx({ current: n === page })}
-                key={n}
-                onClick={() => onPageClick(n)}
-              >
-                {n}
-              </button>
-            ))}
+          {pageArray.slice(range[0] - 1, range[1]).map(n => (
+            <button
+              type="button"
+              className={cx({ current: n === page })}
+              key={n}
+              onClick={() => onPageClick(n)}
+            >
+              {n}
+            </button>
+          ))}
           <button type="button" className={styles.right} onClick={onRightClick}>
             <RightMarkIcon />
           </button>

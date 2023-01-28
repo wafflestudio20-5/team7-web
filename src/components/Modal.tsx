@@ -21,6 +21,11 @@ function Modal() {
     setTimeout(() => close(), 400);
   };
 
+  const onConfirmClick = () => {
+    if (handleClick) handleClick();
+    onCloseClick();
+  };
+
   return visible ? (
     <div>
       <div className={cx('background', { close: closeStart })} />
@@ -40,7 +45,7 @@ function Modal() {
               <button
                 type="button"
                 className={styles.comfirm_button}
-                onClick={handleClick}
+                onClick={onConfirmClick}
               >
                 확인
               </button>

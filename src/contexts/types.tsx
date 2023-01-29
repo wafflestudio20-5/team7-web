@@ -32,18 +32,13 @@ export type post = {
 }; // component를 위한 post 정보
 
 export type commentType = {
-  id: number;
-  writer: user;
-  content: string;
+  cid: number;
+  post: number;
+  author: number;
   created_at: string;
-  updated_at: string;
-  children?: commentListType;
+  content: string;
+  parent_comment: number;
 }; // 댓글 상세 정보
-
-export type commentListType = {
-  comments: commentType[];
-  length: number;
-}; // 포스트의 트리 구조 댓글 목록
 
 export type postDetail = {
   id: number;
@@ -59,7 +54,7 @@ export type postDetail = {
   series: seriesDetail | null;
   prev_post: post | null;
   next_post: post | null;
-  comments: commentListType;
+  comments: commentType[];
   likes: number;
   is_private: boolean;
 }; // post별 page에서 필요한 post 정보

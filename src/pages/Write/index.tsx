@@ -5,6 +5,7 @@ import React, {
   Fragment,
   useRef,
   useEffect,
+  useCallback,
 } from 'react';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse/lib';
@@ -12,7 +13,8 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeReact from 'rehype-react/lib';
 import classNames from 'classnames/bind';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 import useCodemirror from '../../hooks/useCodemirror';
 import styles from './Write.module.scss';
 import { ReactComponent as BoldIcon } from '../../assets/markdown_bold.svg';
@@ -25,12 +27,8 @@ import { ReactComponent as CodeblockIcon } from '../../assets/markdown_codeblock
 import { ReactComponent as BackIcon } from '../../assets/back.svg';
 import { showToast } from '../../components/Toast';
 import PublishModal from './PublishModal';
-import {
-  commentListType,
-  postDetail,
-  presetBtn,
-  user,
-} from '../../contexts/types';
+import { postDetail, presetBtn, user } from '../../contexts/types';
+import { useLoginValue } from '../../contexts/LoginProvider';
 
 const dummyUser: user = {
   id: 'id',
@@ -47,9 +45,18 @@ const dummyUser: user = {
   mail: 'mail',
 };
 
-const initialCommentList: commentListType = {
-  comments: [],
-  length: 0,
+type postGetType = {
+  pid: number;
+  series: number;
+  title: string;
+  author: number;
+  created_at: string;
+  updated_at: string;
+  thumbnail: string;
+  preview: string;
+  content: string;
+  is_private: boolean;
+  tags: number[];
 };
 
 let treeData: any;
@@ -91,24 +98,87 @@ function Write() {
     series: null,
     prev_post: null,
     next_post: null,
-    comments: initialCommentList,
+    comments: [],
     likes: 0,
     is_private: false,
   });
+  const [isLoad, setLoad] = useState(false);
   const [isHide, setHide] = useState(false);
   const [modalActive, setModalActive] = useState(false);
   const [imageLink, setImageLink] = useState<string | null>('');
   const [tagDescActive, setTagDescActive] = useState(false);
   const [tagDescVisible, setTagDescVisible] = useState(false);
   const [tagDescDamp, setTagDescDamp] = useState(false);
+  const previewRef = useRef<HTMLDivElement>(null);
+  const mouseIsOn = useRef<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { ref: editorRef, view: editorView } = useCodemirror({
     initialDoc: post.content,
     setPost,
   });
-  const previewRef = useRef<HTMLDivElement>(null);
-  const mouseIsOn = useRef<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { user } = useLoginValue();
+
+  const getCurPost = useCallback(async () => {
+    const pid = searchParams.get('id');
+    if (pid === null) return;
+
+    try {
+      const response = await axios.get(`/api/v1/velog/write/id=${pid}`);
+      const {
+        pid: id,
+        series,
+        title,
+        author,
+        created_at: createdAt,
+        updated_at: updatedAt,
+        thumbnail,
+        preview,
+        content,
+        is_private: isPrivate,
+        tags,
+      }: postGetType = response.data;
+
+      if (!user || user.id.toString() !== author.toString()) {
+        showToast({ type: 'error', message: '권한이 없습니다.' });
+        navigate(-1);
+      }
+
+      setPost({
+        ...post,
+        id,
+        title,
+        created_at: createdAt,
+        updated_at: updatedAt,
+        thumbnail,
+        preview,
+        content,
+        is_private: isPrivate,
+      });
+      setLoad(true);
+    } catch (error) {
+      showToast({ type: 'error', message: '글이 존재하지 않습니다.' });
+      navigate(-1);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    getCurPost();
+  }, [getCurPost]);
+
+  // content 갖고 온 후 codemirror에 반영
+  useEffect(() => {
+    if (editorView) {
+      const change = {
+        from: 0,
+        insert: post.content,
+      };
+      editorView.dispatch({
+        changes: change,
+      });
+    }
+  }, [isLoad]);
 
   const defaultPlugin = () => (tree: any) => {
     treeData = tree; // treeData length corresponds to previewer's childNodes length

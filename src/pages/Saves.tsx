@@ -6,7 +6,6 @@ import styles from './Saves.module.scss';
 import Header from '../components/Header';
 import HeaderMoving from '../components/HeaderMoving';
 import {
-  commentListType,
   post,
   postDetail,
   seriesDetail,
@@ -47,11 +46,6 @@ const dummyPost: post = {
   is_private: false,
 };
 
-const dummyCommentList: commentListType = {
-  comments: [],
-  length: 0,
-};
-
 const dummySeriesPost: seriesPost = {
   series_id: 1,
   post: dummyPost,
@@ -74,7 +68,7 @@ const dummyPostDetail: postDetail = {
   series: dummySeriesDetail,
   prev_post: dummyPost,
   next_post: dummyPost,
-  comments: dummyCommentList,
+  comments: [],
 };
 
 const dummyTempPosts: postDetail[] = [

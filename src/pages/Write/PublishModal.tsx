@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import classNames from 'classnames/bind';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 import styles from './PublishModal.module.scss';
 import { ReactComponent as ImageIcon } from '../../assets/image.svg';
 import { ReactComponent as WorldIcon } from '../../assets/world.svg';
@@ -9,6 +10,7 @@ import { ReactComponent as ListAddIcon } from '../../assets/list_add.svg';
 import { ReactComponent as SettingIcon } from '../../assets/setting.svg';
 import { postDetail, series } from '../../contexts/types';
 import { showToast } from '../../components/Toast';
+import { useLoginValue } from '../../contexts/LoginProvider';
 
 const cx = classNames.bind(styles);
 
@@ -55,6 +57,8 @@ export default function PublishModal({
   ]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { user } = useLoginValue();
 
   const onCancelClick = () => {
     setModalActive(false);
@@ -195,8 +199,27 @@ export default function PublishModal({
     onBackgroundClick();
   };
 
-  const onPublishClick = () => {
-    navigate(`/@${post.author.id}/${post.url}`);
+  const onPublishClick = async () => {
+    try {
+      const postParams = {
+        series: null,
+        title: post.title,
+        preview: post.preview,
+        content: post.content,
+        is_private: post.is_private,
+        tags: post.tags,
+      };
+      const pid = searchParams.get('id');
+      const response =
+        pid === null
+          ? await axios.post(`/api/v1/velog/write/`, postParams)
+          : await axios.put(`/api/v1/velog/write/id=${pid}`, postParams);
+
+      if (user !== null) navigate(`/@${user.username}/${post.title}`);
+    } catch (error) {
+      showToast({ type: 'error', message: '다시 시도해주세요.' });
+      console.log(error);
+    }
   };
 
   return (

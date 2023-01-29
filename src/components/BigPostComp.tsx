@@ -44,12 +44,12 @@ function BigPostComp({ postInfo, username }: post_type) {
           </div>
         </div>
       )}
-      <Link to={`/@${postInfo.author.id}/${postInfo.title}`}>
+      <Link to={postInfo.url}>
         <div className={cx('thumbnail')}>
           <img src={postInfo.thumbnail} alt="post-thumbnail" />
         </div>
       </Link>
-      <Link to={`/@${postInfo.author.id}/${postInfo.title}`}>
+      <Link to={postInfo.url}>
         <h2>{postInfo.title}</h2>
       </Link>
       <p>{postInfo.preview}</p>

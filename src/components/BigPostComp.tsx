@@ -45,16 +45,18 @@ function BigPostComp({ postInfo, username }: post_type) {
         </div>
       )}
       <Link to={postInfo.url}>
-        <div className={cx('thumbnail')}>
-          <img src={postInfo.thumbnail} alt="post-thumbnail" />
-        </div>
+        {postInfo.thumbnail !== null && postInfo.thumbnail !== undefined && (
+          <div className={cx('thumbnail')}>
+            <img src={postInfo.thumbnail} alt="post-thumbnail" />
+          </div>
+        )}
       </Link>
       <Link to={postInfo.url}>
         <h2>{postInfo.title}</h2>
       </Link>
       <p>{postInfo.preview}</p>
       <div className={cx('tagWrapper')}>
-        {postInfo.tags.map((tag: string) => (
+        {postInfo.tags?.map(tag => (
           <Link to={`/tags/${tag}`} className={cx('tag')}>
             {tag}
           </Link>

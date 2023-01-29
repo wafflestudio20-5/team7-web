@@ -385,6 +385,7 @@ function PersonalPost() {
             text="댓글 작성"
             pid={post.id}
             setCommentLoadTrig={setCommentLoadTrig}
+            initialContent=""
             parent={null}
             toggle={undefined}
             cid={undefined}

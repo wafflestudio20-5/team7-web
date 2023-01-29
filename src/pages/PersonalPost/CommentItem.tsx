@@ -141,6 +141,7 @@ function CommentItem({
           text="댓글 수정"
           pid={comment.post}
           setCommentLoadTrig={setCommentLoadTrig}
+          initialContent={comment.content}
           parent={comment.parent_comment}
           toggle={toggleReplyRevise}
           cid={comment.cid}
@@ -184,6 +185,7 @@ function CommentItem({
                 text="댓글 작성"
                 pid={comment.post}
                 setCommentLoadTrig={setCommentLoadTrig}
+                initialContent=""
                 parent={comment.cid}
                 toggle={toggleReplyWrite}
                 cid={undefined}

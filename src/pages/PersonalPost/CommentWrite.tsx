@@ -7,6 +7,7 @@ interface CommentWriteProps {
   text: string;
   pid: number;
   setCommentLoadTrig: React.Dispatch<React.SetStateAction<boolean>>;
+  initialContent: string;
   parent: number | null;
   toggle: (() => void) | undefined;
   cid: number | undefined;
@@ -17,11 +18,12 @@ export default function CommentWrite({
   text,
   pid,
   setCommentLoadTrig,
+  initialContent,
   parent = null,
   toggle = undefined,
   cid = undefined,
 }: CommentWriteProps) {
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState(initialContent);
 
   const publishComment = async () => {
     try {

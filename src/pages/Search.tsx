@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
+import { debounce } from 'lodash';
+import axios from 'axios';
 import styles from './Search.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import Header from '../components/Header';
@@ -28,64 +30,25 @@ function Search() {
     homepage: 'https://localhost:3000',
     mail: 'myId@snu.ac.kr',
   };
-  const posts: post[] = [
-    {
-      id: 1,
-      title: '포스트 제목입니다',
-      author: exampleUser,
-      url: 'post-title-1',
-      preview: '포스트를 소개해주세요.',
-      thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2023-01-26 12:30:10',
-      updated_at: '2023-01-26 12:30:10',
-      comments: 23,
-      likes: 45,
-      is_private: false,
-    },
-    {
-      id: 2,
-      title: '포스트 제목입니다',
-      author: exampleUser,
-      url: 'post-title-2',
-      preview: '포스트를 소개해주세요.',
-      thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2023-01-23 12:30:10',
-      updated_at: '2023-01-23 12:30:10',
-      comments: 23,
-      likes: 45,
-      is_private: false,
-    },
-    {
-      id: 3,
-      title: '포스트 제목입니다',
-      author: exampleUser,
-      url: 'post-title-3',
-      preview: '포스트를 소개해주세요.',
-      thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2023-01-26 16:10:10',
-      updated_at: '2023-01-26 16:10:10',
-      comments: 23,
-      likes: 45,
-      is_private: false,
-    },
-    {
-      id: 4,
-      title: '포스트 제목입니다',
-      author: exampleUser,
-      url: 'post-title-4',
-      preview: '포스트를 소개해주세요.',
-      thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2023-01-26 12:30:10',
-      updated_at: '2023-01-26 12:30:10',
-      comments: 23,
-      likes: 45,
-      is_private: true,
-    },
-  ];
+  const initialPost: post[] = [];
+  const [posts, setPosts] = useState(initialPost);
+
+  const updatePosts = useCallback(
+    debounce(async (str: string) => {
+      try {
+        const response = await axios.get('/api/v1/velog');
+        setPosts(response.data);
+      } catch (e) {
+        console.error(e);
+      }
+    }, 500),
+    []
+  );
+  function debounceSearch(str: string) {
+    setQuery(str);
+    updatePosts(str);
+  }
+
   const postCount = posts.length;
 
   return (
@@ -110,7 +73,9 @@ function Search() {
             <input
               placeholder="검색어를 입력하세요"
               value={query}
-              onChange={e => setQuery(e.target.value)}
+              onChange={e => {
+                debounceSearch(e.target.value);
+              }}
             />
           </div>
         </div>

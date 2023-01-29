@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
+import axios from 'axios';
 import styles from './TagsTag.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import Header from '../components/Header';
 // eslint-disable-next-line import/extensions,import/no-unresolved
-import BigPostComp from '../components/BigPostComp';
+import ScrollBigPosts from '../components/ScrollBigPosts';
 // eslint-disable-next-line import/extensions,import/no-unresolved
-import { post, tag, user } from '../contexts/types';
+import { post, tag } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
@@ -19,79 +20,24 @@ const currentTag: tag = {
     'JavaScript(JS)는 가벼운 인터프리터 또는 JIT 컴파일 프로그래밍 언어로, 일급 함수를 지원합니다. 웹 페이지의 스크립트 언어로서 제일 유명하지만 Node.js, Apache CouchDB, Adobe Acrobat처럼 많은 비 브라우저 환경에서도 사용하고 있습니다. JavaScript는 프로토타입 기반의 동적 다중 패러다임 스크립트 언어로, 객체지향형, 명령형, 선언형(함수형 프로그래밍 등) 스타일을 지원합니다.',
   postCount: 50498,
 };
-const exampleUser: user = {
-  id: 'myId',
-  velog_name: 'my_velog',
-  email: 'mail',
-  username: '이름',
-  userImg: '',
-  description: '내 벨로그',
-  github: 'github',
-  twitter: 'twitter',
-  facebook: 'facebook',
-  homepage: 'https://localhost:3000',
-  mail: 'myId@snu.ac.kr',
-};
-const tagPosts: post[] = [
-  {
-    id: 1,
-    title: '포스트 제목입니다',
-    author: exampleUser,
-    url: 'post-title-1',
-    preview: '포스트를 소개해주세요.',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    tags: ['tagA', 'tagB', 'tagC'],
-    created_at: '2023-01-26 12:30:10',
-    updated_at: '2023-01-26 12:30:10',
-    comments: 23,
-    likes: 45,
-    is_private: false,
-  },
-  {
-    id: 2,
-    title: '포스트 제목입니다',
-    author: exampleUser,
-    url: 'post-title-2',
-    preview: '포스트를 소개해주세요.',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    tags: ['tagA', 'tagB', 'tagC'],
-    created_at: '2023-01-23 12:30:10',
-    updated_at: '2023-01-23 12:30:10',
-    comments: 23,
-    likes: 45,
-    is_private: false,
-  },
-  {
-    id: 3,
-    title: '포스트 제목입니다',
-    author: exampleUser,
-    url: 'post-title-3',
-    preview: '포스트를 소개해주세요.',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    tags: ['tagA', 'tagB', 'tagC'],
-    created_at: '2023-01-26 16:10:10',
-    updated_at: '2023-01-26 16:10:10',
-    comments: 23,
-    likes: 45,
-    is_private: false,
-  },
-  {
-    id: 4,
-    title: '포스트 제목입니다',
-    author: exampleUser,
-    url: 'post-title-4',
-    preview: '포스트를 소개해주세요.',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    tags: ['tagA', 'tagB', 'tagC'],
-    created_at: '2023-01-26 12:30:10',
-    updated_at: '2023-01-26 12:30:10',
-    comments: 23,
-    likes: 45,
-    is_private: true,
-  },
-];
 
 function TagsTag() {
+  const initialPost: post[] = [];
+  const [tagPosts, setTagPosts] = useState(initialPost);
+
+  async function setPosts() {
+    try {
+      const response = await axios.get('/api/v1/velog');
+      setTagPosts(response.data);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  useEffect(() => {
+    setPosts();
+  }, []);
+
   return (
     <div className={cx('page')}>
       <Header />
@@ -106,9 +52,7 @@ function TagsTag() {
             </div>
           </div>
           <div>
-            {tagPosts.map((postInfo: post) => (
-              <BigPostComp key={postInfo.id} postInfo={postInfo} username="" />
-            ))}
+            <ScrollBigPosts posts={tagPosts} />
           </div>
         </div>
       </main>

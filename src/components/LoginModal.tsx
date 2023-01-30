@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import styles from './LoginModal.module.scss';
-import { useLoginSetting, useLoginValue } from '../contexts/LoginProvider';
+import { useLoginSetting } from '../contexts/LoginProvider';
 
 const cx = classNames.bind(styles);
 
@@ -32,6 +32,16 @@ export default function Login() {
       console.log(response.data);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleKeyDown = (e: { code: any }) => {
+    const key = e.code;
+    switch (key) {
+      case 'Enter':
+        login(inputEmail.current?.value, inputPassword.current?.value);
+        break;
+      default:
     }
   };
 
@@ -64,11 +74,13 @@ export default function Login() {
                         <input
                           placeholder="이메일을 입력하세요"
                           ref={inputEmail}
+                          onKeyDown={handleKeyDown}
                         />
                         <input
                           placeholder="패스워드를 입력하세요"
                           type="password"
                           ref={inputPassword}
+                          onKeyDown={handleKeyDown}
                         />
                       </div>
                       <button

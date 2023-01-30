@@ -19,6 +19,7 @@
     "axios": "^1.2.3",
     "classnames": "^2.3.2",
     "eslint-config-airbnb": "^19.0.4",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "node-sass": "^8.0.0",
     "qs": "^6.11.0",
@@ -71,6 +72,7 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.191",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.1",
     "eslint": "^8.30.0",

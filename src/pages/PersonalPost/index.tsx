@@ -244,8 +244,17 @@ function PersonalPost() {
     navigate(`/write?id=${post.pid}`);
   };
 
+  const deletePost = async () => {
+    try {
+      const response = await axios.delete(`/api/v1/velog/${id}/${postTitle}/`);
+      navigate(-1);
+    } catch (error) {
+      showToast({ type: 'error', message: '다시 시도 해주세요.' });
+    }
+  };
+
   const onDeleteClick = () => {
-    open('포스트 삭제', '정말로 삭제하시겠습니까?');
+    open('포스트 삭제', '정말로 삭제하시겠습니까?', deletePost);
   };
 
   const onLikeClick = () => {

@@ -94,7 +94,7 @@ export default function LoginProvider({
       async resetToken() {
         try {
           const response = await axios.post('/api/v1/accounts/token/refresh/', {
-            Refresh: localStorage.refreshToken,
+            refresh: localStorage.refreshToken,
           });
           setLoginValue(valueSet => {
             return {
@@ -113,19 +113,21 @@ export default function LoginProvider({
   useEffect(() => {
     async function autoLogin() {
       const refreshToken = localStorage.getItem('refreshToken');
-      try {
-        const response = await axios.post('/api/v1/accounts/token/refresh/', {
-          Refresh: refreshToken,
-        });
-        const response2 = await axios.get('/api/v1/accounts/user');
-        setLoginValue({
-          isLogin: true,
-          user: response2.data,
-          accessToken: response.data.access,
-        });
-        axios.defaults.headers.common.Authorization = `Bearer ${response.data.access}`;
-      } catch (e) {
-        console.log(e);
+      if (refreshToken) {
+        try {
+          const response = await axios.post('/api/v1/accounts/token/refresh/', {
+            refresh: refreshToken,
+          });
+          const response2 = await axios.get('/api/v1/accounts/user');
+          setLoginValue({
+            isLogin: true,
+            user: response2.data,
+            accessToken: response.data.access,
+          });
+          axios.defaults.headers.common.Authorization = `Bearer ${response.data.access}`;
+        } catch (e) {
+          console.log(e);
+        }
       }
     }
     autoLogin();

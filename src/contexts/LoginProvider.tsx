@@ -34,6 +34,12 @@ const initialSetting: loginSetting = {
 const loginValueContext = createContext<loginValue>(initialValue);
 const loginSettingContext = createContext<loginSetting>(initialSetting);
 
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+axios.defaults.baseURL =
+  process.env.NODE_ENV === 'development' ? '' : 'https://api.7elog.store';
+axios.defaults.withCredentials = true;
+
 export default function LoginProvider({
   children,
 }: {
@@ -46,11 +52,6 @@ export default function LoginProvider({
   });
 
   const navigate = useNavigate();
-  axios.defaults.xsrfCookieName = 'csrftoken';
-  axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-  axios.defaults.baseURL =
-    process.env.NODE_ENV === 'development' ? '' : 'https://api.7elog.store';
-  axios.defaults.withCredentials = true;
 
   const setting = useMemo(
     () => ({

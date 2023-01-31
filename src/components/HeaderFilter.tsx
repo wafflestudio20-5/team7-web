@@ -10,6 +10,8 @@ export default function HeaderFilter() {
 
   const [filterOn, setFilterOn] = useState(false);
   const [filterValue, setFilterValue] = useState('오늘');
+  const [underlinePos, setUnderlinePos] = useState(0);
+  const [underlineDest, setUnderlineDest] = useState(0);
 
   function openFilter() {
     if (filterOn === false) {
@@ -23,6 +25,30 @@ export default function HeaderFilter() {
     setFilterValue(e.target.innerHTML);
     setFilterOn(false);
   }
+
+  useEffect(() => {
+    if (path === '/') setUnderlineDest(0);
+    else if (path === '/recent') setUnderlineDest(112);
+    else if (path === '/lists/liked') setUnderlineDest(0);
+    else if (path === '/lists/read') setUnderlineDest(144);
+    else if (path === '/lists/following') setUnderlineDest(288);
+  }, [path]);
+
+  useEffect(() => {
+    const initialDist = underlineDest - underlinePos;
+    setUnderlinePos(underlinePos + initialDist * 1.05);
+    const timer1 = setTimeout(() => {
+      setUnderlinePos(underlinePos + initialDist * 0.99);
+    }, 250);
+    const timer2 = setTimeout(() => {
+      setUnderlinePos(underlinePos + initialDist);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [underlineDest]);
 
   return (
     <div
@@ -150,6 +176,14 @@ export default function HeaderFilter() {
           # 태그 목록
         </Link>
       </div>
+      <div
+        className={cx('underline')}
+        style={{
+          width: path === '/' || path === '/recent' ? '112px' : '144px',
+          transform: `translate(${underlinePos}px)`,
+          transition: `transform 0.25s ease-out 0s`,
+        }}
+      />
     </div>
   );
 }

@@ -36,13 +36,13 @@ export default function HeaderFilter() {
 
   useEffect(() => {
     const initialDist = underlineDest - underlinePos;
-    setUnderlinePos(underlinePos + initialDist * 1.05);
+    setUnderlinePos(underlinePos + initialDist * 1.09);
     const timer1 = setTimeout(() => {
       setUnderlinePos(underlinePos + initialDist * 0.99);
-    }, 250);
+    }, 300);
     const timer2 = setTimeout(() => {
       setUnderlinePos(underlinePos + initialDist);
-    }, 500);
+    }, 600);
 
     return () => {
       clearTimeout(timer1);
@@ -181,7 +181,7 @@ export default function HeaderFilter() {
         style={{
           width: path === '/' || path === '/recent' ? '112px' : '144px',
           transform: `translate(${underlinePos}px)`,
-          transition: `transform 0.25s ease-out 0s`,
+          transition: `transform 0.3s ease-out 0s`,
         }}
       />
     </div>

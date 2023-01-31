@@ -177,17 +177,7 @@ function ListsLiked() {
   ];
   const [posts, setPosts] = useState(tempPosts);
 
-  return (
-    <div
-      style={{
-        backgroundColor: '#F8F9FA',
-      }}
-    >
-      <Header />
-      <HeaderMoving />
-      <HomeContents posts={posts} />
-    </div>
-  );
+  return <HomeContents posts={posts} />;
 }
 
 export default ListsLiked;

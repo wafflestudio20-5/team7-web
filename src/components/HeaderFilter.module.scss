@@ -37,7 +37,6 @@
       .highlight {
         color: black;
         font-weight: bold;
-        border-bottom: 2px solid black;
       }
       .wider {
         width: 9rem;
@@ -118,6 +117,13 @@
       color: black;
       font-weight: bold;
     }
+  }
+  .underline {
+    width: 112px;
+    height: 2px;
+    position: absolute;
+    bottom: 0px;
+    background: var(--border1);
   }
 }
 @media (max-width: 1919px) {

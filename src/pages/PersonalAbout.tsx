@@ -128,85 +128,62 @@ function PersonalAbout() {
   }
 
   return (
-    <div className={cx('page')}>
-      <Header />
-      <div className={cx('pageContent')}>
-        <UserIntro userInfo={currentUser} />
-        <div>
-          <div className={cx('pageIndex')}>
-            <Link to={`/@${currentUser.id}`} className={cx('index')}>
-              글
-            </Link>
-            <Link to={`/@${currentUser.id}/series`} className={cx('index')}>
-              시리즈
-            </Link>
-            <Link
-              to={`/@${currentUser.id}/about`}
-              className={cx('index', 'active')}
+    <div>
+      {!isWriting && detailedUser.about === '' && (
+        <div className={cx('empty')}>
+          <img
+            src="https://static.velog.io/static/media/undraw_empty.5fd6f2b8.svg"
+            alt="empty about"
+          />
+          <div className={cx('message')}>소개가 작성되지 않았습니다.</div>
+          {loginUser && (
+            <button
+              type="button"
+              color="teal"
+              className={cx('addIntro')}
+              onClick={writeOpen}
             >
-              소개
-            </Link>
-            <div className={cx('activeLine')} />
-          </div>
+              소개 글 작성하기
+            </button>
+          )}
         </div>
+      )}
+      {!isWriting && detailedUser.about !== '' && (
         <div>
-          {!isWriting && detailedUser.about === '' && (
-            <div className={cx('empty')}>
-              <img
-                src="https://static.velog.io/static/media/undraw_empty.5fd6f2b8.svg"
-                alt="empty about"
-              />
-              <div className={cx('message')}>소개가 작성되지 않았습니다.</div>
-              {loginUser && (
-                <button
-                  type="button"
-                  color="teal"
-                  className={cx('addIntro')}
-                  onClick={writeOpen}
-                >
-                  소개 글 작성하기
-                </button>
-              )}
+          {loginUser && (
+            <div className={cx('buttonDiv')}>
+              <button
+                type="button"
+                color="teal"
+                className={cx('button')}
+                onClick={writeOpen}
+              >
+                수정하기
+              </button>
             </div>
           )}
-          {!isWriting && detailedUser.about !== '' && (
-            <div>
-              {loginUser && (
-                <div className={cx('buttonDiv')}>
-                  <button
-                    type="button"
-                    color="teal"
-                    className={cx('button')}
-                    onClick={writeOpen}
-                  >
-                    수정하기
-                  </button>
-                </div>
-              )}
-              <div className={cx('intro')}>{newAbout}</div>
-            </div>
-          )}
-          {isWriting && (
-            <div>
-              <div className={cx('buttonDiv')}>
-                <button
-                  type="button"
-                  color="teal"
-                  className={cx('button')}
-                  onClick={writeClose}
-                >
-                  저장하기
-                </button>
-              </div>
-              <textarea
-                defaultValue={detailedUser.about}
-                placeholder="소개 문구를 입력하세요."
-                onChange={e => setAbout(e.target.value)}
-              />
-            </div>
-          )}
+          <div className={cx('intro')}>{newAbout}</div>
         </div>
-      </div>
+      )}
+      {isWriting && (
+        <div>
+          <div className={cx('buttonDiv')}>
+            <button
+              type="button"
+              color="teal"
+              className={cx('button')}
+              onClick={writeClose}
+            >
+              저장하기
+            </button>
+          </div>
+          <textarea
+            defaultValue={detailedUser.about}
+            placeholder="소개 문구를 입력하세요."
+            onChange={e => setAbout(e.target.value)}
+          />
+        </div>
+      )}
     </div>
   );
 }

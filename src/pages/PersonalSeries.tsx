@@ -134,58 +134,35 @@ function PersonalSeries() {
   }
 
   return (
-    <div className={cx('page')}>
-      <Header />
-      <div className={cx('pageContent')}>
-        <UserIntro userInfo={currentUser} />
-        <div>
-          <div className={cx('pageIndex')}>
-            <Link to={`/@${currentUser.id}`} className={cx('index')}>
-              글
-            </Link>
+    <div>
+      <div className={cx('seriesList')}>
+        {detailedUser.series.map((seriesInfo: series) => (
+          <div className={cx('seriesDiv')}>
             <Link
-              to={`/@${currentUser.id}/series`}
-              className={cx('index', 'active')}
+              to={`/@${seriesInfo.authorId}/series/${seriesInfo.url}`}
+              className={cx('link')}
             >
-              시리즈
-            </Link>
-            <Link to={`/@${currentUser.id}/about`} className={cx('index')}>
-              소개
-            </Link>
-            <div className={cx('activeLine')} />
-          </div>
-        </div>
-        <div>
-          <div className={cx('seriesList')}>
-            {detailedUser.series.map((seriesInfo: series) => (
-              <div className={cx('seriesDiv')}>
-                <Link
-                  to={`/@${seriesInfo.authorId}/series/${seriesInfo.url}`}
-                  className={cx('link')}
-                >
-                  <div>
-                    <img src={seriesInfo.photo} alt="thumbnail" />
-                  </div>
-                </Link>
-                <h4>
-                  <Link
-                    to={`/@${seriesInfo.authorId}/series/${seriesInfo.url}`}
-                    className={cx('link')}
-                  >
-                    {seriesInfo.title}
-                  </Link>
-                </h4>
-                <div className={cx('subInfo')}>
-                  <span className={cx('count')}>
-                    {seriesInfo.postNum}개의 포스트
-                  </span>
-                  <span className={cx('dot')}>·</span>
-                  마지막 업테이트 {timeSetting(seriesInfo.update)}
-                </div>
+              <div>
+                <img src={seriesInfo.photo} alt="thumbnail" />
               </div>
-            ))}
+            </Link>
+            <h4>
+              <Link
+                to={`/@${seriesInfo.authorId}/series/${seriesInfo.url}`}
+                className={cx('link')}
+              >
+                {seriesInfo.title}
+              </Link>
+            </h4>
+            <div className={cx('subInfo')}>
+              <span className={cx('count')}>
+                {seriesInfo.postNum}개의 포스트
+              </span>
+              <span className={cx('dot')}>·</span>
+              마지막 업테이트 {timeSetting(seriesInfo.update)}
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );

@@ -26,6 +26,7 @@ import LoginProvider from './contexts/LoginProvider';
 import Toast from './components/Toast';
 import Modal from './components/Modal';
 import HeaderLayout from './pages/HeaderLayout';
+import PersonalLayout from './pages/PersonalLayout';
 
 function AppProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -60,13 +61,13 @@ function App() {
           <Route path="" element={<Tags />} />
           <Route path=":tag" element={<TagsTag />} />
         </Route>
-        <Route path="/:id">
+        <Route path="/:id" element={<PersonalLayout />}>
           <Route path="" element={<Personal />} />
-          <Route path="series">
-            <Route path="" element={<PersonalSeries />} />
-            <Route path=":seriesName" element={<PersonalSeriesName />} />
-          </Route>
+          <Route path="series" element={<PersonalSeries />} />
           <Route path="about" element={<PersonalAbout />} />
+        </Route>
+        <Route path="/:id">
+          <Route path="series/:seriesName" element={<PersonalSeriesName />} />
           <Route path=":postTitle" element={<PersonalPost />} />
         </Route>
         <Route path="/*" element={<NotFound />} />

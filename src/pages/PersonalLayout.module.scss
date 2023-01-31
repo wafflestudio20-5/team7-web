@@ -1,0 +1,63 @@
+.page {
+  margin: 0;
+  padding: 0 0 4rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
+    'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', 나눔고딕,
+    'Nanum Gothic', 'Noto Sans KR', 'Noto Sans CJK KR', arial, 돋움, Dotum,
+    Tahoma, Geneva, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: var(--bg-element5);
+  box-sizing: border-box;
+}
+
+.pageContent {
+  width: 82%;
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pageIndex {
+  margin-top: 4.5rem;
+  margin-bottom: 4.5rem;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  position: relative;
+  .index {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    font-size: 1.325rem;
+    width: 8rem;
+    height: 3rem;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.25s ease-in-out 0s;
+    font-weight: 600;
+  }
+  .active {
+    color: var(--primary2);
+  }
+}
+
+.activeLine {
+  width: 8rem;
+  height: 2px;
+  left: 58%;
+  background: var(--primary2);
+  bottom: -2px;
+  position: absolute;
+  transition: left 0.25s ease-in-out 0s;
+}
+
+.underline {
+  width: 8rem;
+  height: 2px;
+  position: absolute;
+  margin-right: 16rem;
+  bottom: -2px;
+  background: var(--primary2);
+}

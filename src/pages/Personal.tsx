@@ -29,90 +29,102 @@ const currentUser: user = {
   about: 'about 페이지에 들어갈 설명입니다',
 };
 
-const detailedUser: userDetail = {
-  id: 'myId',
-  velog_name: 'my_velog',
-  email: 'mail',
-  username: '이름',
-  userImg: '',
-  description: '내 벨로그',
-  github: 'github',
-  twitter: 'twitter',
-  facebook: 'facebook',
-  homepage: 'https://localhost:3000',
-  mail: 'myId@snu.ac.kr',
-  tags: ['tagA', 'tagB', 'tagC'],
-  posts: [
-    {
-      pid: 1,
-      title: '포스트 제목입니다',
-      author: 'id',
-      url: 'post-title-1',
-      preview: '포스트를 소개해주세요.',
-      thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2023-01-26 12:30:10',
-      updated_at: '2023-01-26 12:30:10',
-      comments: 23,
-      likes: 45,
-      is_private: false,
-    },
-    {
-      pid: 2,
-      title: '포스트 제목입니다',
-      author: 'id',
-      url: 'post-title-2',
-      preview: '포스트를 소개해주세요.',
-      thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2023-01-23 12:30:10',
-      updated_at: '2023-01-23 12:30:10',
-      comments: 23,
-      likes: 45,
-      is_private: false,
-    },
-    {
-      pid: 3,
-      title: '포스트 제목입니다',
-      author: 'id',
-      url: 'post-title-3',
-      preview: '포스트를 소개해주세요.',
-      thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2023-01-26 16:10:10',
-      updated_at: '2023-01-26 16:10:10',
-      comments: 23,
-      likes: 45,
-      is_private: false,
-    },
-    {
-      pid: 4,
-      title: '포스트 제목입니다',
-      author: 'id',
-      url: 'post-title-4',
-      preview: '포스트를 소개해주세요.',
-      thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2023-01-26 12:30:10',
-      updated_at: '2023-01-26 12:30:10',
-      comments: 23,
-      likes: 45,
-      is_private: true,
-    },
-  ],
-  series: [
-    {
-      id: 1,
-      series_name: '내 시리즈',
-      url: 'url',
-      photo: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      update: '2022-12-30 10:10:10',
-      author: 'id',
-      postNum: 12,
-    },
-  ],
-  about: '<h1>내 벨로그입니다.</h1>',
-};
+const userTags: string[] = ['tagA', 'tagB', 'tagC'];
+
+const postList: post[] = [
+  {
+    pid: 1,
+    title: '포스트 제목입니다',
+    author: 'id',
+    url: 'post-title-1',
+    preview: '포스트를 소개해주세요.',
+    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
+    tags: [
+      {
+        name: 'html',
+        postCount: 6,
+      },
+      {
+        name: 'css',
+        postCount: 6,
+      },
+    ],
+    created_at: '2023-01-26 12:30:10',
+    updated_at: '2023-01-26 12:30:10',
+    comments: 23,
+    likes: 45,
+    is_private: false,
+  },
+  {
+    pid: 2,
+    title: '포스트 제목입니다',
+    author: 'id',
+    url: 'post-title-2',
+    preview: '포스트를 소개해주세요.',
+    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
+    tags: [
+      {
+        name: 'html',
+        postCount: 6,
+      },
+      {
+        name: 'css',
+        postCount: 6,
+      },
+    ],
+    created_at: '2023-01-23 12:30:10',
+    updated_at: '2023-01-23 12:30:10',
+    comments: 23,
+    likes: 45,
+    is_private: false,
+  },
+  {
+    pid: 3,
+    title: '포스트 제목입니다',
+    author: 'id',
+    url: 'post-title-3',
+    preview: '포스트를 소개해주세요.',
+    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
+    tags: [
+      {
+        name: 'html',
+        postCount: 6,
+      },
+      {
+        name: 'css',
+        postCount: 6,
+      },
+    ],
+    created_at: '2023-01-26 16:10:10',
+    updated_at: '2023-01-26 16:10:10',
+    comments: 23,
+    likes: 45,
+    is_private: false,
+  },
+  {
+    pid: 4,
+    title: '포스트 제목입니다',
+    author: 'id',
+    url: 'post-title-4',
+    preview: '포스트를 소개해주세요.',
+    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
+    tags: [
+      {
+        name: 'html',
+        postCount: 6,
+      },
+      {
+        name: 'css',
+        postCount: 6,
+      },
+    ],
+    created_at: '2023-01-26 12:30:10',
+    updated_at: '2023-01-26 12:30:10',
+    comments: 23,
+    likes: 45,
+    is_private: true,
+  },
+];
 
 function Personal() {
   const [query, setQuery] = useState('');
@@ -157,7 +169,7 @@ function Personal() {
                   <Link to={`/@${currentUser.username}`}>전체보기</Link>
                   <span>({getPostnum('')})</span>
                 </li>
-                {detailedUser.tags.map((tag: string) => (
+                {userTags.map((tag: string) => (
                   <li
                     className={cx(
                       'tagElem',
@@ -178,7 +190,7 @@ function Personal() {
 
       <div>
         <div className="postList">
-          {detailedUser.posts.map((postComp: post) => (
+          {postList.map((postComp: post) => (
             <BigPostComp
               key={postComp.pid}
               postInfo={postComp}

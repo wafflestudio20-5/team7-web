@@ -14,7 +14,16 @@ function ListsRead() {
       preview: '포스트 미리보기',
       thumbnail:
         'https://th.bing.com/th/id/R.d01dd3fd4074d38334656a25a511dd5a?rik=x6upOuofKEAgRQ&riu=http%3a%2f%2fwww.etoland.co.kr%2fdata%2fdaumeditor02%2f200202%2f56492515806018600.jpg&ehk=e7vLw%2bHjTj3q2eX6TnrulH77vFS5G4qzokeLISh%2brRM%3d&risl=&pid=ImgRaw&r=0',
-      tags: ['html', 'css'],
+      tags: [
+        {
+          name: 'html',
+          postCount: 6,
+        },
+        {
+          name: 'css',
+          postCount: 6,
+        },
+      ],
       created_at: '2022년 4월 20일',
       updated_at: '2022년 4월 20일',
       comments: 12,
@@ -29,7 +38,16 @@ function ListsRead() {
       preview: '포스트 미리보기',
       thumbnail:
         'https://th.bing.com/th/id/R.d01dd3fd4074d38334656a25a511dd5a?rik=x6upOuofKEAgRQ&riu=http%3a%2f%2fwww.etoland.co.kr%2fdata%2fdaumeditor02%2f200202%2f56492515806018600.jpg&ehk=e7vLw%2bHjTj3q2eX6TnrulH77vFS5G4qzokeLISh%2brRM%3d&risl=&pid=ImgRaw&r=0',
-      tags: ['html', 'css'],
+      tags: [
+        {
+          name: 'html',
+          postCount: 6,
+        },
+        {
+          name: 'css',
+          postCount: 6,
+        },
+      ],
       created_at: '2022년 4월 20일',
       updated_at: '2022년 4월 20일',
       comments: 12,
@@ -44,7 +62,16 @@ function ListsRead() {
       preview: '포스트 미리보기',
       thumbnail:
         'https://th.bing.com/th/id/R.d01dd3fd4074d38334656a25a511dd5a?rik=x6upOuofKEAgRQ&riu=http%3a%2f%2fwww.etoland.co.kr%2fdata%2fdaumeditor02%2f200202%2f56492515806018600.jpg&ehk=e7vLw%2bHjTj3q2eX6TnrulH77vFS5G4qzokeLISh%2brRM%3d&risl=&pid=ImgRaw&r=0',
-      tags: ['html', 'css'],
+      tags: [
+        {
+          name: 'html',
+          postCount: 6,
+        },
+        {
+          name: 'css',
+          postCount: 6,
+        },
+      ],
       created_at: '2022년 4월 20일',
       updated_at: '2022년 4월 20일',
       comments: 12,
@@ -59,7 +86,16 @@ function ListsRead() {
       preview: '포스트 미리보기',
       thumbnail:
         'https://th.bing.com/th/id/R.d01dd3fd4074d38334656a25a511dd5a?rik=x6upOuofKEAgRQ&riu=http%3a%2f%2fwww.etoland.co.kr%2fdata%2fdaumeditor02%2f200202%2f56492515806018600.jpg&ehk=e7vLw%2bHjTj3q2eX6TnrulH77vFS5G4qzokeLISh%2brRM%3d&risl=&pid=ImgRaw&r=0',
-      tags: ['html', 'css'],
+      tags: [
+        {
+          name: 'html',
+          postCount: 6,
+        },
+        {
+          name: 'css',
+          postCount: 6,
+        },
+      ],
       created_at: '2022년 4월 20일',
       updated_at: '2022년 4월 20일',
       comments: 12,
@@ -74,7 +110,16 @@ function ListsRead() {
       preview: '포스트 미리보기',
       thumbnail:
         'https://th.bing.com/th/id/R.d01dd3fd4074d38334656a25a511dd5a?rik=x6upOuofKEAgRQ&riu=http%3a%2f%2fwww.etoland.co.kr%2fdata%2fdaumeditor02%2f200202%2f56492515806018600.jpg&ehk=e7vLw%2bHjTj3q2eX6TnrulH77vFS5G4qzokeLISh%2brRM%3d&risl=&pid=ImgRaw&r=0',
-      tags: ['html', 'css'],
+      tags: [
+        {
+          name: 'html',
+          postCount: 6,
+        },
+        {
+          name: 'css',
+          postCount: 6,
+        },
+      ],
       created_at: '2022년 4월 20일',
       updated_at: '2022년 4월 20일',
       comments: 12,
@@ -89,7 +134,16 @@ function ListsRead() {
       preview: '포스트 미리보기',
       thumbnail:
         'https://th.bing.com/th/id/R.d01dd3fd4074d38334656a25a511dd5a?rik=x6upOuofKEAgRQ&riu=http%3a%2f%2fwww.etoland.co.kr%2fdata%2fdaumeditor02%2f200202%2f56492515806018600.jpg&ehk=e7vLw%2bHjTj3q2eX6TnrulH77vFS5G4qzokeLISh%2brRM%3d&risl=&pid=ImgRaw&r=0',
-      tags: ['html', 'css'],
+      tags: [
+        {
+          name: 'html',
+          postCount: 6,
+        },
+        {
+          name: 'css',
+          postCount: 6,
+        },
+      ],
       created_at: '2022년 4월 20일',
       updated_at: '2022년 4월 20일',
       comments: 12,

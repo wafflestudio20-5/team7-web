@@ -24,7 +24,7 @@ export type post = {
   url: string;
   preview: string;
   thumbnail: string;
-  tags: string[];
+  tags: tag[];
   created_at: string;
   updated_at: string;
   comments: number;
@@ -48,7 +48,7 @@ export type postDetail = {
   url: string;
   preview: string;
   thumbnail: string;
-  tags: string[];
+  tags: tag[];
   created_at: string;
   updated_at: string;
   content: string;

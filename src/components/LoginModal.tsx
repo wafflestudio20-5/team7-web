@@ -7,33 +7,30 @@ import { useLoginSetting } from '../contexts/LoginProvider';
 
 const cx = classNames.bind(styles);
 
-// const githubUrl =
-// 'https://github.com/login/oauth/authorize?client_id=c6d4c32547dbe4263ea7&scope=user';
-// const googleUrl =
-//   'https://accounts.google.com/o/oauth2/auth?client_id=583150238500-td364pcrgj438lfdkkl061g3pssec3i0.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&redirect_uri=http://localhost:3000/login&response_type=code';
-
 const githubUrl =
-  'https://github.com/login/oauth/authorize?client_id=e59b63fb2c54247d72f9&scope=user';
+  'https://github.com/login/oauth/authorize?client_id=c6d4c32547dbe4263ea7&scope=user';
+// const googleUrl =
+//   'https://accounts.google.com/o/oauth2/auth?client_id=583150238500-td364pcrgj438lfdkkl061g3pssec3i0.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&redirect_uri=http://localhost:3000/loginProcess&response_type=token';
+
+// const githubUrl =
+//   'https://github.com/login/oauth/authorize?client_id=e59b63fb2c54247d72f9&scope=user';
+
 const googleUrl =
-  'https://accounts.google.com/o/oauth2/auth?client_id=1057423908982-0e1v495ji7p6sh0mdbds1nq0h6s3vn5b.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&redirect_uri=http://localhost:3000/login&response_type=code';
+  'https://accounts.google.com/o/oauth2/auth?client_id=1057423908982-0e1v495ji7p6sh0mdbds1nq0h6s3vn5b.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&redirect_uri=http://localhost:3000/loginProcess&response_type=token';
+const facebookUrl = `https://www.facebook.com/v13.0/dialog/oauth?client_id=1499778270541428&redirect_uri=http://localhost:3000/loginProcess&state=1&resource_type=token`;
 
 export default function Login() {
-  //   const authCode = new URL(window.location.href).searchParams.get('code');
-  //   console.log(authCode);
-
+  // async function facebook() {
+  //   const response = await axios.get('/api/v1/accounts/google/login');
+  //   console.log(response);
+  // }
+  // useEffect(() => {
+  //   facebook();
+  // });
   const inputEmail = useRef<HTMLInputElement>(null);
   const inputPassword = useRef<HTMLInputElement>(null);
 
   const { login } = useLoginSetting();
-
-  const postGoogleLogin = async () => {
-    try {
-      const response = await axios.get('/api/v1/accounts/google/login');
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleKeyDown = (e: { code: any }) => {
     const key = e.code;
@@ -151,7 +148,7 @@ export default function Login() {
                           />
                         </svg>
                       </a>
-                      <a href="facebook">
+                      <div>
                         <svg
                           width="20"
                           height="20"
@@ -177,7 +174,7 @@ export default function Login() {
                             <path fill="#fff" d="M0 0h20v20H0z" />
                           </g>
                         </svg>
-                      </a>
+                      </div>
                     </div>
                   </section>
                 </div>

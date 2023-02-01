@@ -25,11 +25,13 @@ type loginSetting = {
   login: (email: string | undefined, password: string | undefined) => void;
   logout: () => void;
   resetToken: () => void;
+  googleFinish: () => void;
 };
 const initialSetting: loginSetting = {
   login: (email: string | undefined, password: string | undefined) => undefined,
   logout: () => undefined,
   resetToken: () => undefined,
+  googleFinish: () => undefined,
 };
 
 const loginValueContext = createContext<loginValue>(initialValue);
@@ -105,6 +107,28 @@ export default function LoginProvider({
           });
         } catch (error) {
           console.log(error);
+        }
+      },
+      async googleFinish() {
+        const accessToken = new URL(
+          window.location.href.replace('#', '?')
+        ).searchParams.get('access_token');
+        try {
+          const response = await axios.post(
+            `/api/v1/accounts/google/login/finish/`,
+            {
+              access_token: accessToken,
+            }
+          );
+          setLoginValue({
+            isLogin: true,
+            user: response.data.user,
+            accessToken: '',
+          });
+          localStorage.setItem('refreshToken', response.data.refresh_token);
+          navigate('/');
+        } catch (e) {
+          console.log(e);
         }
       },
     }),

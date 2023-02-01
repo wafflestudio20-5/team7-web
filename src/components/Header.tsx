@@ -97,7 +97,13 @@ export default function Header() {
             </div>
           </div>
           <div className={menuOn ? cx('menu') : cx('blind')}>
-            <div className={cx('menu-wrapper')}>
+            <div
+              className={cx('menu-wrapper')}
+              onClick={() => {
+                setMenuOn(false);
+              }}
+              role="presentation"
+            >
               <Link to="/myvelog">
                 <div>내 벨로그</div>
               </Link>

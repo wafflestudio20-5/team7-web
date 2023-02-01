@@ -13,7 +13,6 @@ type HomeContentsProps = { posts: post[] };
 export default function HomeContents({ posts }: HomeContentsProps) {
   return (
     <div className={cx('contents')}>
-      <HeaderFilter />
       <div className={cx('container')}>
         <main>
           <div className={cx('posts')}>

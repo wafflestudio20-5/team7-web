@@ -25,6 +25,8 @@ import ModalProvider from './contexts/ModalProvider';
 import LoginProvider from './contexts/LoginProvider';
 import Toast from './components/Toast';
 import Modal from './components/Modal';
+import HeaderLayout from './pages/HeaderLayout';
+import PersonalLayout from './pages/PersonalLayout';
 
 function AppProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -38,32 +40,34 @@ function App() {
   return (
     <AppProvider>
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/recent" element={<Recent />} />
         <Route path="/search" element={<Search />} />
         <Route path="/write" element={<Write />} />
         <Route path="/saves" element={<Saves />} />
         <Route path="/setting" element={<Setting />} />
         <Route path="/follows" element={<Follows />} />
-        <Route path="/lists">
-          <Route path="liked" element={<ListsLiked />} />
-          <Route path="read" element={<ListsRead />} />
-          <Route path="following" element={<ListsFollowing />} />
-          <Route path="" element={<NotFound />} />
+        <Route element={<HeaderLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/recent" element={<Recent />} />
+          <Route path="/lists">
+            <Route path="liked" element={<ListsLiked />} />
+            <Route path="read" element={<ListsRead />} />
+            <Route path="following" element={<ListsFollowing />} />
+            <Route path="" element={<NotFound />} />
+          </Route>
         </Route>
         <Route path="/tags">
           <Route path="" element={<Tags />} />
           <Route path=":tag" element={<TagsTag />} />
         </Route>
-        <Route path="/:id">
+        <Route path="/:id" element={<PersonalLayout />}>
           <Route path="" element={<Personal />} />
-          <Route path="series">
-            <Route path="" element={<PersonalSeries />} />
-            <Route path=":seriesName" element={<PersonalSeriesName />} />
-          </Route>
+          <Route path="series" element={<PersonalSeries />} />
           <Route path="about" element={<PersonalAbout />} />
+        </Route>
+        <Route path="/:id">
+          <Route path="series/:seriesName" element={<PersonalSeriesName />} />
           <Route path=":postTitle" element={<PersonalPost />} />
         </Route>
         <Route path="/*" element={<NotFound />} />

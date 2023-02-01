@@ -17,19 +17,6 @@ const cx = classNames.bind(styles);
 function Search() {
   const [query, setQuery] = useState('');
   const username = new URLSearchParams(window.location.search).get('username');
-  const exampleUser: user = {
-    id: 'myId',
-    velog_name: 'my_velog',
-    email: 'mail',
-    username: '이름',
-    userImg: '',
-    description: '내 벨로그',
-    github: 'github',
-    twitter: 'twitter',
-    facebook: 'facebook',
-    homepage: 'https://localhost:3000',
-    mail: 'myId@snu.ac.kr',
-  };
   const initialPost: post[] = [];
   const [posts, setPosts] = useState(initialPost);
 
@@ -89,7 +76,7 @@ function Search() {
           <div>
             {posts.map((postComp: post) => (
               <BigPostComp
-                key={postComp.id}
+                key={postComp.pid}
                 postInfo={postComp}
                 username={username === null ? '' : username}
               />

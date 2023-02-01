@@ -21,12 +21,12 @@ function UserIntro({ userInfo }: user_type) {
   return (
     <div className={cx('user')}>
       <div className={cx('intro')}>
-        <Link to={`/@${userInfo.id}`}>
-          <img src={userInfo.userImg} alt="profile" />
+        <Link to={`/@${userInfo.username}`}>
+          <img src={userInfo.profile_image} alt="profile" />
         </Link>
         <div className={cx('textIntro')}>
           <div className={cx('name')}>
-            <Link to={`/@${userInfo.id}`}>{userInfo.id}</Link>
+            <Link to={`/@${userInfo.username}`}>{userInfo.username}</Link>
             {!isFollowing && (
               <button
                 type="button"
@@ -46,7 +46,7 @@ function UserIntro({ userInfo }: user_type) {
               </button>
             )}
           </div>
-          <div className={cx('description')}>{userInfo.description}</div>
+          <div className={cx('description')}>{userInfo.introduction}</div>
         </div>
       </div>
       <div className={cx('line')} />

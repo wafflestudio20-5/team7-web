@@ -14,27 +14,18 @@ const cx = classNames.bind(styles);
 const tagList: tag[] = [
   {
     name: 'JavaScript',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    intro: '자바스크립트 태그입니다.',
     postCount: 1234,
   },
   {
     name: 'TypeScript',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    intro: '타입스크립트 태그입니다.',
     postCount: 4321,
   },
   {
     name: 'Python',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    intro: '',
     postCount: 56,
   },
   {
     name: 'TIL',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    intro:
-      'Today I Learned의 준말로서, 오늘 배운 것들을 기록하는 것을 의미합니다.',
     postCount: 100,
   },
 ]; // sortTab 이용해서 불러오기
@@ -87,7 +78,6 @@ function Tags() {
                 <Link to={`/tags/${tagInfo.name}`} className={cx('title')}>
                   {tagInfo.name}
                 </Link>
-                <p>{tagInfo.intro}</p>
               </div>
               <div className={cx('count')}>
                 총 {tagInfo.postCount}개의 포스트

@@ -2,27 +2,14 @@ import React, { useState } from 'react';
 import Header from '../components/Header';
 import HeaderMoving from '../components/HeaderMoving';
 import HomeContents from '../components/HomeContents';
-import { post } from '../contexts/types';
+import { post, user } from '../contexts/types';
 
 function ListsFollowing() {
   const tempPosts: post[] = [
     {
-      id: 1,
+      pid: 1,
       title: '포스트 제목',
-      author: {
-        id: 'abcd12',
-        velog_name: 'abcd12의 velog',
-        email: 'mail',
-        username: 'abcd',
-        userImg:
-          'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-        description: '벨로그 설명',
-        github: '깃허브 링크',
-        twitter: '트위터 링크',
-        facebook: '페이스북 링크',
-        homepage: '홈페이지 링크',
-        mail: '메일 링크',
-      },
+      author: 'abcd12',
       url: 'userID/personalPost',
       preview: '포스트 미리보기',
       thumbnail:
@@ -35,22 +22,9 @@ function ListsFollowing() {
       is_private: true,
     },
     {
-      id: 2,
+      pid: 2,
       title: '포스트 제목',
-      author: {
-        id: 'abcd12',
-        velog_name: 'abcd12의 velog',
-        email: 'mail',
-        username: 'abcd',
-        userImg:
-          'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-        description: '벨로그 설명',
-        github: '깃허브 링크',
-        twitter: '트위터 링크',
-        facebook: '페이스북 링크',
-        homepage: '홈페이지 링크',
-        mail: '메일 링크',
-      },
+      author: 'abcd12',
       url: 'userID/personalPost',
       preview: '포스트 미리보기',
       thumbnail:
@@ -63,22 +37,9 @@ function ListsFollowing() {
       is_private: true,
     },
     {
-      id: 3,
+      pid: 3,
       title: '포스트 제목',
-      author: {
-        id: 'abcd12',
-        velog_name: 'abcd12의 velog',
-        email: 'mail',
-        username: 'abcd',
-        userImg:
-          'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-        description: '벨로그 설명',
-        github: '깃허브 링크',
-        twitter: '트위터 링크',
-        facebook: '페이스북 링크',
-        homepage: '홈페이지 링크',
-        mail: '메일 링크',
-      },
+      author: 'abcd12',
       url: 'userID/personalPost',
       preview: '포스트 미리보기',
       thumbnail:
@@ -91,22 +52,9 @@ function ListsFollowing() {
       is_private: true,
     },
     {
-      id: 4,
+      pid: 4,
       title: '포스트 제목',
-      author: {
-        id: 'abcd12',
-        velog_name: 'abcd12의 velog',
-        email: 'mail',
-        username: 'abcd',
-        userImg:
-          'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-        description: '벨로그 설명',
-        github: '깃허브 링크',
-        twitter: '트위터 링크',
-        facebook: '페이스북 링크',
-        homepage: '홈페이지 링크',
-        mail: '메일 링크',
-      },
+      author: 'abcd12',
       url: 'userID/personalPost',
       preview: '포스트 미리보기',
       thumbnail:
@@ -119,22 +67,9 @@ function ListsFollowing() {
       is_private: true,
     },
     {
-      id: 5,
+      pid: 5,
       title: '포스트 제목',
-      author: {
-        id: 'abcd12',
-        velog_name: 'abcd12의 velog',
-        email: 'mail',
-        username: 'abcd',
-        userImg:
-          'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-        description: '벨로그 설명',
-        github: '깃허브 링크',
-        twitter: '트위터 링크',
-        facebook: '페이스북 링크',
-        homepage: '홈페이지 링크',
-        mail: '메일 링크',
-      },
+      author: 'abcd12',
       url: 'userID/personalPost',
       preview: '포스트 미리보기',
       thumbnail:
@@ -147,22 +82,9 @@ function ListsFollowing() {
       is_private: true,
     },
     {
-      id: 6,
+      pid: 6,
       title: '포스트 제목',
-      author: {
-        id: 'abcd12',
-        velog_name: 'abcd12의 velog',
-        email: 'mail',
-        username: 'abcd',
-        userImg:
-          'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-        description: '벨로그 설명',
-        github: '깃허브 링크',
-        twitter: '트위터 링크',
-        facebook: '페이스북 링크',
-        homepage: '홈페이지 링크',
-        mail: '메일 링크',
-      },
+      author: 'abcd12',
       url: 'userID/personalPost',
       preview: '포스트 미리보기',
       thumbnail:

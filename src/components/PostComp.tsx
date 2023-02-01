@@ -4,7 +4,7 @@ import moment from 'moment';
 import Moment from 'react-moment';
 import classNames from 'classnames/bind';
 import styles from './PostComp.module.scss';
-import { post } from '../contexts/types';
+import { post, user } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +15,21 @@ type postCompProps = {
 export default function PostComp({ post }: postCompProps) {
   const timeNow = moment();
   const timePost = moment(post.updated_at);
+
+  const user: user = {
+    username: 'myId',
+    velog_name: 'my_velog',
+    email: 'mail',
+    name: '이름',
+    profile_image: '',
+    introduction: '내 벨로그',
+    github: 'github',
+    twitter: 'twitter',
+    facebook: 'facebook',
+    homepage: 'https://localhost:3000',
+    mail: 'myId@snu.ac.kr',
+    about: 'about 페이지에 들어갈 설명입니다',
+  };
 
   return (
     <div className={cx('post')}>
@@ -43,14 +58,14 @@ export default function PostComp({ post }: postCompProps) {
         </div>
       </div>
       <div className={cx('footer')}>
-        <Link to={'@'.concat(post.author.id)}>
+        <Link to={'@'.concat(user.username)}>
           <img
             className={cx('profile')}
-            src={post.author.userImg}
+            src={user.profile_image}
             alt="profile"
           />
           by
-          <span>{post.author.id}</span>
+          <span>{user.username}</span>
         </Link>
         <div className={cx('likes')}>{'♥ '.concat(String(post.likes))}</div>
       </div>

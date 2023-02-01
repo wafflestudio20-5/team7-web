@@ -12,7 +12,7 @@ function Home() {
   const getVelog = async () => {
     try {
       const response = await axios.get('/api/v1/velog');
-      setPosts(response.data);
+      setPosts(response.data.results);
     } catch (error) {
       console.log(error);
     }

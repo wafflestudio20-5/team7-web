@@ -12,7 +12,7 @@ function Recent() {
   const getVelogRecent = async () => {
     try {
       const response = await axios.get('/api/v1/velog/recent');
-      setPosts(response.data);
+      setPosts(response.data.results);
     } catch (error) {
       console.log(error);
     }

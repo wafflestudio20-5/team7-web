@@ -9,6 +9,7 @@ import React, {
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { user } from './types';
+import { showToast } from '../components/Toast';
 
 type loginValue = {
   isLogin: boolean;
@@ -25,11 +26,13 @@ type loginSetting = {
   login: (email: string | undefined, password: string | undefined) => void;
   logout: () => void;
   resetToken: () => void;
+  googleFinish: () => void;
 };
 const initialSetting: loginSetting = {
   login: (email: string | undefined, password: string | undefined) => undefined,
   logout: () => undefined,
   resetToken: () => undefined,
+  googleFinish: () => undefined,
 };
 
 const loginValueContext = createContext<loginValue>(initialValue);
@@ -70,8 +73,11 @@ export default function LoginProvider({
           axios.defaults.headers.common.Authorization = `Bearer ${response.data.access_token}`;
           localStorage.setItem('refreshToken', response.data.refresh_token);
           navigate('/');
-        } catch (error) {
-          console.log(error);
+        } catch (error: Error | any) {
+          const keys = Object.keys(error.response.data);
+          const key = keys[0];
+          const message = error.response.data[key][0];
+          showToast({ type: 'error', message: `${key}: `.concat(message) });
         }
       },
       async logout() {
@@ -102,6 +108,28 @@ export default function LoginProvider({
           });
         } catch (error) {
           console.log(error);
+        }
+      },
+      async googleFinish() {
+        const accessToken = new URL(
+          window.location.href.replace('#', '?')
+        ).searchParams.get('access_token');
+        try {
+          const response = await axios.post(
+            `/api/v1/accounts/google/login/finish/`,
+            {
+              access_token: accessToken,
+            }
+          );
+          setLoginValue({
+            isLogin: true,
+            user: response.data.user,
+            accessToken: '',
+          });
+          localStorage.setItem('refreshToken', response.data.refresh_token);
+          navigate('/');
+        } catch (e) {
+          console.log(e);
         }
       },
     }),

@@ -20,6 +20,7 @@ import PersonalAbout from './pages/PersonalAbout';
 import PersonalPost from './pages/PersonalPost';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import LoginProcess from './pages/LoginProcess';
 import NotFound from './pages/NotFound';
 import ModalProvider from './contexts/ModalProvider';
 import LoginProvider from './contexts/LoginProvider';
@@ -42,6 +43,7 @@ function App() {
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/loginProcess" element={<LoginProcess />} />
         <Route path="/search" element={<Search />} />
         <Route path="/write" element={<Write />} />
         <Route path="/saves" element={<Saves />} />

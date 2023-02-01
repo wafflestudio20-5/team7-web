@@ -140,6 +140,7 @@
           display: flex;
           -webkit-box-align: center;
           align-items: center;
+          justify-content: space-between;
           .contents {
             flex: 1 1 0%;
             font-size: 1rem;
@@ -185,6 +186,7 @@
                     outline: none;
                     border-radius: 4px;
                     width: 100%;
+                    margin-left: 0.5rem;
                   }
                 }
               }
@@ -223,6 +225,22 @@
             justify-content: space-between;
             align-items: center;
             margin-left: 1rem;
+            ul {
+              list-style: none;
+              padding: 0px;
+              margin: 0px;
+              width: 100%;
+              li {
+                margin-top: 0.5rem;
+                display: flex;
+                -webkit-box-align: center;
+                align-items: center;
+                span {
+                  margin-left: 0.5rem;
+                  font-size: 1rem;
+                }
+              }
+            }
             button {
               outline: none;
               padding: 0px;
@@ -235,7 +253,7 @@
               text-decoration: underline;
               background: none;
               cursor: pointer;
-              right: 0;
+              min-width: fit-content;
             }
           }
         }

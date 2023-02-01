@@ -8,91 +8,49 @@ import Header from '../components/Header';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './PersonalSeriesName.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved
-import { user, seriesDetail, seriesPost } from '../contexts/types';
+import { user, seriesDetail, seriesPost, post } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
-const exampleUser: user = {
-  id: 'myId',
-  velog_name: 'my_velog',
-  email: 'mail',
-  username: '이름',
-  userImg: '',
-  description: '내 벨로그',
-  github: 'github',
-  twitter: 'twitter',
-  facebook: 'facebook',
-  homepage: 'https://localhost:3000',
-  mail: 'myId@snu.ac.kr',
+const dummyPost: post = {
+  pid: 1,
+  title: 'title',
+  author: 'id',
+  url: '/userid/posttitle',
+  preview: 'preview',
+  thumbnail: 'thm',
+  tags: ['tag1', 'tag2', 'tag3'],
+  created_at: '2020-02-20 20:20:20',
+  updated_at: '2020-02-20 20:20:20',
+  comments: 2,
+  likes: 77,
+  is_private: false,
 };
 
-const detailedSeries: seriesDetail = {
+const dummySeriesPost: seriesPost = {
+  series_id: 1,
+  post: dummyPost,
+};
+const dummySeriesPost2: seriesPost = {
+  series_id: 2,
+  post: dummyPost,
+};
+
+const dummySeriesDetail: seriesDetail = {
   id: 1,
-  title: '내 시리즈',
-  photo: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-  update: '2022년 12월 6일',
-  authorId: 'myId',
-  postNum: 25,
-  postList: [
-    {
-      series_id: 1,
-      post: {
-        id: 1,
-        title: '첫 번째 포스트 제목입니다',
-        author: exampleUser,
-        url: 'post-title-1',
-        preview: '포스트를 소개해주세요.',
-        thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-        tags: ['tagA', 'tagB', 'tagC'],
-        created_at: '2022-01-26 12:30:10',
-        updated_at: '2022-01-26 12:30:10',
-        comments: 23,
-        likes: 45,
-        is_private: false,
-      },
-    },
-    {
-      series_id: 2,
-      post: {
-        id: 2,
-        title: '두 번째 포스트 제목입니다',
-        author: exampleUser,
-        url: 'post-title-2',
-        preview: '포스트를 소개해주세요.',
-        thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-        tags: ['tagA', 'tagB', 'tagC'],
-        created_at: '2023-01-23 12:30:10',
-        updated_at: '2023-01-23 12:30:10',
-        comments: 23,
-        likes: 45,
-        is_private: false,
-      },
-    },
-    {
-      series_id: 3,
-      post: {
-        id: 3,
-        title: '세 번째 포스트 제목입니다',
-        author: exampleUser,
-        url: 'post-title-3',
-        preview: '포스트를 소개해주세요.',
-        thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-        tags: ['tagA', 'tagB', 'tagC'],
-        created_at: '2023-01-26 12:30:10',
-        updated_at: '2023-01-26 12:30:10',
-        comments: 23,
-        likes: 45,
-        is_private: false,
-      },
-    },
-  ],
+  title: 'series',
+  photo: 'photo',
+  update: '2020-02-20 20:20:20',
+  author: 'id',
+  postNum: 2,
+  postList: [dummySeriesPost, dummySeriesPost2],
 };
 
 function PersonalSeriesName() {
   const [rotate, setRotate] = useState(false);
 
   const [sortedList, setList] = useState(
-    rotate ? detailedSeries.postList : detailedSeries.postList.reverse()
+    rotate ? dummySeriesDetail.postList : dummySeriesDetail.postList.reverse()
   );
   const changeOrder = () => {
     setRotate(!rotate);
@@ -125,7 +83,7 @@ function PersonalSeriesName() {
       <div className={cx('pageBody')}>
         <div>
           <span className={cx('label')}>시리즈</span>
-          <h1>{detailedSeries.title}</h1>
+          <h1>{dummySeriesDetail.title}</h1>
           <div className={cx('line')} />
           <section>
             <div className={cx('sortRule')}>
@@ -156,16 +114,12 @@ function PersonalSeriesName() {
                 <div className={cx('postDiv')} key={postInfo.series_id}>
                   <h2>
                     <span>{postInfo.series_id}.</span>
-                    <Link
-                      to={`/@${postInfo.post.author.id}/${postInfo.post.url}`}
-                    >
+                    <Link to={`/@${postInfo.post.author}/${postInfo.post.url}`}>
                       {postInfo.post.title}
                     </Link>
                   </h2>
                   <section>
-                    <Link
-                      to={`/@${postInfo.post.author.id}/${postInfo.post.url}`}
-                    >
+                    <Link to={`/@${postInfo.post.author}/${postInfo.post.url}`}>
                       <img src={postInfo.post.thumbnail} alt="post-thumbnail" />
                     </Link>
                     <div className={cx('postInfo')}>

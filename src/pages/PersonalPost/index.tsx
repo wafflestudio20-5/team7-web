@@ -42,9 +42,10 @@ import CommentWrite from './CommentWrite';
 
 type postGetType = {
   pid: number;
+  series: number;
   title: string;
-  tags: number[];
-  author: number;
+  tags: string[];
+  author: string;
   created_at: string;
   updated_at: string;
   content: string;
@@ -55,24 +56,25 @@ let treeData: any;
 const cx = classNames.bind(styles);
 
 const dummyUser: user = {
-  id: 'id',
+  username: 'id',
   velog_name: 'velog',
   email: 'mail',
-  username: 'name',
-  userImg:
+  name: 'name',
+  profile_image:
     'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',
-  description: 'desc',
+  introduction: 'desc',
   github: 'git',
   twitter: 'twit',
   facebook: 'face',
   homepage: 'home',
   mail: 'mail',
+  about: 'about',
 };
 
 const dummyPost: post = {
-  id: 1,
+  pid: 1,
   title: 'title',
-  author: dummyUser,
+  author: 'id',
   url: '/userid/posttitle',
   preview: 'preview',
   thumbnail: 'thm',
@@ -94,16 +96,16 @@ const dummySeriesDetail: seriesDetail = {
   title: 'series',
   photo: 'photo',
   update: '2023-01-24 10:20:20',
-  authorId: 'id',
+  author: 'id',
   postNum: 2,
   postList: [dummySeriesPost, dummySeriesPost],
 };
 
 function PersonalPost() {
   const [post, setPost] = useState<postDetail>({
-    id: 2,
+    pid: 2,
     title: '',
-    author: dummyUser,
+    author: 'id',
     url: '',
     preview: '',
     thumbnail: '',
@@ -117,6 +119,7 @@ function PersonalPost() {
     comments: [],
     likes: 0,
     is_private: false,
+    is_active: true,
   });
   const [isLoad, setLoad] = useState(false);
   const [commentLoadTrig, setCommentLoadTrig] = useState(false);
@@ -148,8 +151,10 @@ function PersonalPost() {
 
       setPost({
         ...post,
-        id: pid,
+        pid,
         title,
+        tags,
+        author,
         created_at: createdAt,
         updated_at: updatedAt,
         content,
@@ -170,12 +175,12 @@ function PersonalPost() {
     if (!isLoad) return;
 
     try {
-      const response = await axios.get(`/api/v1/velog/${post.id}/comment/`);
+      const response = await axios.get(`/api/v1/velog/${post.pid}/comment/`);
       setPost({ ...post, comments: response.data });
     } catch (error) {
       console.log(error);
     }
-  }, [post.id]);
+  }, [post.pid]);
 
   useEffect(() => {
     getComment();
@@ -228,7 +233,7 @@ function PersonalPost() {
   }, [tocFixed]);
 
   const onReviseClick = () => {
-    navigate(`/write?id=${post.id}`);
+    navigate(`/write?id=${post.pid}`);
   };
 
   const onDeleteClick = () => {
@@ -258,9 +263,7 @@ function PersonalPost() {
           <div className={styles.info_container}>
             <div className={styles.information}>
               <span className={styles.username}>
-                <Link to={`/@${post.author.username}`}>
-                  {post.author.username}
-                </Link>
+                <Link to={`/@${dummyUser.username}`}>{dummyUser.username}</Link>
               </span>
               <span className={styles.separator}>·</span>
               <span>
@@ -322,18 +325,14 @@ function PersonalPost() {
       <div className={cx('name_card_container', 'hori_size')}>
         <div className={styles.name_card_box}>
           <div className={styles.name_card}>
-            <Link to={`/@${post.author.username}`}>
-              <img src={post.author.userImg} alt="profile" />
+            <Link to={`/@${dummyUser.username}`}>
+              <img src={dummyUser.profile_image} alt="profile" />
             </Link>
             <div className={styles.name_desc}>
               <div className={styles.name}>
-                <Link to={`/@${post.author.username}`}>
-                  {post.author.username}
-                </Link>
+                <Link to={`/@${dummyUser.username}`}>{dummyUser.username}</Link>
               </div>
-              <div className={styles.description}>
-                {post.author.description}
-              </div>
+              <div className={styles.description}>{dummyUser.introduction}</div>
             </div>
           </div>
           <div className={styles.line} />
@@ -344,7 +343,7 @@ function PersonalPost() {
         {post.prev_post && (
           <div className={styles.link_box}>
             <Link
-              to={`/@${dummyUser.id}/${post.title}`}
+              to={`/@${dummyUser.username}/${post.title}`}
               className={styles.left_link}
             >
               <div className={styles.arrow_container}>
@@ -362,7 +361,7 @@ function PersonalPost() {
         {post.next_post && (
           <div className={styles.link_box}>
             <Link
-              to={`/@${dummyUser.id}/${post.title}`}
+              to={`/@${dummyUser.username}/${post.title}`}
               className={styles.right_link}
             >
               <div className={styles.arrow_container}>
@@ -383,7 +382,7 @@ function PersonalPost() {
         <div>
           <CommentWrite
             text="댓글 작성"
-            pid={post.id}
+            pid={post.pid}
             setCommentLoadTrig={setCommentLoadTrig}
             initialContent=""
             parent={null}

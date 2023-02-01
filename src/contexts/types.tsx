@@ -3,23 +3,24 @@
 import React from 'react';
 
 export type user = {
-  id: string;
+  username: string;
   velog_name: string;
   email: string;
-  username: string;
-  userImg: string;
-  description: string;
+  name: string;
+  profile_image: string;
+  introduction: string;
   github: string;
   twitter: string;
   facebook: string;
   homepage: string;
   mail: string;
+  about: string;
 }; // user의 rough 정보
 
 export type post = {
-  id: number;
+  pid: number;
   title: string;
-  author: user;
+  author: string;
   url: string;
   preview: string;
   thumbnail: string;
@@ -34,16 +35,16 @@ export type post = {
 export type commentType = {
   cid: number;
   post: number;
-  author: number;
+  author: string;
   created_at: string;
   content: string;
   parent_comment: number;
 }; // 댓글 상세 정보
 
 export type postDetail = {
-  id: number;
+  pid: number;
   title: string;
-  author: user;
+  author: string;
   url: string;
   preview: string;
   thumbnail: string;
@@ -57,6 +58,7 @@ export type postDetail = {
   comments: commentType[];
   likes: number;
   is_private: boolean;
+  is_active: boolean;
 }; // post별 page에서 필요한 post 정보
 
 export type seriesPost = {
@@ -66,11 +68,11 @@ export type seriesPost = {
 
 export type series = {
   id: number;
-  title: string;
+  series_name: string;
   url: string;
   photo: string;
   update: string;
-  authorId: string;
+  author: string;
   postNum: number;
 }; // series 목록에서 필요한 series 정보
 
@@ -79,7 +81,7 @@ export type seriesDetail = {
   title: string;
   photo: string;
   update: string;
-  authorId: string;
+  author: string;
   postNum: number;
   postList: seriesPost[];
 }; // 각 series별 페이지에서 필요한 series 정보 (series + seriesPost)
@@ -104,8 +106,6 @@ export type userDetail = {
 
 export type tag = {
   name: string;
-  thumbnail: string;
-  intro: string;
   postCount: number;
 };
 

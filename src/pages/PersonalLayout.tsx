@@ -14,17 +14,18 @@ import { user } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 const currentUser: user = {
-  id: 'myId',
-  velog_name: 'my_velog',
+  username: 'id',
+  velog_name: 'myvelog.log',
   email: 'mail',
-  username: '이름',
-  userImg: '',
-  description: '내 벨로그',
+  name: '이름',
+  profile_image: '',
+  introduction: 'desc',
   github: 'github',
   twitter: 'twitter',
   facebook: 'facebook',
   homepage: 'https://localhost:3000',
-  mail: 'myId@snu.ac.kr',
+  mail: 'yuye2002@snu.ac.kr',
+  about: 'about',
 };
 
 function PersonalLayout() {
@@ -33,9 +34,9 @@ function PersonalLayout() {
   const [underlineDest, setUnderlineDest] = useState(0);
 
   useEffect(() => {
-    if (path === `/@${currentUser.id}`) setUnderlineDest(0);
-    else if (path === `/@${currentUser.id}/series`) setUnderlineDest(128);
-    else if (path === `/@${currentUser.id}/about`) setUnderlineDest(256);
+    if (path === `/@${currentUser.username}`) setUnderlineDest(0);
+    else if (path === `/@${currentUser.username}/series`) setUnderlineDest(128);
+    else if (path === `/@${currentUser.username}/about`) setUnderlineDest(256);
   }, [path]);
 
   useEffect(() => {
@@ -52,25 +53,25 @@ function PersonalLayout() {
         <div>
           <div className={cx('pageIndex')}>
             <Link
-              to={`/@${currentUser.id}`}
+              to={`/@${currentUser.username}`}
               className={cx('index', {
-                active: path === `/@${currentUser.id}`,
+                active: path === `/@${currentUser.username}`,
               })}
             >
               글
             </Link>
             <Link
-              to={`/@${currentUser.id}/series`}
+              to={`/@${currentUser.username}/series`}
               className={cx('index', {
-                active: path === `/@${currentUser.id}/series`,
+                active: path === `/@${currentUser.username}/series`,
               })}
             >
               시리즈
             </Link>
             <Link
-              to={`/@${currentUser.id}/about`}
+              to={`/@${currentUser.username}/about`}
               className={cx('index', {
-                active: path === `/@${currentUser.id}/about`,
+                active: path === `/@${currentUser.username}/about`,
               })}
             >
               소개

@@ -9,24 +9,25 @@ import { ReactComponent as RightIcon } from '../../assets/right_mark.svg';
 import { post, seriesDetail, seriesPost, user } from '../../contexts/types';
 
 const dummyUser: user = {
-  id: 'id',
+  username: 'id',
   velog_name: 'velog',
   email: 'mail',
-  username: 'name',
-  userImg:
+  name: 'name',
+  profile_image:
     'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',
-  description: 'desc',
+  introduction: 'desc',
   github: 'git',
   twitter: 'twit',
   facebook: 'face',
   homepage: 'home',
   mail: 'mail',
+  about: '',
 };
 
 const dummyPost: post = {
-  id: 1,
+  pid: 1,
   title: 'title',
-  author: dummyUser,
+  author: 'id',
   url: '/userid/posttitle',
   preview: 'preview',
   thumbnail: 'thm',
@@ -52,7 +53,7 @@ const dummySeriesDetail: seriesDetail = {
   title: 'series',
   photo: 'photo',
   update: '2020-02-20 20:20:20',
-  authorId: 'id',
+  author: 'id',
   postNum: 2,
   postList: [dummySeriesPost, dummySeriesPost2],
 };
@@ -68,7 +69,7 @@ export default function SeriesSelector() {
     <div className={styles.series_container}>
       <h2>
         <Link
-          to={`/@${dummySeriesDetail.authorId}/series/${dummySeriesDetail.title}`}
+          to={`/@${dummySeriesDetail.author}/series/${dummySeriesDetail.title}`}
         >
           {dummySeriesDetail.title}
         </Link>
@@ -80,7 +81,7 @@ export default function SeriesSelector() {
             return (
               <li key={seriesPost.series_id}>
                 <Link
-                  to={`/@${dummySeriesDetail.authorId}/${seriesPost.post.title}`}
+                  to={`/@${dummySeriesDetail.author}/${seriesPost.post.title}`}
                   style={
                     seriesPost.series_id === dummySeriesDetail.id
                       ? { color: 'var(--primary1)', fontWeight: 'bold' }

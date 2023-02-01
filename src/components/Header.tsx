@@ -9,7 +9,7 @@ const cx = classNames.bind(styles);
 export default function Header() {
   const [menuOn, setMenuOn] = useState(false);
 
-  const { isLogin, user, accessToken } = useLoginValue();
+  const { isLogin, user } = useLoginValue();
   const { logout } = useLoginSetting();
 
   const path = useLocation().pathname;
@@ -77,7 +77,7 @@ export default function Header() {
                   className={cx('profile')}
                   src={
                     user
-                      ? user.userImg
+                      ? user.profile_image
                       : 'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png'
                   }
                   alt="profile"

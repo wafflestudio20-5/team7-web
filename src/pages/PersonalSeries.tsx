@@ -10,108 +10,42 @@ import UserIntro from '../components/UserIntro';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './PersonalSeries.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved
-import { series, user, userDetail } from '../contexts/types';
+import {
+  series,
+  seriesDetail,
+  seriesPost,
+  user,
+  userDetail,
+} from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
 const currentUser: user = {
-  id: 'myId',
-  velog_name: 'my_velog',
+  username: 'id',
+  velog_name: 'myvelog.log',
   email: 'mail',
-  username: '이름',
-  userImg: '',
-  description: '내 벨로그',
+  name: '이름',
+  profile_image: '',
+  introduction: 'desc',
   github: 'github',
   twitter: 'twitter',
   facebook: 'facebook',
   homepage: 'https://localhost:3000',
-  mail: 'myId@snu.ac.kr',
+  mail: 'yuye2002@snu.ac.kr',
+  about: 'about',
 };
 
-const detailedUser: userDetail = {
-  id: 'myId',
-  velog_name: 'my_velog',
-  email: 'mail',
-  username: '이름',
-  userImg: '',
-  description: '내 벨로그',
-  github: 'github',
-  twitter: 'twitter',
-  facebook: 'facebook',
-  homepage: 'https://localhost:3000',
-  mail: 'myId@snu.ac.kr',
-  tags: ['tagA', 'tagB', 'tagC'],
-  posts: [
-    {
-      id: 1,
-      title: '포스트 제목입니다',
-      author: currentUser,
-      url: 'post-title-1',
-      preview: '포스트를 소개해주세요.',
-      thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2023-01-26 12:30:10',
-      updated_at: '2023-01-26 12:30:10',
-      comments: 23,
-      likes: 45,
-      is_private: false,
-    },
-    {
-      id: 2,
-      title: '포스트 제목입니다',
-      author: currentUser,
-      url: 'post-title-2',
-      preview: '포스트를 소개해주세요.',
-      thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2023-01-23 12:30:10',
-      updated_at: '2023-01-23 12:30:10',
-      comments: 23,
-      likes: 45,
-      is_private: false,
-    },
-    {
-      id: 3,
-      title: '포스트 제목입니다',
-      author: currentUser,
-      url: 'post-title-3',
-      preview: '포스트를 소개해주세요.',
-      thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2023-01-26 16:10:10',
-      updated_at: '2023-01-26 16:10:10',
-      comments: 23,
-      likes: 45,
-      is_private: false,
-    },
-    {
-      id: 4,
-      title: '포스트 제목입니다',
-      author: currentUser,
-      url: 'post-title-4',
-      preview: '포스트를 소개해주세요.',
-      thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      tags: ['tagA', 'tagB', 'tagC'],
-      created_at: '2023-01-26 12:30:10',
-      updated_at: '2023-01-26 12:30:10',
-      comments: 23,
-      likes: 45,
-      is_private: true,
-    },
-  ],
-  series: [
-    {
-      id: 1,
-      title: '내 시리즈',
-      url: 'url',
-      photo: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-      update: '2023-01-26 15:10:10',
-      authorId: 'myId',
-      postNum: 12,
-    },
-  ],
-  about: '<h1>내 벨로그입니다.</h1>',
-};
+const dummySeries: series[] = [
+  {
+    id: 1,
+    series_name: 'series',
+    url: 'seriesName',
+    photo: '',
+    update: '2022-02-02 00:01:11',
+    author: 'id',
+    postNum: 2,
+  },
+];
 
 function PersonalSeries() {
   const timeNow = moment();
@@ -136,10 +70,10 @@ function PersonalSeries() {
   return (
     <div>
       <div className={cx('seriesList')}>
-        {detailedUser.series.map((seriesInfo: series) => (
+        {dummySeries.map((seriesInfo: series) => (
           <div className={cx('seriesDiv')}>
             <Link
-              to={`/@${seriesInfo.authorId}/series/${seriesInfo.url}`}
+              to={`/@${seriesInfo.author}/series/${seriesInfo.url}`}
               className={cx('link')}
             >
               <div>
@@ -148,10 +82,10 @@ function PersonalSeries() {
             </Link>
             <h4>
               <Link
-                to={`/@${seriesInfo.authorId}/series/${seriesInfo.url}`}
+                to={`/@${seriesInfo.author}/series/${seriesInfo.url}`}
                 className={cx('link')}
               >
-                {seriesInfo.title}
+                {seriesInfo.series_name}
               </Link>
             </h4>
             <div className={cx('subInfo')}>

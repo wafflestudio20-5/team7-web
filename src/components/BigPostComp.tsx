@@ -6,7 +6,7 @@ import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './BigPostComp.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved
-import { post } from '../contexts/types';
+import { post, user } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
@@ -32,15 +32,30 @@ function BigPostComp({ postInfo, username }: post_type) {
     else setAgoFormat(timePost.format('YYYY년 MM월 DD일'));
   }, []);
 
+  const user: user = {
+    username: 'myId',
+    velog_name: 'my_velog',
+    email: 'mail',
+    name: '이름',
+    profile_image: '',
+    introduction: '내 벨로그',
+    github: 'github',
+    twitter: 'twitter',
+    facebook: 'facebook',
+    homepage: 'https://localhost:3000',
+    mail: 'myId@snu.ac.kr',
+    about: 'about 페이지에 들어갈 설명입니다',
+  };
+
   return (
     <div className={cx('postDiv')}>
       {username === '' && (
         <div className={cx('userInfo')}>
-          <Link to={`/@${postInfo.author.id}`}>
-            <img src={postInfo.author.userImg} alt="thumbnail" />
+          <Link to={`/@${user.username}`}>
+            <img src={user.profile_image} alt="thumbnail" />
           </Link>
           <div className={cx('username')}>
-            <Link to={`/@${postInfo.author.id}`}>{postInfo.author.id}</Link>
+            <Link to={`/@${user.username}`}>{user.username}</Link>
           </div>
         </div>
       )}

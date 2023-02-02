@@ -17,7 +17,7 @@ export default function HomeContents({ posts }: HomeContentsProps) {
         <main>
           <div className={cx('posts')}>
             {posts.map(post => (
-              <PostComp post={post} key={post.id} />
+              <PostComp post={post} key={post.pid} />
             ))}
           </div>
         </main>

@@ -14,20 +14,36 @@ export default function SettingSetter() {
   const { open } = useModalActions();
 
   const { user } = useLoginValue();
-  const { changeUserValue } = useLoginSetting();
+  const {
+    // eslint-disable-next-line camelcase
+    profile_image,
+    username,
+    name,
+    introduction,
+    // eslint-disable-next-line camelcase
+    velog_name,
+    github,
+    twitter,
+    mail,
+    facebook,
+    homepage,
+    about,
+  } = user || {};
 
   const [input, setInput] = useState({
-    userImg: '',
-    username: '',
-    description: '',
     // eslint-disable-next-line camelcase
-    velog_name: '',
-    email: '',
-    github: '',
-    twitter: '',
-    mail: '',
-    facebook: '',
-    homepage: '',
+    profile_image,
+    username,
+    name,
+    introduction,
+    // eslint-disable-next-line camelcase
+    velog_name,
+    github,
+    twitter,
+    mail,
+    facebook,
+    homepage,
+    about,
   });
 
   const getUser = async () => {
@@ -121,7 +137,8 @@ export default function SettingSetter() {
     <div className={cx('setter')}>
       <section className={cx('top')}>
         <div className={cx('thumbnail')}>
-          <img src={input.userImg} alt="user-thumbnail" />
+          {/* eslint-disable-next-line camelcase */}
+          <img src={profile_image} alt="user-thumbnail" />
           <label htmlFor="input-image">
             <input
               type="file"
@@ -137,8 +154,8 @@ export default function SettingSetter() {
         <div className={cx('info')}>
           <div className={nameEdit ? cx('blind') : ''}>
             <h2>{input.username}</h2>
-            <p>{input.description}</p>
-            <button type="button" onClick={handleNameEdit}>
+            <p>{input.introduction}</p>
+            <button type="button" onClick={openNameEdit}>
               수정
             </button>
           </div>
@@ -153,7 +170,7 @@ export default function SettingSetter() {
               <input
                 placeholder="한 줄 소개"
                 name="description"
-                value={input.description}
+                value={input.introduction}
                 onChange={onChange}
               />
               <button
@@ -475,7 +492,7 @@ export default function SettingSetter() {
               <h3>이메일 주소</h3>
             </div>
             <div className={cx('block')}>
-              <div className={cx('contents')}>{input.email}</div>
+              <div className={cx('contents')}>{username}</div>
             </div>
           </div>
           <div className={cx('description')}>

@@ -1,26 +1,29 @@
 import React from 'react';
 import PostComp from '../../components/PostComp';
-import { post } from '../../contexts/types';
+import { post, user } from '../../contexts/types';
 import styles from './InterestPost.module.scss';
+
+const dummyUser: user = {
+  username: 'id',
+  velog_name: 'velog',
+  email: 'mail',
+  name: 'name',
+  profile_image:
+    'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',
+  introduction: 'desc',
+  github: 'git',
+  twitter: 'twit',
+  facebook: 'face',
+  homepage: 'home',
+  mail: 'mail',
+  about: 'about',
+};
 
 const tempPosts: post[] = [
   {
-    id: 1,
+    pid: 1,
     title: '포스트 제목',
-    author: {
-      id: 'abcd12',
-      velog_name: 'abcd12의 velog',
-      email: 'mail',
-      username: 'abcd',
-      userImg:
-        'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
-      github: '깃허브 링크',
-      twitter: '트위터 링크',
-      facebook: '페이스북 링크',
-      homepage: '홈페이지 링크',
-      mail: '메일 링크',
-    },
+    author: 'id',
     url: 'userID/personalPost',
     preview: '포스트 미리보기',
     thumbnail:
@@ -33,22 +36,9 @@ const tempPosts: post[] = [
     is_private: true,
   },
   {
-    id: 2,
+    pid: 2,
     title: '포스트 제목',
-    author: {
-      id: 'abcd12',
-      velog_name: 'abcd12의 velog',
-      email: 'mail',
-      username: 'abcd',
-      userImg:
-        'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
-      github: '깃허브 링크',
-      twitter: '트위터 링크',
-      facebook: '페이스북 링크',
-      homepage: '홈페이지 링크',
-      mail: '메일 링크',
-    },
+    author: 'id',
     url: 'userID/personalPost',
     preview: '포스트 미리보기',
     thumbnail:
@@ -61,22 +51,9 @@ const tempPosts: post[] = [
     is_private: true,
   },
   {
-    id: 3,
+    pid: 3,
     title: '포스트 제목',
-    author: {
-      id: 'abcd12',
-      velog_name: 'abcd12의 velog',
-      email: 'mail',
-      username: 'abcd',
-      userImg:
-        'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
-      github: '깃허브 링크',
-      twitter: '트위터 링크',
-      facebook: '페이스북 링크',
-      homepage: '홈페이지 링크',
-      mail: '메일 링크',
-    },
+    author: 'id',
     url: 'userID/personalPost',
     preview: '포스트 미리보기',
     thumbnail:
@@ -89,22 +66,9 @@ const tempPosts: post[] = [
     is_private: true,
   },
   {
-    id: 4,
+    pid: 4,
     title: '포스트 제목',
-    author: {
-      id: 'abcd12',
-      velog_name: 'abcd12의 velog',
-      email: 'mail',
-      username: 'abcd',
-      userImg:
-        'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
-      github: '깃허브 링크',
-      twitter: '트위터 링크',
-      facebook: '페이스북 링크',
-      homepage: '홈페이지 링크',
-      mail: '메일 링크',
-    },
+    author: 'id',
     url: 'userID/personalPost',
     preview: '포스트 미리보기',
     thumbnail:
@@ -117,22 +81,9 @@ const tempPosts: post[] = [
     is_private: true,
   },
   {
-    id: 5,
+    pid: 5,
     title: '포스트 제목',
-    author: {
-      id: 'abcd12',
-      velog_name: 'abcd12의 velog',
-      email: 'mail',
-      username: 'abcd',
-      userImg:
-        'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
-      github: '깃허브 링크',
-      twitter: '트위터 링크',
-      facebook: '페이스북 링크',
-      homepage: '홈페이지 링크',
-      mail: '메일 링크',
-    },
+    author: 'id',
     url: 'userID/personalPost',
     preview: '포스트 미리보기',
     thumbnail:
@@ -145,22 +96,9 @@ const tempPosts: post[] = [
     is_private: true,
   },
   {
-    id: 6,
+    pid: 6,
     title: '포스트 제목',
-    author: {
-      id: 'abcd12',
-      velog_name: 'abcd12의 velog',
-      email: 'mail',
-      username: 'abcd',
-      userImg:
-        'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
-      github: '깃허브 링크',
-      twitter: '트위터 링크',
-      facebook: '페이스북 링크',
-      homepage: '홈페이지 링크',
-      mail: '메일 링크',
-    },
+    author: 'id',
     url: 'userID/personalPost',
     preview: '포스트 미리보기',
     thumbnail:
@@ -181,7 +119,7 @@ function InterestPost() {
       <div className={styles.container}>
         <div className={styles.post_container}>
           {tempPosts.map(post => {
-            return <PostComp post={post} key={post.id} />;
+            return <PostComp post={post} key={post.pid} />;
           })}
         </div>
       </div>

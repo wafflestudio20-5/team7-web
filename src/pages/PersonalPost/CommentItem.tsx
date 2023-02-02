@@ -21,18 +21,19 @@ interface commentProps {
 }
 
 const dummyUser: user = {
-  id: 'id',
+  username: 'id',
   velog_name: 'velog',
   email: 'mail',
-  username: 'name',
-  userImg:
+  name: 'name',
+  profile_image:
     'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',
-  description: 'desc',
+  introduction: 'desc',
   github: 'git',
   twitter: 'twit',
   facebook: 'face',
   homepage: 'home',
   mail: 'mail',
+  about: '소개',
 };
 
 // nested ternery 회피용
@@ -109,12 +110,12 @@ function CommentItem({
     <div className={styles.comment}>
       <div className={styles.comment_head}>
         <div className={styles.profile}>
-          <Link to={`/@${dummyUser.id}`}>
-            <img src={dummyUser.userImg} alt="profile" />
+          <Link to={`/@${dummyUser.username}`}>
+            <img src={dummyUser.profile_image} alt="profile" />
           </Link>
           <div className={styles.comment_info}>
             <div className={styles.username}>
-              <Link to={`/@${dummyUser.id}`}>{dummyUser.username}</Link>
+              <Link to={`/@${dummyUser.username}`}>{dummyUser.username}</Link>
             </div>
             <div className={styles.date}>
               {moment.duration(timeNow.diff(timeComment)).asDays() > 7 ? (

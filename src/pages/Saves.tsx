@@ -17,24 +17,24 @@ import { useModalActions } from '../contexts/ModalProvider';
 const cx = classNames.bind(styles);
 
 const dummyUser: user = {
-  id: 'id',
-  velog_name: 'velog',
-  username: 'name',
-  userImg:
-    'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',
-  description: 'desc',
-  github: 'git',
-  twitter: 'twit',
-  facebook: 'face',
-  homepage: 'home',
-  mail: 'mail',
-  email: 'email',
+  username: 'id',
+  velog_name: 'myvelog.log',
+  email: 'mail',
+  name: '이름',
+  profile_image: '',
+  introduction: 'desc',
+  github: 'github',
+  twitter: 'twitter',
+  facebook: 'facebook',
+  homepage: 'https://localhost:3000',
+  mail: 'yuye2002@snu.ac.kr',
+  about: 'about',
 };
 
 const dummyPost: post = {
-  id: 1,
+  pid: 1,
   title: 'title',
-  author: dummyUser,
+  author: 'id',
   url: '/userid/posttitle',
   preview: 'preview',
   thumbnail: 'thm',
@@ -56,7 +56,7 @@ const dummySeriesDetail: seriesDetail = {
   title: 'series',
   photo: 'photo',
   update: '2020-02-20 20:20:20',
-  authorId: 'id',
+  author: 'id',
   postNum: 2,
   postList: [dummySeriesPost, dummySeriesPost],
 };
@@ -69,6 +69,7 @@ const dummyPostDetail: postDetail = {
   prev_post: dummyPost,
   next_post: dummyPost,
   comments: [],
+  is_active: true,
 };
 
 const dummyTempPosts: postDetail[] = [

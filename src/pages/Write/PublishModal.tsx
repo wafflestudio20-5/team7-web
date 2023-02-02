@@ -38,20 +38,20 @@ export default function PublishModal({
   const [dummySeries, setDummySeries] = useState<series[]>([
     {
       id: 1,
-      title: 'series 1',
+      series_name: 'series 1',
       url: 'series-1',
       photo: '',
       update: '',
-      authorId: 'id',
+      author: 'id',
       postNum: 1,
     },
     {
       id: 2,
-      title: 'series 2',
+      series_name: 'series 2',
       url: 'series-2',
       photo: '',
       update: '',
-      authorId: 'id',
+      author: 'id',
       postNum: 1,
     },
   ]);
@@ -183,11 +183,11 @@ export default function PublishModal({
 
     const newSeries: series = {
       id: dummySeries[dummySeries.length - 1].id + 1,
-      title: newSeriesTitle,
+      series_name: newSeriesTitle,
       url: newSeriesUrl,
       photo: '',
       update: '',
-      authorId: 'id',
+      author: 'id',
       postNum: 1,
     };
 
@@ -354,7 +354,7 @@ export default function PublishModal({
                         onClick={() => setCurSeries(series.id)}
                         role="presentation"
                       >
-                        {series.title}
+                        {series.series_name}
                       </li>
                     ))}
                   </ul>
@@ -410,7 +410,7 @@ export default function PublishModal({
                 <h3>URL 설정</h3>
                 <div className={styles.contents}>
                   <div className={styles.url_box}>
-                    <div className={styles.username}>/@{post.author.id}/</div>
+                    <div className={styles.username}>/@{user?.username}/</div>
                     <input
                       className={styles.url}
                       value={post.url}
@@ -437,7 +437,7 @@ export default function PublishModal({
                         <div className={styles.name}>
                           {
                             dummySeries.find(series => series.id === curSeries)
-                              ?.title
+                              ?.series_name
                           }
                         </div>
                       </div>

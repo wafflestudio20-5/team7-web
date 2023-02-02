@@ -8,10 +8,10 @@ const cx = classNames.bind(styles);
 
 function User({ user }: { user: user }) {
   return (
-    <a className={cx('user')} href={'@'.concat(user.id)}>
+    <a className={cx('user')} href={'@'.concat(user.username)}>
       <img className={cx('delete')} src={deleteIcon} alt="delete" />
-      <img className={cx('profile')} src={user.userImg} alt="profile" />
-      {user.id}
+      <img className={cx('profile')} src={user.profile_image} alt="profile" />
+      {user.username}
     </a>
   );
 }
@@ -19,116 +19,124 @@ function User({ user }: { user: user }) {
 export default function FollowSetter() {
   const tempUsers: user[] = [
     {
-      id: 'abcd12',
+      username: 'abcd12',
       velog_name: 'abcd12의 velog',
       email: 'mail',
-      username: 'abcd',
-      userImg:
+      name: 'abcd',
+      profile_image:
         'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
+      introduction: '벨로그 설명',
       github: '깃허브 링크',
       twitter: '트위터 링크',
       facebook: '페이스북 링크',
       homepage: '홈페이지 링크',
       mail: '메일 링크',
+      about: '',
     },
     {
-      id: 'abcd13',
-      velog_name: 'abcd12의 velog',
+      username: 'abcd13',
+      velog_name: 'abcd13의 velog',
       email: 'mail',
-      username: 'abcd',
-      userImg:
+      name: 'abcd',
+      profile_image:
         'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
+      introduction: '벨로그 설명',
       github: '깃허브 링크',
       twitter: '트위터 링크',
       facebook: '페이스북 링크',
       homepage: '홈페이지 링크',
       mail: '메일 링크',
+      about: '',
     },
     {
-      id: 'abcd13',
-      velog_name: 'abcd12의 velog',
+      username: 'abcd14',
+      velog_name: 'abcd14의 velog',
       email: 'mail',
-      username: 'abcd',
-      userImg:
+      name: 'abcd',
+      profile_image:
         'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
+      introduction: '벨로그 설명',
       github: '깃허브 링크',
       twitter: '트위터 링크',
       facebook: '페이스북 링크',
       homepage: '홈페이지 링크',
       mail: '메일 링크',
+      about: '',
     },
     {
-      id: 'abcd13',
-      velog_name: 'abcd12의 velog',
+      username: 'abcd15',
+      velog_name: 'abcd15의 velog',
       email: 'mail',
-      username: 'abcd',
-      userImg:
+      name: 'abcd',
+      profile_image:
         'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
+      introduction: '벨로그 설명',
       github: '깃허브 링크',
       twitter: '트위터 링크',
       facebook: '페이스북 링크',
       homepage: '홈페이지 링크',
       mail: '메일 링크',
+      about: '',
     },
     {
-      id: 'abcd13',
-      velog_name: 'abcd12의 velog',
+      username: 'abcd16',
+      velog_name: 'abcd16의 velog',
       email: 'mail',
-      username: 'abcd',
-      userImg:
+      name: 'abcd',
+      profile_image:
         'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
+      introduction: '벨로그 설명',
       github: '깃허브 링크',
       twitter: '트위터 링크',
       facebook: '페이스북 링크',
       homepage: '홈페이지 링크',
       mail: '메일 링크',
+      about: '',
     },
     {
-      id: 'abcd13',
-      velog_name: 'abcd12의 velog',
+      username: 'abcd17',
+      velog_name: 'abcd17의 velog',
       email: 'mail',
-      username: 'abcd',
-      userImg:
+      name: 'abcd',
+      profile_image:
         'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
+      introduction: '벨로그 설명',
       github: '깃허브 링크',
       twitter: '트위터 링크',
       facebook: '페이스북 링크',
       homepage: '홈페이지 링크',
       mail: '메일 링크',
+      about: '',
     },
     {
-      id: 'abcd13',
+      username: 'abcd18',
       velog_name: 'abcd12의 velog',
       email: 'mail',
-      username: 'abcd',
-      userImg:
+      name: 'abcd',
+      profile_image:
         'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
+      introduction: '벨로그 설명',
       github: '깃허브 링크',
       twitter: '트위터 링크',
       facebook: '페이스북 링크',
       homepage: '홈페이지 링크',
       mail: '메일 링크',
+      about: '',
     },
     {
-      id: 'abcd13',
+      username: 'abcd19',
       velog_name: 'abcd12의 velog',
       email: 'mail',
-      username: 'abcd',
-      userImg:
+      name: 'abcd',
+      profile_image:
         'https://velog.velcdn.com/images/silky225/profile/f3d11391-6a64-4cf0-9889-46778956d77e/social_profile.png',
-      description: '벨로그 설명',
+      introduction: '벨로그 설명',
       github: '깃허브 링크',
       twitter: '트위터 링크',
       facebook: '페이스북 링크',
       homepage: '홈페이지 링크',
       mail: '메일 링크',
+      about: '',
     },
   ];
 

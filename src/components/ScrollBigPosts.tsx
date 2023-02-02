@@ -10,7 +10,7 @@ function ScrollBigPosts({ posts }: postList) {
   return (
     <div>
       {posts.map(post => (
-        <BigPostComp key={post.id} postInfo={post} username="" />
+        <BigPostComp key={post.pid} postInfo={post} username="" />
       ))}
     </div>
   );

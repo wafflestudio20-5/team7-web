@@ -31,32 +31,33 @@ import { postDetail, presetBtn, user } from '../../contexts/types';
 import { useLoginValue } from '../../contexts/LoginProvider';
 
 const dummyUser: user = {
-  id: 'id',
+  username: 'id',
   velog_name: 'velog',
   email: 'mail',
-  username: 'name',
-  userImg:
+  name: 'name',
+  profile_image:
     'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',
-  description: 'desc',
+  introduction: 'desc',
   github: 'git',
   twitter: 'twit',
   facebook: 'face',
   homepage: 'home',
   mail: 'mail',
+  about: '',
 };
 
 type postGetType = {
   pid: number;
   series: number;
   title: string;
-  author: number;
+  author: string;
+  tags: string[];
   created_at: string;
   updated_at: string;
   thumbnail: string;
   preview: string;
   content: string;
   is_private: boolean;
-  tags: number[];
 };
 
 let treeData: any;
@@ -85,9 +86,9 @@ const wrapperToRegExp = (wrapper: string) => {
 
 function Write() {
   const [post, setPost] = useState<postDetail>({
-    id: 2,
+    pid: 2,
     title: '',
-    author: dummyUser,
+    author: 'id',
     url: '',
     preview: '',
     thumbnail: '',
@@ -101,6 +102,7 @@ function Write() {
     comments: [],
     likes: 0,
     is_private: false,
+    is_active: true,
   });
   const [isLoad, setLoad] = useState(false);
   const [isHide, setHide] = useState(false);
@@ -140,14 +142,14 @@ function Write() {
         tags,
       }: postGetType = response.data;
 
-      if (!user || user.id.toString() !== author.toString()) {
+      if (!user || user.username.toString() !== author.toString()) {
         showToast({ type: 'error', message: '권한이 없습니다.' });
         navigate(-1);
       }
 
       setPost({
         ...post,
-        id,
+        author,
         title,
         created_at: createdAt,
         updated_at: updatedAt,

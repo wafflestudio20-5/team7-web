@@ -15,17 +15,18 @@ import { post, user, userDetail } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 const currentUser: user = {
-  id: 'myId',
+  username: 'myId',
   velog_name: 'my_velog',
   email: 'mail',
-  username: '이름',
-  userImg: '',
-  description: '내 벨로그',
+  name: '이름',
+  profile_image: '',
+  introduction: '내 벨로그',
   github: 'github',
   twitter: 'twitter',
   facebook: 'facebook',
   homepage: 'https://localhost:3000',
   mail: 'myId@snu.ac.kr',
+  about: 'about 페이지에 들어갈 설명입니다',
 };
 
 const detailedUser: userDetail = {
@@ -43,9 +44,9 @@ const detailedUser: userDetail = {
   tags: ['tagA', 'tagB', 'tagC'],
   posts: [
     {
-      id: 1,
+      pid: 1,
       title: '포스트 제목입니다',
-      author: currentUser,
+      author: 'id',
       url: 'post-title-1',
       preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
@@ -57,9 +58,9 @@ const detailedUser: userDetail = {
       is_private: false,
     },
     {
-      id: 2,
+      pid: 2,
       title: '포스트 제목입니다',
-      author: currentUser,
+      author: 'id',
       url: 'post-title-2',
       preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
@@ -71,9 +72,9 @@ const detailedUser: userDetail = {
       is_private: false,
     },
     {
-      id: 3,
+      pid: 3,
       title: '포스트 제목입니다',
-      author: currentUser,
+      author: 'id',
       url: 'post-title-3',
       preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
@@ -85,9 +86,9 @@ const detailedUser: userDetail = {
       is_private: false,
     },
     {
-      id: 4,
+      pid: 4,
       title: '포스트 제목입니다',
-      author: currentUser,
+      author: 'id',
       url: 'post-title-4',
       preview: '포스트를 소개해주세요.',
       thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
@@ -102,11 +103,11 @@ const detailedUser: userDetail = {
   series: [
     {
       id: 1,
-      title: '내 시리즈',
+      series_name: '내 시리즈',
       url: 'url',
       photo: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
       update: '2022-12-30 10:10:10',
-      authorId: 'myId',
+      author: 'id',
       postNum: 12,
     },
   ],
@@ -153,7 +154,7 @@ function Personal() {
                     tagQuery === null ? 'tagActive' : 'none'
                   )}
                 >
-                  <Link to={`/@${currentUser.id}`}>전체보기</Link>
+                  <Link to={`/@${currentUser.username}`}>전체보기</Link>
                   <span>({getPostnum('')})</span>
                 </li>
                 {detailedUser.tags.map((tag: string) => (
@@ -163,7 +164,9 @@ function Personal() {
                       tagQuery === tag ? 'tagActive' : 'none'
                     )}
                   >
-                    <Link to={`/@${currentUser.id}?tag=${tag}`}>{tag}</Link>
+                    <Link to={`/@${currentUser.username}?tag=${tag}`}>
+                      {tag}
+                    </Link>
                     <span>({getPostnum(tag)})</span>
                   </li>
                 ))}
@@ -177,9 +180,9 @@ function Personal() {
         <div className="postList">
           {detailedUser.posts.map((postComp: post) => (
             <BigPostComp
-              key={postComp.id}
+              key={postComp.pid}
               postInfo={postComp}
-              username={currentUser.id}
+              username={currentUser.username}
             />
           ))}
         </div>

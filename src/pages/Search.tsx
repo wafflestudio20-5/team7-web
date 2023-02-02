@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -10,7 +10,7 @@ import Header from '../components/Header';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import BigPostComp from '../components/BigPostComp';
 // eslint-disable-next-line import/extensions,import/no-unresolved
-import { post, user } from '../contexts/types';
+import { post } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
@@ -19,12 +19,26 @@ function Search() {
   const username = new URLSearchParams(window.location.search).get('username');
   const initialPost: post[] = [];
   const [posts, setPosts] = useState(initialPost);
+  const [page, setPage] = useState(1);
 
   const updatePosts = useCallback(
     debounce(async (str: string) => {
       try {
-        const response = await axios.get('/api/v1/velog');
-        setPosts(response.data.results);
+        if (str === '') {
+          setPosts([]);
+        } else if (username === null) {
+          const response = await axios.get(
+            `/api/v1/velog/search?page=${page}&q=${str}`
+          );
+          setPosts(response.data.results);
+          setPage(page + 1);
+        } else {
+          const response = await axios.get(
+            `/api/v1/velog/search?page=${page}&q=${str}&username=${username}`
+          );
+          setPosts(response.data.results);
+          setPage(page + 1);
+        }
       } catch (e) {
         console.error(e);
       }

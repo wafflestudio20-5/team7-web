@@ -13,7 +13,7 @@ import { showToast } from '../../components/Toast';
 import { useLoginValue } from '../../contexts/LoginProvider';
 
 type postPostType = {
-  get_or_create_series: string | null;
+  series: number | null;
   title: string;
   preview: string | null;
   content: string;
@@ -52,9 +52,11 @@ export default function PublishModal({
   const { user } = useLoginValue();
 
   const getSeriesList = useCallback(async () => {
+    if (!user) return;
+
     try {
       const response = await axios.get(
-        `/api/v1/velog/@${user?.username}/series`
+        `/api/v1/velog/@${user.username}/series/`
       );
       setSeriesList(response.data);
     } catch (error) {
@@ -190,27 +192,38 @@ export default function PublishModal({
     setNewSeriesUrl(tempUrl);
   };
 
-  const onNewSeriesAddClick = () => {
+  const onNewSeriesAddClick = async () => {
     if (seriesList.find(series => series.url === newSeriesUrl) !== undefined) {
       showToast({ type: 'error', message: '이미 존재하는 URL입니다.' });
       onBackgroundClick();
       return;
     }
 
-    // 리스트에 띄울 용도, 실제 생성은 서버에서
-    const newSeries: series = {
-      id: seriesList[seriesList.length - 1].id + 1,
-      series_name: newSeriesTitle,
-      url: newSeriesUrl,
-      photo: '',
-      update: '',
-      author: 'id',
-      postNum: 1,
-    };
+    if (!user) return;
 
-    setSeriesList([...seriesList, newSeries]);
+    try {
+      const response = await axios.post(`/api/v1/velog/create_series/`, {
+        series_name: newSeriesTitle,
+        url: newSeriesUrl,
+      });
+      setCurSeries(response.data.id);
+    } catch (error) {
+      console.log(error);
+    }
 
-    setCurSeries(newSeries.id);
+    try {
+      const response = await axios.get(
+        `/api/v1/velog/@${user.username}/series/`
+      );
+      setSeriesList(response.data);
+    } catch (error) {
+      showToast({
+        type: 'error',
+        message: '시리즈 로드에 실패하였습니다. 새로고침 해주세요.',
+      });
+      console.log(error);
+    }
+
     setNewSeriesTitle('');
     setNewSeriesUrl('');
     onBackgroundClick();
@@ -218,12 +231,8 @@ export default function PublishModal({
 
   const onPublishClick = async () => {
     try {
-      const curSeriesName = seriesList.find(
-        series => series.id === curSeries
-      )?.series_name;
-
       const postParams: postPostType = {
-        get_or_create_series: curSeriesName || null,
+        series: curSeries > -1 ? curSeries : null,
         title: post.title,
         preview: post.preview || null,
         content: post.content,
@@ -235,13 +244,17 @@ export default function PublishModal({
       const response =
         pid === null
           ? await axios.post(`/api/v1/velog/write/`, postParams)
-          : await axios.put(`/api/v1/velog/write/id=${pid}`, postParams);
+          : await axios.put(`/api/v1/velog/write/id=${pid}/`, postParams);
 
       if (user !== null) navigate(`/@${user.username}/${post.url}`);
     } catch (error) {
       showToast({ type: 'error', message: '다시 시도해주세요.' });
       console.log(error);
     }
+  };
+
+  const onSeriesRemoveClick = () => {
+    setCurSeries(-1);
   };
 
   return (
@@ -393,7 +406,7 @@ export default function PublishModal({
                 <button
                   type="button"
                   className={styles.select_button}
-                  disabled={curSeries === 0}
+                  disabled={curSeries === -1}
                   onClick={() => setSeriesActive(false)}
                 >
                   선택하기
@@ -444,7 +457,7 @@ export default function PublishModal({
               <section className={styles.series_setting}>
                 <h3>시리즈 설정</h3>
                 <div className={styles.contents}>
-                  {curSeries === 0 ? (
+                  {curSeries === -1 ? (
                     <button
                       type="button"
                       className={styles.series_add_button}
@@ -468,9 +481,9 @@ export default function PublishModal({
                       </button>
                     </div>
                   )}
-                  {curSeries > 0 && (
+                  {curSeries > -1 && (
                     <div className={styles.series_delete}>
-                      <button type="button" onClick={onSeriesCancelClick}>
+                      <button type="button" onClick={onSeriesRemoveClick}>
                         시리즈에서 제거
                       </button>
                     </div>

@@ -80,7 +80,6 @@ const dummyPostDetail: postDetail = {
   comments: [],
   is_active: true,
   create_tag: '',
-  get_or_create_series: '',
 };
 
 const dummyTempPosts: postDetail[] = [

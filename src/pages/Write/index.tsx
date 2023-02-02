@@ -98,7 +98,6 @@ function Write() {
     is_private: false,
     is_active: true,
     create_tag: '',
-    get_or_create_series: '',
   });
   const [isLoad, setLoad] = useState(false);
   const [isHide, setHide] = useState(false);
@@ -127,7 +126,6 @@ function Write() {
       const {
         pid: id,
         series,
-        get_or_create_series: seriesTigger,
         title,
         author,
         created_at: createdAt,
@@ -180,7 +178,6 @@ function Write() {
         tags: frontTags,
         url,
         create_tag: createTag,
-        get_or_create_series: seriesTigger,
       });
       setLoad(true);
     } catch (error) {

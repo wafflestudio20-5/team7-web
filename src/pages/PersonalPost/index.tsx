@@ -87,7 +87,6 @@ function PersonalPost() {
     is_private: false,
     is_active: true,
     create_tag: '',
-    get_or_create_series: '',
   });
   const [authorInfo, setAuthorInfo] = useState<user>({
     username: '',

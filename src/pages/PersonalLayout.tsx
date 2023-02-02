@@ -41,9 +41,10 @@ function PersonalLayout() {
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [id]);
 
   const path = useLocation().pathname;
+
   const [underlinePos, setUnderlinePos] = useState(0);
   const [underlineDest, setUnderlineDest] = useState(0);
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -9,25 +9,30 @@ import BigPostComp from '../components/BigPostComp';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './Personal.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved,camelcase
-import { post, tag } from '../contexts/types';
+import { post } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
+type tagGetType = {
+  id: number;
+  tag_name: string;
+  author: string;
+  postCount: number;
+};
+
 function Personal() {
   const [query, setQuery] = useState('');
-  function getPostnum(tag: string) {
-    return tag.length;
-  }
   const tagQuery = new URLSearchParams(window.location.search).get('tag');
   const { id } = useParams();
 
   const [postList, setPost] = useState([]);
+  const [allPosts, setAllCount] = useState(0);
   const getPost = useCallback(async () => {
     try {
       if (tagQuery === null) {
-        console.log(id);
         const response = await axios.get(`/api/v1/velog/${id}`);
         setPost(response.data);
+        setAllCount(response.data.length);
       } else {
         const response = await axios.get(
           `/api/v1/velog/${id}/tags/${tagQuery}`
@@ -37,13 +42,13 @@ function Personal() {
     } catch (e) {
       console.error(e);
     }
-  }, [id, tagQuery]);
+  }, [id]);
 
   const [userTags, setTags] = useState([]);
   const getTags = useCallback(async () => {
     try {
-      const response = await axios.get(`/api/v1/velog/${id}/tags`);
-      setTags(response.data.results);
+      const response = await axios.get(`/api/v1/velog/${id}/tags/`);
+      setTags(response.data);
     } catch (e) {
       console.error(e);
     }
@@ -52,7 +57,7 @@ function Personal() {
   useEffect(() => {
     getTags();
     getPost();
-  }, []);
+  }, [id]);
 
   return (
     <div>
@@ -88,16 +93,18 @@ function Personal() {
                   )}
                 >
                   <Link to={`/${id}`}>전체보기</Link>
-                  <span>({getPostnum('')})</span>
+                  <span>({allPosts})</span>
                 </li>
-                {userTags?.map((tag: tag) => (
+                {userTags?.map((tag: tagGetType) => (
                   <li
                     className={cx(
                       'tagElem',
-                      tagQuery === tag.name ? 'tagActive' : 'none'
+                      tagQuery === tag.tag_name ? 'tagActive' : 'none'
                     )}
                   >
-                    <Link to={`/${id}?tag=${tag.name}`}>{tag.name}</Link>
+                    <Link to={`/${id}?tag=${tag.tag_name}`}>
+                      {tag.tag_name}
+                    </Link>
                     <span>({tag.postCount})</span>
                   </li>
                 ))}

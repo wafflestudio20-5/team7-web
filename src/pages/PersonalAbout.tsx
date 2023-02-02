@@ -44,7 +44,7 @@ function PersonalAbout() {
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [id]);
 
   const loginUser =
     useLoginValue().isLogin &&

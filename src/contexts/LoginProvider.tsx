@@ -27,12 +27,14 @@ type loginSetting = {
   logout: () => void;
   resetToken: () => void;
   googleFinish: () => void;
+  changeUserValue: (newUser: user) => void;
 };
 const initialSetting: loginSetting = {
   login: (email: string | undefined, password: string | undefined) => undefined,
   logout: () => undefined,
   resetToken: () => undefined,
   googleFinish: () => undefined,
+  changeUserValue: (newUser: user) => undefined,
 };
 
 const loginValueContext = createContext<loginValue>(initialValue);
@@ -131,6 +133,14 @@ export default function LoginProvider({
         } catch (e) {
           console.log(e);
         }
+      },
+      changeUserValue(newUser: user) {
+        setLoginValue(valueSet => {
+          return {
+            ...valueSet,
+            user: newUser,
+          };
+        });
       },
     }),
     []

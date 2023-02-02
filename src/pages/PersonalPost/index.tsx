@@ -41,12 +41,20 @@ import {
 } from '../../contexts/types';
 import { showToast } from '../../components/Toast';
 import CommentWrite from './CommentWrite';
+import { useLoginValue } from '../../contexts/LoginProvider';
+
+type tagGetType = {
+  id: number;
+  tag_name: string;
+  author: string;
+  postCount: number;
+};
 
 type postGetType = {
   pid: number;
   series: number;
   title: string;
-  tags: tag[];
+  tags: tagGetType[];
   author: string;
   url: string;
   created_at: string;
@@ -81,6 +89,20 @@ function PersonalPost() {
     create_tag: '',
     get_or_create_series: '',
   });
+  const [authorInfo, setAuthorInfo] = useState<user>({
+    username: '',
+    velog_name: '',
+    email: '',
+    name: '',
+    profile_image: '',
+    introduction: '',
+    github: '',
+    twitter: '',
+    facebook: '',
+    homepage: '',
+    mail: '',
+    about: '',
+  });
   const [isLoad, setLoad] = useState(false);
   const [seriesId, setSeriesId] = useState(-1);
   const [commentLoadTrig, setCommentLoadTrig] = useState(false);
@@ -92,11 +114,14 @@ function PersonalPost() {
   const textRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { open } = useModalActions();
-  const { atId, postUrl } = useParams();
+  const { id: atId, postTitle: postUrl } = useParams();
+  const { user } = useLoginValue();
   const timeNow = moment();
   const timePost = moment(post.updated_at);
 
   const getPost = useCallback(async () => {
+    if (!atId || !postUrl) return;
+
     try {
       const response = await axios.get(`/api/v1/velog/${atId}/${postUrl}`);
       const {
@@ -113,11 +138,19 @@ function PersonalPost() {
         is_active: isLikeActive,
       }: postGetType = response.data;
 
+      const frontTags = tags.map(tag => {
+        const frontTag: tag = {
+          name: tag.tag_name,
+          postCount: tag.postCount,
+        };
+        return frontTag;
+      });
+
       setPost({
         ...post,
         pid,
         title,
-        tags,
+        tags: frontTags,
         author,
         url,
         created_at: createdAt,
@@ -138,17 +171,37 @@ function PersonalPost() {
     getPost();
   }, [getPost]);
 
+  const getAuthor = useCallback(async () => {
+    if (!isLoad) return;
+
+    try {
+      const response = await axios.get(`/api/v1/accounts/user/@${post.author}`);
+      const userInfo: user = response.data;
+      setAuthorInfo({ ...userInfo });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [isLoad]);
+
+  useEffect(() => {
+    getAuthor();
+  }, [getAuthor]);
+
   const getSeries = useCallback(async () => {
     if (!isLoad) return;
 
     try {
       const response = await axios.get(`/api/v1/velog/@${post.author}/series/`);
-      const curSeries: series = response.data.filer(
+      const curSeries: series = response.data.find(
         (series: series) => series.id === seriesId
       );
+
+      if (!curSeries) return;
+
       const postListRes = await axios.get(
         `/api/v1/velog/@${post.author}/series/${curSeries.series_name}`
       );
+
       const seriesPostList: seriesPost[] = postListRes.data.map(
         (post: postGetType) => {
           return { series_id: seriesId, post };
@@ -166,7 +219,7 @@ function PersonalPost() {
     } catch (error) {
       console.log(error);
     }
-  }, [post]);
+  }, [isLoad]);
 
   useEffect(() => {
     getSeries();
@@ -181,7 +234,7 @@ function PersonalPost() {
     } catch (error) {
       console.log(error);
     }
-  }, [post]);
+  }, [isLoad]);
 
   useEffect(() => {
     getComment();
@@ -261,19 +314,22 @@ function PersonalPost() {
       <div className={cx('head_container', 'hori_size')}>
         <div className={styles.head_wrapper}>
           <h1>{post.title}</h1>
-          <div className={styles.actions}>
-            <button type="button">통계</button>
-            <button type="button" onClick={onReviseClick}>
-              수정
-            </button>
-            <button type="button" onClick={onDeleteClick}>
-              삭제
-            </button>
-          </div>
+          {user && user.username === authorInfo.username && (
+            <div className={styles.actions}>
+              <button type="button" onClick={onReviseClick}>
+                수정
+              </button>
+              <button type="button" onClick={onDeleteClick}>
+                삭제
+              </button>
+            </div>
+          )}
           <div className={styles.info_container}>
             <div className={styles.information}>
               <span className={styles.username}>
-                <Link to={`/@${dummyUser.username}`}>{dummyUser.username}</Link>
+                <Link to={`/@${authorInfo.username}`}>
+                  {authorInfo.username}
+                </Link>
               </span>
               <span className={styles.separator}>·</span>
               <span>
@@ -324,7 +380,7 @@ function PersonalPost() {
               />
             </div>
           </div>
-          <SeriesSelector post={post} />
+          {post.series && <SeriesSelector post={post} />}
         </div>
       </div>
       <div className={styles.text_container}>
@@ -335,14 +391,18 @@ function PersonalPost() {
       <div className={cx('name_card_container', 'hori_size')}>
         <div className={styles.name_card_box}>
           <div className={styles.name_card}>
-            <Link to={`/@${dummyUser.username}`}>
-              <img src={dummyUser.profile_image} alt="profile" />
+            <Link to={`/@${authorInfo.username}`}>
+              <img src={authorInfo.profile_image} alt="profile" />
             </Link>
             <div className={styles.name_desc}>
               <div className={styles.name}>
-                <Link to={`/@${dummyUser.username}`}>{dummyUser.username}</Link>
+                <Link to={`/@${authorInfo.username}`}>
+                  {authorInfo.username}
+                </Link>
               </div>
-              <div className={styles.description}>{dummyUser.introduction}</div>
+              <div className={styles.description}>
+                {authorInfo.introduction}
+              </div>
             </div>
           </div>
           <div className={styles.line} />
@@ -353,7 +413,7 @@ function PersonalPost() {
         {post.prev_post && (
           <div className={styles.link_box}>
             <Link
-              to={`/@${dummyUser.username}/${post.title}`}
+              to={`/@${authorInfo.username}/${post.url}`}
               className={styles.left_link}
             >
               <div className={styles.arrow_container}>
@@ -371,7 +431,7 @@ function PersonalPost() {
         {post.next_post && (
           <div className={styles.link_box}>
             <Link
-              to={`/@${dummyUser.username}/${post.title}`}
+              to={`/@${authorInfo.username}/${post.url}`}
               className={styles.right_link}
             >
               <div className={styles.arrow_container}>

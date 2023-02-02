@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './SeriesSelector.module.scss';
 import { ReactComponent as SeriesIcon } from '../../assets/series_mark.svg';
 import { ReactComponent as UpTriangleIcon } from '../../assets/up_triangle.svg';
@@ -16,6 +16,7 @@ import {
 
 export default function SeriesSelector({ post }: { post: postDetail | null }) {
   const [listVisible, setListVisible] = useState(false);
+  const navigate = useNavigate();
   const { pid, series }: { pid: number; series: seriesDetail | null } =
     post || { pid: -1, series: null };
   const { id, title, photo, update, author, postNum, postList }: seriesDetail =
@@ -32,6 +33,14 @@ export default function SeriesSelector({ post }: { post: postDetail | null }) {
 
   const toggleList = () => {
     setListVisible(x => !x);
+  };
+
+  const onLeftClick = () => {
+    navigate(`/@${author}/${postList[curPostIdx - 2].post.url}`);
+  };
+
+  const onRightClick = () => {
+    navigate(`/@${author}/${postList[curPostIdx].post.url}`);
   };
 
   return (
@@ -74,10 +83,18 @@ export default function SeriesSelector({ post }: { post: postDetail | null }) {
             className={styles.series_number}
           >{`${curPostIdx}/${postNum}`}</div>
           <div className={styles.button_container}>
-            <button type="button" disabled>
+            <button
+              type="button"
+              disabled={curPostIdx === 1}
+              onClick={onLeftClick}
+            >
               <LeftIcon />
             </button>
-            <button type="button">
+            <button
+              type="button"
+              disabled={curPostIdx === postNum}
+              onClick={onRightClick}
+            >
               <RightIcon />
             </button>
           </div>

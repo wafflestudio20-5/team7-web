@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import Moment from 'react-moment';
@@ -14,22 +15,40 @@ type postCompProps = {
 
 export default function PostComp({ post }: postCompProps) {
   const timeNow = moment();
-  const timePost = moment(post.updated_at);
+  const timePost = moment(post.created_at);
+  const [agoFormat, setAgoFormat] = useState('YYYY-MM-DD');
+  const timeDiff = timeNow.diff(timePost);
 
-  const user: user = {
-    username: 'myId',
-    velog_name: 'my_velog',
-    email: 'mail',
-    name: '이름',
+  const [user, setUser] = useState({
+    username: '',
+    velog_name: '',
+    email: '',
+    name: '',
     profile_image: '',
-    introduction: '내 벨로그',
-    github: 'github',
-    twitter: 'twitter',
-    facebook: 'facebook',
-    homepage: 'https://localhost:3000',
-    mail: 'myId@snu.ac.kr',
-    about: 'about 페이지에 들어갈 설명입니다',
+    introduction: '',
+    github: '',
+    twitter: '',
+    facebook: '',
+    homepage: '',
+    mail: '',
+    about: '',
+  });
+
+  const getUser = async () => {
+    const response = await axios.get(`/api/v1/accounts/user/@${post.author}`);
+    setUser(response.data);
   };
+
+  useEffect(() => {
+    getUser();
+    if (timeDiff < 1000 * 60 * 60)
+      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60))}분 전`);
+    else if (timeDiff < 1000 * 60 * 60 * 24)
+      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60 * 60))}시간 전`);
+    else if (timeDiff < 1000 * 60 * 60 * 24 * 7)
+      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60 * 60 * 24))}일 전`);
+    else setAgoFormat(timePost.format('YYYY년 MM월 DD일'));
+  }, []);
 
   return (
     <div className={cx('post')}>
@@ -46,28 +65,22 @@ export default function PostComp({ post }: postCompProps) {
           </div>
         </Link>
         <div className={cx('sub-info')}>
-          <span>
-            {moment.duration(timeNow.diff(timePost)).asDays() > 7 ? (
-              <Moment format="YYYY년 MM월 DD일">{post.updated_at}</Moment>
-            ) : (
-              <Moment fromNow>{post.updated_at}</Moment>
-            )}
-          </span>
+          <span>{agoFormat}</span>
           <span> · </span>
           <span>{post.comments}개의 댓글</span>
         </div>
       </div>
       <div className={cx('footer')}>
-        <Link to={'@'.concat(user.username)}>
+        <Link to={`@${post.author}`}>
           <img
             className={cx('profile')}
             src={user.profile_image}
             alt="profile"
           />
           by
-          <span>{user.username}</span>
+          <span>{post.author}</span>
         </Link>
-        <div className={cx('likes')}>{'♥ '.concat(String(post.likes))}</div>
+        <div className={cx('likes')}>{`♥ ${post.likes}`}</div>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
+import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { user } from './types';
@@ -45,6 +46,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.baseURL =
   process.env.NODE_ENV === 'development' ? '' : 'https://api.7elog.store';
 axios.defaults.withCredentials = true;
+const cookies = new Cookies();
 
 export default function LoginProvider({
   children,
@@ -84,9 +86,17 @@ export default function LoginProvider({
       },
       async logout() {
         try {
-          await axios.post('/api/v1/accounts/logout/', {
-            refresh: localStorage.getItem('refreshToken'),
-          });
+          await axios.post(
+            '/api/v1/accounts/logout/',
+            {
+              refresh: localStorage.getItem('refreshToken'),
+            },
+            {
+              headers: {
+                'X-CSRFToken': cookies.get('csrftoken'),
+              },
+            }
+          );
           setLoginValue({
             isLogin: false,
             user: null,
@@ -152,6 +162,7 @@ export default function LoginProvider({
       const response = await axios.post('/api/v1/accounts/token/refresh/', {
         refresh: refreshToken,
       });
+      console.log(response);
       const response2 = await axios.get('/api/v1/accounts/user');
       setLoginValue({
         isLogin: true,

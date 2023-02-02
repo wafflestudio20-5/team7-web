@@ -7,26 +7,9 @@ import { useLoginSetting } from '../contexts/LoginProvider';
 
 const cx = classNames.bind(styles);
 
-const githubUrl =
-  'https://github.com/login/oauth/authorize?client_id=c6d4c32547dbe4263ea7&scope=user';
-// const googleUrl =
-//   'https://accounts.google.com/o/oauth2/auth?client_id=583150238500-td364pcrgj438lfdkkl061g3pssec3i0.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&redirect_uri=http://localhost:3000/loginProcess&response_type=token';
-
-// const githubUrl =
-//   'https://github.com/login/oauth/authorize?client_id=e59b63fb2c54247d72f9&scope=user';
-
 const googleUrl =
-  'https://accounts.google.com/o/oauth2/auth?client_id=1057423908982-0e1v495ji7p6sh0mdbds1nq0h6s3vn5b.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&redirect_uri=http://localhost:3000/loginProcess&response_type=token';
-const facebookUrl = `https://www.facebook.com/v13.0/dialog/oauth?client_id=1499778270541428&redirect_uri=http://localhost:3000/loginProcess&state=1&resource_type=token`;
-
+  'https://accounts.google.com/o/oauth2/auth?client_id=1057423908982-0e1v495ji7p6sh0mdbds1nq0h6s3vn5b.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&redirect_uri=https://7elog.store/loginProcess&response_type=token';
 export default function Login() {
-  // async function facebook() {
-  //   const response = await axios.get('/api/v1/accounts/google/login');
-  //   console.log(response);
-  // }
-  // useEffect(() => {
-  //   facebook();
-  // });
   const inputEmail = useRef<HTMLInputElement>(null);
   const inputPassword = useRef<HTMLInputElement>(null);
 
@@ -96,33 +79,6 @@ export default function Login() {
                   <section className={cx('by-social')}>
                     <h4>소셜 계정으로 로그인</h4>
                     <div>
-                      <a href={githubUrl}>
-                        <svg
-                          width="20"
-                          height="20"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <mask
-                            id="github"
-                            width="20"
-                            height="20"
-                            x="0"
-                            y="0"
-                            maskUnits="userSpaceOnUse"
-                          >
-                            <path
-                              fill="#ffffff"
-                              fillRule="evenodd"
-                              d="M6.69 15.944c0 .08-.093.145-.21.145-.133.012-.226-.053-.226-.145 0-.081.093-.146.21-.146.12-.012.226.053.226.146zm-1.255-.182c-.028.08.053.173.174.198.105.04.226 0 .25-.081.024-.08-.053-.173-.174-.21-.104-.028-.221.012-.25.093zm1.783-.068c-.117.028-.198.104-.186.197.012.08.117.133.238.105.117-.028.198-.105.186-.186-.012-.076-.121-.129-.238-.116zM9.87.242C4.278.242 0 4.488 0 10.08c0 4.471 2.815 8.298 6.835 9.645.516.093.697-.226.697-.488 0-.25-.012-1.63-.012-2.476 0 0-2.822.605-3.415-1.202 0 0-.46-1.173-1.121-1.475 0 0-.924-.633.064-.621 0 0 1.004.08 1.557 1.04.883 1.557 2.363 1.109 2.94.843.092-.645.354-1.093.645-1.36-2.255-.25-4.529-.576-4.529-4.455 0-1.109.307-1.665.952-2.375-.105-.262-.448-1.342.105-2.738C5.56 4.157 7.5 5.51 7.5 5.51a9.474 9.474 0 0 1 2.532-.344c.86 0 1.726.117 2.533.343 0 0 1.939-1.355 2.782-1.089.552 1.4.21 2.476.105 2.738.645.714 1.04 1.27 1.04 2.375 0 3.891-2.375 4.202-4.63 4.456.372.319.686.923.686 1.87 0 1.36-.012 3.041-.012 3.372 0 .262.186.58.698.488C17.266 18.379 20 14.552 20 10.08 20 4.488 15.464.24 9.871.24zM3.919 14.149c-.052.04-.04.133.029.21.064.064.157.093.21.04.052-.04.04-.133-.029-.21-.064-.064-.157-.092-.21-.04zm-.435-.326c-.028.052.012.117.093.157.064.04.145.028.173-.028.028-.053-.012-.117-.093-.158-.08-.024-.145-.012-.173.029zm1.306 1.435c-.064.053-.04.174.053.25.092.093.21.105.262.04.052-.052.028-.173-.053-.25-.088-.092-.21-.104-.262-.04zm-.46-.593c-.064.04-.064.146 0 .238.065.093.174.133.226.093.065-.053.065-.157 0-.25-.056-.093-.16-.133-.225-.08z"
-                              clipRule="evenodd"
-                            />
-                          </mask>
-                          <g mask="url(#github)">
-                            <path fill="currentColor" d="M0 0h20v20H0z" />
-                          </g>
-                        </svg>
-                      </a>
                       <a href={googleUrl}>
                         <svg
                           width="20"
@@ -148,33 +104,6 @@ export default function Login() {
                           />
                         </svg>
                       </a>
-                      <div>
-                        <svg
-                          width="20"
-                          height="20"
-                          fill="none"
-                          viewBox="0 0 20 20"
-                        >
-                          <mask
-                            id="facebook"
-                            width="12"
-                            height="20"
-                            x="4"
-                            y="0"
-                            maskUnits="userSpaceOnUse"
-                          >
-                            <path
-                              fill="#fff"
-                              fillRule="evenodd"
-                              d="M7.84 20v-8.945H4.844V7.5H7.84V4.7C7.84 1.655 9.7 0 12.414 0c1.3 0 2.418.098 2.742.14v3.18h-1.883c-1.476 0-1.761.703-1.761 1.73V7.5h3.332l-.457 3.555h-2.875V20"
-                              clipRule="evenodd"
-                            />
-                          </mask>
-                          <g mask="url(#facebook)">
-                            <path fill="#fff" d="M0 0h20v20H0z" />
-                          </g>
-                        </svg>
-                      </div>
                     </div>
                   </section>
                 </div>

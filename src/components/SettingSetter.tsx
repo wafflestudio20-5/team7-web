@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './SettingSetter.module.scss';
 import { useLoginValue, useLoginSetting } from '../contexts/LoginProvider';
 import { useModalActions } from '../contexts/ModalProvider';
+import { showToast } from './Toast';
 
 const cx = classNames.bind(styles);
 
@@ -14,50 +16,82 @@ export default function SettingSetter() {
   const { open } = useModalActions();
 
   const { user } = useLoginValue();
-  const {
-    // eslint-disable-next-line camelcase
-    profile_image,
-    username,
-    name,
-    introduction,
-    // eslint-disable-next-line camelcase
-    velog_name,
-    github,
-    twitter,
-    mail,
-    facebook,
-    homepage,
-    about,
-  } = user || {};
+  const { changeUserValue } = useLoginSetting();
+  const navigate = useNavigate();
 
   const [input, setInput] = useState({
     // eslint-disable-next-line camelcase
-    profile_image,
-    username,
-    name,
-    introduction,
+    profile_image: '',
+    username: '',
+    name: '',
+    introduction: '',
     // eslint-disable-next-line camelcase
-    velog_name,
-    github,
-    twitter,
-    mail,
-    facebook,
-    homepage,
-    about,
+    velog_name: '',
+    github: '',
+    twitter: '',
+    email: '',
+    mail: '',
+    facebook: '',
+    homepage: '',
+    about: '',
   });
 
   const getUser = async () => {
-    const response = await axios.get('/api/v1/accounts/user/');
-    setInput(response.data);
+    try {
+      const response = await axios.get('/api/v1/accounts/user/');
+      setInput(response.data);
+    } catch (error) {
+      showToast({ type: 'error', message: '잘못된 접근입니다' });
+      navigate('/');
+    }
   };
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [user]);
 
   const onChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
+  };
+
+  const onFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      try {
+        console.log(URL.createObjectURL(e.target.files[0]));
+        const response = await axios.patch('/api/v1/accounts/user/', {
+          profile_image: URL.createObjectURL(e.target.files[0]),
+        });
+        changeUserValue(response.data);
+        setInput({
+          ...input,
+          profile_image: URL.createObjectURL(e.target.files[0]),
+        });
+      } catch (error: Error | any) {
+        const keys = Object.keys(error.response.data);
+        const key = keys[0];
+        const message = error.response.data[key][0];
+        showToast({ type: 'error', message: `${key}: `.concat(message) });
+      }
+    }
+  };
+
+  const onFileDelete = async () => {
+    try {
+      const response = await axios.patch('/api/v1/accounts/user/', {
+        profile_image: '',
+      });
+      changeUserValue(response.data);
+      setInput({
+        ...input,
+        profile_image: '',
+      });
+    } catch (error: Error | any) {
+      const keys = Object.keys(error.response.data);
+      const key = keys[0];
+      const message = error.response.data[key][0];
+      showToast({ type: 'error', message: `${key}: `.concat(message) });
+    }
   };
 
   function handleNameEdit() {
@@ -96,12 +130,15 @@ export default function SettingSetter() {
         });
       }
       const response = await axios.patch('/api/v1/accounts/user/', {
-        description: input.description,
+        introduction: input.introduction,
       });
       changeUserValue(response.data);
       handleNameEdit();
-    } catch (error) {
-      console.log(error);
+    } catch (error: Error | any) {
+      const keys = Object.keys(error.response.data);
+      const key = keys[0];
+      const message = error.response.data[key][0];
+      showToast({ type: 'error', message: `${key}: `.concat(message) });
     }
   };
 
@@ -110,14 +147,17 @@ export default function SettingSetter() {
       const response = await axios.patch('/api/v1/accounts/user/', {
         github: input.github,
         mail: input.mail,
-        hompage: input.homepage,
+        homepage: input.homepage,
         facebook: input.facebook,
         twitter: input.twitter,
       });
       changeUserValue(response.data);
       handleSocialEdit();
-    } catch (error) {
-      console.log(error);
+    } catch (error: Error | any) {
+      const keys = Object.keys(error.response.data);
+      const key = keys[0];
+      const message = error.response.data[key][0];
+      showToast({ type: 'error', message: `${key}: `.concat(message) });
     }
   };
 
@@ -128,8 +168,11 @@ export default function SettingSetter() {
       });
       changeUserValue(response.data);
       handleTitleEdit();
-    } catch (error) {
-      console.log(error);
+    } catch (error: Error | any) {
+      const keys = Object.keys(error.response.data);
+      const key = keys[0];
+      const message = error.response.data[key][0];
+      showToast({ type: 'error', message: `${key}: `.concat(message) });
     }
   };
 
@@ -138,24 +181,26 @@ export default function SettingSetter() {
       <section className={cx('top')}>
         <div className={cx('thumbnail')}>
           {/* eslint-disable-next-line camelcase */}
-          <img src={profile_image} alt="user-thumbnail" />
-          <label htmlFor="input-image">
+          <img src={input.profile_image} alt="profile_image" />
+          <label htmlFor="profile_image">
             <input
               type="file"
-              name="userImg"
-              id="input-image"
+              name="profile_image"
+              id="profile_image"
               className={cx('blind')}
-              onChange={onChange}
+              onChange={onFileUpload}
             />
             이미지 업로드
           </label>
-          <button type="button">이미지 제거</button>
+          <button type="button" onClick={onFileDelete}>
+            이미지 제거
+          </button>
         </div>
         <div className={cx('info')}>
           <div className={nameEdit ? cx('blind') : ''}>
             <h2>{input.username}</h2>
             <p>{input.introduction}</p>
-            <button type="button" onClick={openNameEdit}>
+            <button type="button" onClick={handleNameEdit}>
               수정
             </button>
           </div>
@@ -169,7 +214,7 @@ export default function SettingSetter() {
               />
               <input
                 placeholder="한 줄 소개"
-                name="description"
+                name="introduction"
                 value={input.introduction}
                 onChange={onChange}
               />
@@ -492,7 +537,7 @@ export default function SettingSetter() {
               <h3>이메일 주소</h3>
             </div>
             <div className={cx('block')}>
-              <div className={cx('contents')}>{username}</div>
+              <div className={cx('contents')}>{input.email}</div>
             </div>
           </div>
           <div className={cx('description')}>

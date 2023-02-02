@@ -22,7 +22,7 @@ function TagsTag() {
 
   async function setPosts() {
     try {
-      const response = await axios.get(`/api/v1/velog/tags/${tag}/`);
+      const response = await axios.get(`/api/v1/velog/tags/${tag}`);
       setTagPosts(response.data);
       setCount(response.data.length);
     } catch (e) {

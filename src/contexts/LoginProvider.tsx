@@ -65,10 +65,18 @@ export default function LoginProvider({
     () => ({
       async login(email: string | undefined, password: string | undefined) {
         try {
-          const response = await axios.post('/api/v1/accounts/login/', {
-            email,
-            password,
-          });
+          const response = await axios.post(
+            '/api/v1/accounts/login/',
+            {
+              email,
+              password,
+            },
+            {
+              headers: {
+                'X-CSRFToken': cookies.get('csrftoken'),
+              },
+            }
+          );
           setLoginValue({
             isLogin: true,
             user: response.data.user,
@@ -159,10 +167,17 @@ export default function LoginProvider({
   const autoLogin = useCallback(async () => {
     const refreshToken = localStorage.getItem('refreshToken');
     try {
-      const response = await axios.post('/api/v1/accounts/token/refresh/', {
-        refresh: refreshToken,
-      });
-      console.log(response);
+      const response = await axios.post(
+        '/api/v1/accounts/token/refresh/',
+        {
+          refresh: refreshToken,
+        },
+        {
+          headers: {
+            'X-CSRFToken': cookies.get('csrftoken'),
+          },
+        }
+      );
       const response2 = await axios.get('/api/v1/accounts/user');
       setLoginValue({
         isLogin: true,

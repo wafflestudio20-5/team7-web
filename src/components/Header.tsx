@@ -26,18 +26,18 @@ export default function Header() {
     <div>
       <div className={cx('header')}>
         <div className={cx('center')}>
-          <div className={path === '/myvelog' ? cx('blind') : cx('left')}>
+          <div className={path[1] === '@' ? cx('blind') : cx('left')}>
             <Link to="/">velog</Link>
           </div>
-          <div className={path === '/myvelog' ? cx('left') : cx('blind')}>
+          <div className={path[1] === '@' ? cx('left') : cx('blind')}>
             <Link to="/">
               <img
                 src="https://th.bing.com/th/id/R.96f8c2f286f01b640e87b113e630b540?rik=615zqZQiGS8hLQ&riu=http%3a%2f%2fwww.zumalakarregimuseoa.eus%2feu%2f06vimeo.png&ehk=KRybvv%2fa1k3ANJCrkUGMFflBCp4fD6JZTDUTlkXvbRk%3d&risl=&pid=ImgRaw&r=0"
                 alt="velog"
               />
             </Link>
-            <Link to={'/'.concat('')}>
-              {path.replace('/', '').concat('.log')}
+            <Link to={`/${path.split('/')[1]}`}>
+              {path.split('/')[1].slice(1)}
             </Link>
           </div>
           <div className={cx('right')}>
@@ -104,7 +104,7 @@ export default function Header() {
               }}
               role="presentation"
             >
-              <Link to="/myvelog">
+              <Link to={`/@${user ? user.username : ''}`}>
                 <div>내 벨로그</div>
               </Link>
               <Link to="/saves">

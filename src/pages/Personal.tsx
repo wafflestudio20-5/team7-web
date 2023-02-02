@@ -21,6 +21,7 @@ type tagGetType = {
 };
 
 function Personal() {
+  const path = useLocation().pathname;
   const [query, setQuery] = useState('');
   const tagQuery = new URLSearchParams(window.location.search).get('tag');
   const { id } = useParams();
@@ -57,7 +58,7 @@ function Personal() {
   useEffect(() => {
     getTags();
     getPost();
-  }, [id]);
+  }, [id, path]);
 
   return (
     <div>

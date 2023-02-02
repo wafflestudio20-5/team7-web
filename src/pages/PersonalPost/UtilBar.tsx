@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
+import { FacebookShareButton, TwitterShareButton } from 'react-share';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import styles from './UtilBar.module.scss';
 import { ReactComponent as LikeIcon } from '../../assets/like.svg';
 import { ReactComponent as FacebookIcon } from '../../assets/facebook.svg';
 import { ReactComponent as TwitterIcon } from '../../assets/twitter.svg';
 import { ReactComponent as ClipIcon } from '../../assets/clip.svg';
 import { ReactComponent as ShareIcon } from '../../assets/share.svg';
+import { showToast } from '../../components/Toast';
 
 const cx = classNames.bind(styles);
 
@@ -23,6 +26,7 @@ function UtilBar({ utilFixed, likes, likeClicked, setLikeClicked }: utilProps) {
   const [facePos, setFacePos] = useState([0, 0]);
   const [twitPos, setTwitPos] = useState(0);
   const [clipPos, setClipPos] = useState([0, 0]);
+  const curUrl = window.location.href;
 
   const onLikeClick = () => {
     setLikeClicked(x => !x);
@@ -64,6 +68,10 @@ function UtilBar({ utilFixed, likes, likeClicked, setLikeClicked }: utilProps) {
     }
   };
 
+  const onClipClick = () => {
+    showToast({ type: 'success', message: '링크가 복사되었습니다.' });
+  };
+
   return (
     <div
       className={styles.util_box}
@@ -96,7 +104,9 @@ function UtilBar({ utilFixed, likes, likeClicked, setLikeClicked }: utilProps) {
               onClick={onLinkClick}
               role="presentation"
             >
-              <FacebookIcon />
+              <FacebookShareButton url={curUrl}>
+                <FacebookIcon />
+              </FacebookShareButton>
             </div>
           </div>
           <div
@@ -112,7 +122,9 @@ function UtilBar({ utilFixed, likes, likeClicked, setLikeClicked }: utilProps) {
               onClick={onLinkClick}
               role="presentation"
             >
-              <TwitterIcon />
+              <TwitterShareButton url={curUrl}>
+                <TwitterIcon />
+              </TwitterShareButton>
             </div>
           </div>
           <div
@@ -125,10 +137,15 @@ function UtilBar({ utilFixed, likes, likeClicked, setLikeClicked }: utilProps) {
           >
             <div
               className={styles.link}
-              onClick={onLinkClick}
+              onClick={() => {
+                onLinkClick();
+                onClipClick();
+              }}
               role="presentation"
             >
-              <ClipIcon />
+              <CopyToClipboard text={curUrl}>
+                <ClipIcon />
+              </CopyToClipboard>
             </div>
           </div>
         </div>

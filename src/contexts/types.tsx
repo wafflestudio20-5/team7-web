@@ -39,6 +39,7 @@ export type commentType = {
   created_at: string;
   content: string;
   parent_comment: number;
+  comment_like_count: number;
 }; // 댓글 상세 정보
 
 export type postDetail = {

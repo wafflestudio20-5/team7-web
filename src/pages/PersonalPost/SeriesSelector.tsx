@@ -1,98 +1,63 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './SeriesSelector.module.scss';
 import { ReactComponent as SeriesIcon } from '../../assets/series_mark.svg';
 import { ReactComponent as UpTriangleIcon } from '../../assets/up_triangle.svg';
 import { ReactComponent as DownTriangleIcon } from '../../assets/down_triangle.svg';
 import { ReactComponent as LeftIcon } from '../../assets/left_mark.svg';
 import { ReactComponent as RightIcon } from '../../assets/right_mark.svg';
-import { post, seriesDetail, seriesPost, user } from '../../contexts/types';
+import {
+  post,
+  postDetail,
+  seriesDetail,
+  seriesPost,
+  user,
+} from '../../contexts/types';
 
-const dummyUser: user = {
-  username: 'id',
-  velog_name: 'velog',
-  email: 'mail',
-  name: 'name',
-  profile_image:
-    'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',
-  introduction: 'desc',
-  github: 'git',
-  twitter: 'twit',
-  facebook: 'face',
-  homepage: 'home',
-  mail: 'mail',
-  about: '',
-};
-
-const dummyPost: post = {
-  pid: 1,
-  title: 'title',
-  author: 'id',
-  url: '/userid/posttitle',
-  preview: 'preview',
-  thumbnail: 'thm',
-  tags: [
-    {
-      name: 'html',
-      postCount: 6,
-    },
-    {
-      name: 'css',
-      postCount: 6,
-    },
-  ],
-  created_at: '2020-02-20 20:20:20',
-  updated_at: '2020-02-20 20:20:20',
-  comments: 2,
-  likes: 77,
-  is_private: false,
-};
-
-const dummySeriesPost: seriesPost = {
-  series_id: 1,
-  post: dummyPost,
-};
-const dummySeriesPost2: seriesPost = {
-  series_id: 2,
-  post: dummyPost,
-};
-
-const dummySeriesDetail: seriesDetail = {
-  id: 1,
-  title: 'series',
-  photo: 'photo',
-  update: '2020-02-20 20:20:20',
-  author: 'id',
-  postNum: 2,
-  postList: [dummySeriesPost, dummySeriesPost2],
-};
-
-export default function SeriesSelector() {
+export default function SeriesSelector({ post }: { post: postDetail | null }) {
   const [listVisible, setListVisible] = useState(false);
+  const navigate = useNavigate();
+  const { pid, series }: { pid: number; series: seriesDetail | null } =
+    post || { pid: -1, series: null };
+  const { id, title, photo, update, author, postNum, postList }: seriesDetail =
+    series || {
+      id: -1,
+      title: '',
+      photo: '',
+      update: '',
+      author: '',
+      postNum: 0,
+      postList: [],
+    };
+  const curPostIdx = postList.findIndex(spost => spost.post.pid === pid) + 1;
 
   const toggleList = () => {
     setListVisible(x => !x);
   };
 
+  const onLeftClick = () => {
+    navigate(`/@${author}/${postList[curPostIdx - 2].post.url}`);
+  };
+
+  const onRightClick = () => {
+    navigate(`/@${author}/${postList[curPostIdx].post.url}`);
+  };
+
   return (
     <div className={styles.series_container}>
       <h2>
-        <Link
-          to={`/@${dummySeriesDetail.author}/series/${dummySeriesDetail.title}`}
-        >
-          {dummySeriesDetail.title}
-        </Link>
+        <Link to={`/@${author}/series/${title}`}>{title}</Link>
       </h2>
       <SeriesIcon className={styles.series_mark} />
       {listVisible && (
         <ol className={styles.list}>
-          {dummySeriesDetail.postList.map(seriesPost => {
+          {postList.map(seriesPost => {
             return (
-              <li key={seriesPost.series_id}>
+              <li key={seriesPost.post.pid}>
                 <Link
-                  to={`/@${dummySeriesDetail.author}/${seriesPost.post.title}`}
+                  to={`/@${author}/${seriesPost.post.url}`}
                   style={
-                    seriesPost.series_id === dummySeriesDetail.id
+                    seriesPost.post.pid === pid
                       ? { color: 'var(--primary1)', fontWeight: 'bold' }
                       : {}
                   }
@@ -116,12 +81,20 @@ export default function SeriesSelector() {
         <div className={styles.series_number_container}>
           <div
             className={styles.series_number}
-          >{`${dummySeriesDetail.id}/${dummySeriesDetail.postList.length}`}</div>
+          >{`${curPostIdx}/${postNum}`}</div>
           <div className={styles.button_container}>
-            <button type="button" disabled>
+            <button
+              type="button"
+              disabled={curPostIdx === 1}
+              onClick={onLeftClick}
+            >
               <LeftIcon />
             </button>
-            <button type="button">
+            <button
+              type="button"
+              disabled={curPostIdx === postNum}
+              onClick={onRightClick}
+            >
               <RightIcon />
             </button>
           </div>

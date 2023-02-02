@@ -27,8 +27,15 @@ import { ReactComponent as CodeblockIcon } from '../../assets/markdown_codeblock
 import { ReactComponent as BackIcon } from '../../assets/back.svg';
 import { showToast } from '../../components/Toast';
 import PublishModal from './PublishModal';
-import { postDetail, presetBtn, tag } from '../../contexts/types';
+import { postDetail, presetBtn, seriesDetail, tag } from '../../contexts/types';
 import { useLoginValue } from '../../contexts/LoginProvider';
+
+type tagGetType = {
+  id: number;
+  tag_name: string;
+  author: string;
+  postCount: number;
+};
 
 type postGetType = {
   pid: number;
@@ -43,7 +50,7 @@ type postGetType = {
   content: string;
   is_private: boolean;
   create_tag: string;
-  tags: tag[];
+  tags: tagGetType[];
   url: string;
 };
 
@@ -139,6 +146,25 @@ function Write() {
         navigate(-1);
       }
 
+      const frontTags = tags.map(tag => {
+        const frontTag: tag = {
+          name: tag.tag_name,
+          postCount: tag.postCount,
+        };
+        return frontTag;
+      });
+
+      // series id 만 필요
+      const frontSeries: seriesDetail = {
+        id: series,
+        title: '',
+        photo: '',
+        update: '',
+        author: '',
+        postNum: 0,
+        postList: [],
+      };
+
       setPost({
         ...post,
         pid: id,
@@ -149,14 +175,14 @@ function Write() {
         thumbnail,
         preview,
         content,
+        series: frontSeries,
         is_private: isPrivate,
-        tags,
+        tags: frontTags,
         url,
         create_tag: createTag,
         get_or_create_series: seriesTigger,
       });
       setLoad(true);
-      // 시리즈 설정 필요
     } catch (error) {
       showToast({ type: 'error', message: '글이 존재하지 않습니다.' });
       navigate(-1);
@@ -345,9 +371,7 @@ function Write() {
           return {
             ...post,
             tags: [...post.tags, { name: newTag, postCount: 0 }],
-            create_tag: post.create_tag
-              ? `${post.create_tag}, ${newTag}`
-              : newTag,
+            create_tag: `${post.create_tag}${newTag}, `,
           };
         });
       }
@@ -369,7 +393,7 @@ function Write() {
           return {
             ...post,
             tags: [...post.tags, { name: text, postCount: 0 }],
-            create_tag: post.create_tag ? `${post.create_tag}, ${text}` : text,
+            create_tag: `${post.create_tag}${text}, `,
           };
         });
       }
@@ -383,7 +407,7 @@ function Write() {
         return {
           ...post,
           tag: [...tempTags],
-          created_at: tempTags.map(x => x.name).join(', '),
+          created_at: `${tempTags.map(x => x.name).join(', ')}, `,
         };
       });
     }

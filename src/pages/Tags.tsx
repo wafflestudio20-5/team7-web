@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -16,25 +16,35 @@ type tagGetType = {
 };
 
 function Tags() {
+  const path = useLocation().search;
   const [sortTab, setSortTab] = useState('trending');
-  function toggle() {
-    if (sortTab === 'alphabetical') setSortTab('trending');
-    else setSortTab('alphabetical');
-  }
-  const [tagList, setTags] = useState([]);
 
+  const [tagList, setTags] = useState([]);
   const getTags = useCallback(async () => {
     try {
-      const response = await axios.get(`/api/v1/velog/tags`);
-      setTags(response.data);
+      if (sortTab !== 'alphabetical') {
+        const response = await axios.get(`/api/v1/velog/tags/?num=yes`);
+        setTags(response.data);
+        console.log(sortTab);
+      } else {
+        const response = await axios.get(`/api/v1/velog/tags/`);
+        setTags(response.data);
+        console.log(sortTab);
+      }
     } catch (e) {
       console.error(e);
     }
-  }, []);
+  }, [sortTab]);
+
+  useEffect(() => {
+    console.log(path);
+    if (path === '?sort=alphabetical') setSortTab('alphabetical');
+    else setSortTab('trending');
+  }, [path]);
 
   useEffect(() => {
     getTags();
-  }, []);
+  }, [sortTab]);
 
   return (
     <div className={cx('page')}>
@@ -42,26 +52,24 @@ function Tags() {
       <main>
         <div className={cx('sortDiv')}>
           <div className={cx('tabWrapper')}>
-            <div
-              onClick={toggle}
+            <Link
+              to="/tags?sort=trending"
               className={cx(
                 'tab',
                 sortTab !== 'alphabetical' ? 'active' : 'none'
               )}
-              role="presentation"
             >
               인기순
-            </div>
-            <div
-              onClick={toggle}
+            </Link>
+            <Link
+              to="/tags?sort=alphabetical"
               className={cx(
                 'tab',
                 sortTab === 'alphabetical' ? 'active' : 'none'
               )}
-              role="presentation"
             >
               이름순
-            </div>
+            </Link>
             <div
               className={cx(
                 'line',

@@ -37,11 +37,11 @@ const dummyPost: post = {
 };
 
 const dummySeriesPost: seriesPost = {
-  series_id: 1,
+  series_order: 1,
   post: dummyPost,
 };
 const dummySeriesPost2: seriesPost = {
-  series_id: 2,
+  series_order: 2,
   post: dummyPost,
 };
 
@@ -120,9 +120,9 @@ function PersonalSeriesName() {
             </div>
             <div className={cx('postList')}>
               {sortedList.map((postInfo: seriesPost) => (
-                <div className={cx('postDiv')} key={postInfo.series_id}>
+                <div className={cx('postDiv')} key={postInfo.series_order}>
                   <h2>
-                    <span>{postInfo.series_id}.</span>
+                    <span>{postInfo.series_order}.</span>
                     <Link to={`/@${postInfo.post.author}/${postInfo.post.url}`}>
                       {postInfo.post.title}
                     </Link>

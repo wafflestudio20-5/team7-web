@@ -37,7 +37,7 @@ function Personal() {
     } catch (e) {
       console.error(e);
     }
-  }, [id]);
+  }, [id, tagQuery]);
 
   const [userTags, setTags] = useState([]);
   const getTags = useCallback(async () => {

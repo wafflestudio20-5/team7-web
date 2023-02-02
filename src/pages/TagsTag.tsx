@@ -3,29 +3,28 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import styles from './TagsTag.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import Header from '../components/Header';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import ScrollBigPosts from '../components/ScrollBigPosts';
 // eslint-disable-next-line import/extensions,import/no-unresolved
-import { post, tag } from '../contexts/types';
+import { post } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
-const currentTag: tag = {
-  name: 'JavaScript',
-  postCount: 50498,
-};
-
 function TagsTag() {
-  const initialPost: post[] = [];
-  const [tagPosts, setTagPosts] = useState(initialPost);
+  const { tag } = useParams();
+
+  const [tagPosts, setTagPosts] = useState([]);
+  const [postCount, setCount] = useState(0);
 
   async function setPosts() {
     try {
-      const response = await axios.get('/api/v1/velog');
+      const response = await axios.get(`/api/v1/velog/tags/${tag}/`);
       setTagPosts(response.data);
+      setCount(response.data.length);
     } catch (e) {
       console.error(e);
     }
@@ -41,10 +40,8 @@ function TagsTag() {
       <main>
         <div className={cx('body')}>
           <div className={cx('tagInfo')}>
-            <h1># {currentTag.name}</h1>
-            <div className={cx('count')}>
-              총 {currentTag.postCount}개의 포스트
-            </div>
+            <h1># {tag}</h1>
+            <div className={cx('count')}>총 {postCount}개의 포스트</div>
           </div>
           <div>
             <ScrollBigPosts posts={tagPosts} />

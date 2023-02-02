@@ -37,6 +37,7 @@ import {
   mdElementType,
   commentType,
   tag,
+  series,
 } from '../../contexts/types';
 import { showToast } from '../../components/Toast';
 import CommentWrite from './CommentWrite';
@@ -47,71 +48,22 @@ type postGetType = {
   title: string;
   tags: tag[];
   author: string;
+  url: string;
   created_at: string;
   updated_at: string;
   content: string;
-  like_count: string;
+  likes: string;
+  is_active: boolean;
 };
 
 let treeData: any;
 const cx = classNames.bind(styles);
 
-const dummyUser: user = {
-  username: 'id',
-  velog_name: 'velog',
-  email: 'mail',
-  name: 'name',
-  profile_image:
-    'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',
-  introduction: 'desc',
-  github: 'git',
-  twitter: 'twit',
-  facebook: 'face',
-  homepage: 'home',
-  mail: 'mail',
-  about: 'about',
-};
-
-const dummyPost: post = {
-  pid: 1,
-  title: 'title',
-  author: 'id',
-  url: '/userid/posttitle',
-  preview: 'preview',
-  thumbnail: 'thm',
-  tags: [
-    {
-      name: 'tag',
-      postCount: 1,
-    },
-  ],
-  created_at: '2020-02-20 20:20:20',
-  updated_at: '2023-01-24 10:20:20',
-  comments: 2,
-  likes: 77,
-  is_private: false,
-};
-
-const dummySeriesPost: seriesPost = {
-  series_id: 1,
-  post: dummyPost,
-};
-
-const dummySeriesDetail: seriesDetail = {
-  id: 1,
-  title: 'series',
-  photo: 'photo',
-  update: '2023-01-24 10:20:20',
-  author: 'id',
-  postNum: 2,
-  postList: [dummySeriesPost, dummySeriesPost],
-};
-
 function PersonalPost() {
   const [post, setPost] = useState<postDetail>({
-    pid: 2,
+    pid: -1,
     title: '',
-    author: 'id',
+    author: '',
     url: '',
     preview: '',
     thumbnail: '',
@@ -130,6 +82,7 @@ function PersonalPost() {
     get_or_create_series: '',
   });
   const [isLoad, setLoad] = useState(false);
+  const [seriesId, setSeriesId] = useState(-1);
   const [commentLoadTrig, setCommentLoadTrig] = useState(false);
   const [tocFixed, setTocFixed] = useState(false);
   const [utilFixed, setUtilFixed] = useState(false);
@@ -139,22 +92,25 @@ function PersonalPost() {
   const textRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { open } = useModalActions();
-  const { id, postTitle } = useParams();
+  const { atId, postUrl } = useParams();
   const timeNow = moment();
   const timePost = moment(post.updated_at);
 
   const getPost = useCallback(async () => {
     try {
-      const response = await axios.get(`/api/v1/velog/${id}/${postTitle}`);
+      const response = await axios.get(`/api/v1/velog/${atId}/${postUrl}`);
       const {
         pid,
+        series,
         title,
         tags,
         author,
+        url,
         created_at: createdAt,
         updated_at: updatedAt,
         content,
-        like_count: likeCount,
+        likes,
+        is_active: isLikeActive,
       }: postGetType = response.data;
 
       setPost({
@@ -163,21 +119,58 @@ function PersonalPost() {
         title,
         tags,
         author,
+        url,
         created_at: createdAt,
         updated_at: updatedAt,
         content,
-        likes: parseInt(likeCount, 10),
+        likes: parseInt(likes, 10),
+        is_active: isLikeActive,
       });
+      setSeriesId(series);
       setLoad(true);
     } catch (error) {
       showToast({ type: 'error', message: '글이 존재하지 않습니다.' });
       navigate(-1);
     }
-  }, [id, postTitle]);
+  }, [atId, postUrl]);
 
   useEffect(() => {
     getPost();
   }, [getPost]);
+
+  const getSeries = useCallback(async () => {
+    if (!isLoad) return;
+
+    try {
+      const response = await axios.get(`/api/v1/velog/@${post.author}/series/`);
+      const curSeries: series = response.data.filer(
+        (series: series) => series.id === seriesId
+      );
+      const postListRes = await axios.get(
+        `/api/v1/velog/@${post.author}/series/${curSeries.series_name}`
+      );
+      const seriesPostList: seriesPost[] = postListRes.data.map(
+        (post: postGetType) => {
+          return { series_id: seriesId, post };
+        }
+      );
+
+      setPost({
+        ...post,
+        series: {
+          ...curSeries,
+          title: curSeries.series_name,
+          postList: seriesPostList,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [post]);
+
+  useEffect(() => {
+    getSeries();
+  }, [getSeries]);
 
   const getComment = useCallback(async () => {
     if (!isLoad) return;
@@ -188,7 +181,7 @@ function PersonalPost() {
     } catch (error) {
       console.log(error);
     }
-  }, [post.pid]);
+  }, [post]);
 
   useEffect(() => {
     getComment();
@@ -246,7 +239,7 @@ function PersonalPost() {
 
   const deletePost = async () => {
     try {
-      const response = await axios.delete(`/api/v1/velog/${id}/${postTitle}/`);
+      const response = await axios.delete(`/api/v1/velog/${atId}/${postUrl}/`);
       navigate(-1);
     } catch (error) {
       showToast({ type: 'error', message: '다시 시도 해주세요.' });
@@ -331,7 +324,7 @@ function PersonalPost() {
               />
             </div>
           </div>
-          <SeriesSelector />
+          <SeriesSelector post={post} />
         </div>
       </div>
       <div className={styles.text_container}>

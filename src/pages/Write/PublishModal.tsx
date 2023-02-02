@@ -12,6 +12,16 @@ import { postDetail, series } from '../../contexts/types';
 import { showToast } from '../../components/Toast';
 import { useLoginValue } from '../../contexts/LoginProvider';
 
+type postPostType = {
+  get_or_create_series: string;
+  title: string;
+  preview: string;
+  content: string;
+  is_private: boolean;
+  create_tag: string;
+  url: string;
+};
+
 const cx = classNames.bind(styles);
 
 interface PublishModalProps {
@@ -201,13 +211,14 @@ export default function PublishModal({
 
   const onPublishClick = async () => {
     try {
-      const postParams = {
-        series: null,
+      const postParams: postPostType = {
+        get_or_create_series: 'Null',
         title: post.title,
         preview: post.preview,
         content: post.content,
         is_private: post.is_private,
-        tags: post.tags,
+        create_tag: post.create_tag,
+        url: post.url,
       };
       const pid = searchParams.get('id');
       const response =

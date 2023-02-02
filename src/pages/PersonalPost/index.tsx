@@ -126,6 +126,8 @@ function PersonalPost() {
     likes: 0,
     is_private: false,
     is_active: true,
+    create_tag: '',
+    get_or_create_series: '',
   });
   const [isLoad, setLoad] = useState(false);
   const [commentLoadTrig, setCommentLoadTrig] = useState(false);

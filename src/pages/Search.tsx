@@ -24,7 +24,7 @@ function Search() {
     debounce(async (str: string) => {
       try {
         const response = await axios.get('/api/v1/velog');
-        setPosts(response.data);
+        setPosts(response.data.results);
       } catch (e) {
         console.error(e);
       }

@@ -24,7 +24,7 @@ export type post = {
   url: string;
   preview: string;
   thumbnail: string;
-  tags: string[];
+  tags: tag[];
   created_at: string;
   updated_at: string;
   comments: number;
@@ -48,7 +48,7 @@ export type postDetail = {
   url: string;
   preview: string;
   thumbnail: string;
-  tags: string[];
+  tags: tag[];
   created_at: string;
   updated_at: string;
   content: string;
@@ -59,6 +59,8 @@ export type postDetail = {
   likes: number;
   is_private: boolean;
   is_active: boolean;
+  create_tag: string;
+  get_or_create_series: string;
 }; // post별 page에서 필요한 post 정보
 
 export type seriesPost = {

@@ -4,6 +4,7 @@ import moment from 'moment';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
+import axios from 'axios';
 import styles from './BigPostComp.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import { post, user } from '../contexts/types';
@@ -16,23 +17,7 @@ type post_type = {
 };
 
 function BigPostComp({ postInfo, username }: post_type) {
-  const timeNow = moment();
-  const timePost = moment(postInfo.created_at);
-
-  const [agoFormat, setAgoFormat] = useState('YYYY-MM-DD');
-  const timeDiff = timeNow.diff(timePost);
-
-  useEffect(() => {
-    if (timeDiff < 1000 * 60 * 60)
-      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60))}분 전`);
-    else if (timeDiff < 1000 * 60 * 60 * 24)
-      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60 * 60))}시간 전`);
-    else if (timeDiff < 1000 * 60 * 60 * 24 * 7)
-      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60 * 60 * 24))}일 전`);
-    else setAgoFormat(timePost.format('YYYY년 MM월 DD일'));
-  }, []);
-
-  const user: user = {
+  const [user, setUser] = useState({
     username: 'myId',
     velog_name: 'my_velog',
     email: 'mail',
@@ -45,7 +30,36 @@ function BigPostComp({ postInfo, username }: post_type) {
     homepage: 'https://localhost:3000',
     mail: 'myId@snu.ac.kr',
     about: 'about 페이지에 들어갈 설명입니다',
-  };
+  });
+
+  async function getUser() {
+    try {
+      const response = await axios.get(
+        `/api/v1/velog/account/user/@${postInfo.author}`
+      );
+      const responseUser: user = response.data;
+      setUser(responseUser);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const timeNow = moment();
+  const timePost = moment(postInfo.created_at);
+
+  const [agoFormat, setAgoFormat] = useState('YYYY-MM-DD');
+  const timeDiff = timeNow.diff(timePost);
+
+  useEffect(() => {
+    getUser();
+    if (timeDiff < 1000 * 60 * 60)
+      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60))}분 전`);
+    else if (timeDiff < 1000 * 60 * 60 * 24)
+      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60 * 60))}시간 전`);
+    else if (timeDiff < 1000 * 60 * 60 * 24 * 7)
+      setAgoFormat(`${Math.floor(timeDiff / (1000 * 60 * 60 * 24))}일 전`);
+    else setAgoFormat(timePost.format('YYYY년 MM월 DD일'));
+  }, []);
 
   return (
     <div className={cx('postDiv')}>
@@ -59,21 +73,21 @@ function BigPostComp({ postInfo, username }: post_type) {
           </div>
         </div>
       )}
-      <Link to={postInfo.url}>
+      <Link to={`/@${postInfo.author}/${postInfo.url}`}>
         {postInfo.thumbnail !== null && postInfo.thumbnail !== undefined && (
           <div className={cx('thumbnail')}>
             <img src={postInfo.thumbnail} alt="post-thumbnail" />
           </div>
         )}
       </Link>
-      <Link to={postInfo.url}>
+      <Link to={`/@${postInfo.author}/${postInfo.url}`}>
         <h2>{postInfo.title}</h2>
       </Link>
       <p>{postInfo.preview}</p>
       <div className={cx('tagWrapper')}>
         {postInfo.tags?.map(tag => (
-          <Link to={`/tags/${tag}`} className={cx('tag')}>
-            {tag}
+          <Link to={`/tags/${tag.name}`} className={cx('tag')}>
+            {tag.name}
           </Link>
         ))}
       </div>

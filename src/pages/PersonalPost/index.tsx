@@ -36,6 +36,7 @@ import {
   user,
   mdElementType,
   commentType,
+  tag,
 } from '../../contexts/types';
 import { showToast } from '../../components/Toast';
 import CommentWrite from './CommentWrite';
@@ -44,7 +45,7 @@ type postGetType = {
   pid: number;
   series: number;
   title: string;
-  tags: string[];
+  tags: tag[];
   author: string;
   created_at: string;
   updated_at: string;
@@ -78,7 +79,12 @@ const dummyPost: post = {
   url: '/userid/posttitle',
   preview: 'preview',
   thumbnail: 'thm',
-  tags: ['tag1', 'tag2', 'tag3'],
+  tags: [
+    {
+      name: 'tag',
+      postCount: 1,
+    },
+  ],
   created_at: '2020-02-20 20:20:20',
   updated_at: '2023-01-24 10:20:20',
   comments: 2,
@@ -120,6 +126,8 @@ function PersonalPost() {
     likes: 0,
     is_private: false,
     is_active: true,
+    create_tag: '',
+    get_or_create_series: '',
   });
   const [isLoad, setLoad] = useState(false);
   const [commentLoadTrig, setCommentLoadTrig] = useState(false);
@@ -288,8 +296,8 @@ function PersonalPost() {
           <div className={styles.tag_container}>
             {post.tags.map(tag => {
               return (
-                <Link to={`/tags/${tag}`} key={tag}>
-                  {tag}
+                <Link to={`/tags/${tag.name}`} key={tag.name}>
+                  {tag.name}
                 </Link>
               );
             })}

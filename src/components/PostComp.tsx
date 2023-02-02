@@ -33,13 +33,13 @@ export default function PostComp({ post }: postCompProps) {
 
   return (
     <div className={cx('post')}>
-      <Link className={cx('image-link')} to={post.url}>
+      <Link className={cx('image-link')} to={`/@${post.author}/${post.url}`}>
         <div className={cx('image-container')}>
           <img src={post.thumbnail} alt="post" />
         </div>
       </Link>
       <div className={cx('body')}>
-        <Link className={cx('content')} to={post.url}>
+        <Link className={cx('content')} to={`/@${post.author}/${post.url}`}>
           <h4>{post.title}</h4>
           <div>
             <p>{post.preview}</p>

@@ -38,7 +38,16 @@ const dummyPost: post = {
   url: '/userid/posttitle',
   preview: 'preview',
   thumbnail: 'thm',
-  tags: ['tag1', 'tag2', 'tag3'],
+  tags: [
+    {
+      name: 'html',
+      postCount: 6,
+    },
+    {
+      name: 'css',
+      postCount: 6,
+    },
+  ],
   created_at: '2020-02-20 20:20:20',
   updated_at: '2023-01-22 20:20:20',
   comments: 2,
@@ -70,6 +79,8 @@ const dummyPostDetail: postDetail = {
   next_post: dummyPost,
   comments: [],
   is_active: true,
+  create_tag: '',
+  get_or_create_series: '',
 };
 
 const dummyTempPosts: postDetail[] = [

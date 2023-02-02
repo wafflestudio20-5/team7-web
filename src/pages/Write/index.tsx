@@ -27,37 +27,24 @@ import { ReactComponent as CodeblockIcon } from '../../assets/markdown_codeblock
 import { ReactComponent as BackIcon } from '../../assets/back.svg';
 import { showToast } from '../../components/Toast';
 import PublishModal from './PublishModal';
-import { postDetail, presetBtn, user } from '../../contexts/types';
+import { postDetail, presetBtn, tag } from '../../contexts/types';
 import { useLoginValue } from '../../contexts/LoginProvider';
-
-const dummyUser: user = {
-  username: 'id',
-  velog_name: 'velog',
-  email: 'mail',
-  name: 'name',
-  profile_image:
-    'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',
-  introduction: 'desc',
-  github: 'git',
-  twitter: 'twit',
-  facebook: 'face',
-  homepage: 'home',
-  mail: 'mail',
-  about: '',
-};
 
 type postGetType = {
   pid: number;
   series: number;
+  get_or_create_series: string;
   title: string;
   author: string;
-  tags: string[];
   created_at: string;
   updated_at: string;
   thumbnail: string;
   preview: string;
   content: string;
   is_private: boolean;
+  create_tag: string;
+  tags: tag[];
+  url: string;
 };
 
 let treeData: any;
@@ -86,7 +73,7 @@ const wrapperToRegExp = (wrapper: string) => {
 
 function Write() {
   const [post, setPost] = useState<postDetail>({
-    pid: 2,
+    pid: -1,
     title: '',
     author: 'id',
     url: '',
@@ -103,6 +90,8 @@ function Write() {
     likes: 0,
     is_private: false,
     is_active: true,
+    create_tag: '',
+    get_or_create_series: '',
   });
   const [isLoad, setLoad] = useState(false);
   const [isHide, setHide] = useState(false);
@@ -131,8 +120,30 @@ function Write() {
       const {
         pid: id,
         series,
+        get_or_create_series: seriesTigger,
         title,
         author,
+        created_at: createdAt,
+        updated_at: updatedAt,
+        thumbnail,
+        preview,
+        content,
+        is_private: isPrivate,
+        create_tag: createTag,
+        tags,
+        url,
+      }: postGetType = response.data;
+
+      if (!user || user.username !== author) {
+        showToast({ type: 'error', message: '권한이 없습니다.' });
+        navigate(-1);
+      }
+
+      setPost({
+        ...post,
+        pid: id,
+        author,
+        title,
         created_at: createdAt,
         updated_at: updatedAt,
         thumbnail,
@@ -140,25 +151,12 @@ function Write() {
         content,
         is_private: isPrivate,
         tags,
-      }: postGetType = response.data;
-
-      if (!user || user.username.toString() !== author.toString()) {
-        showToast({ type: 'error', message: '권한이 없습니다.' });
-        navigate(-1);
-      }
-
-      setPost({
-        ...post,
-        author,
-        title,
-        created_at: createdAt,
-        updated_at: updatedAt,
-        thumbnail,
-        preview,
-        content,
-        is_private: isPrivate,
+        url,
+        create_tag: createTag,
+        get_or_create_series: seriesTigger,
       });
       setLoad(true);
+      // 시리즈 설정 필요
     } catch (error) {
       showToast({ type: 'error', message: '글이 존재하지 않습니다.' });
       navigate(-1);
@@ -341,10 +339,16 @@ function Write() {
 
       if (
         newTag.length > 0 &&
-        post.tags.find(tag => tag === newTag) === undefined
+        post.tags.find(tag => tag.name === newTag) === undefined
       ) {
         setPost(post => {
-          return { ...post, tags: [...post.tags, newTag] };
+          return {
+            ...post,
+            tags: [...post.tags, { name: newTag, postCount: 0 }],
+            create_tag: post.create_tag
+              ? `${post.create_tag}, ${newTag}`
+              : newTag,
+          };
         });
       }
 
@@ -359,10 +363,14 @@ function Write() {
     if (e.key === 'Enter') {
       if (
         text.length > 0 &&
-        post.tags.find(tag => tag === text) === undefined
+        post.tags.find(tag => tag.name === text) === undefined
       ) {
         setPost(post => {
-          return { ...post, tags: [...post.tags, text] };
+          return {
+            ...post,
+            tags: [...post.tags, { name: text, postCount: 0 }],
+            create_tag: post.create_tag ? `${post.create_tag}, ${text}` : text,
+          };
         });
       }
 
@@ -372,7 +380,11 @@ function Write() {
       if (tempTags.pop() === undefined) return;
 
       setPost(post => {
-        return { ...post, tag: [...tempTags] };
+        return {
+          ...post,
+          tag: [...tempTags],
+          created_at: tempTags.map(x => x.name).join(', '),
+        };
       });
     }
   };
@@ -601,8 +613,8 @@ function Write() {
           <div className={styles.md_tag_container}>
             {post.tags.map(tag => {
               return (
-                <div className={styles.md_tag} key={tag}>
-                  {tag}
+                <div className={styles.md_tag} key={tag.name}>
+                  {tag.name}
                 </div>
               );
             })}

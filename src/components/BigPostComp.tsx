@@ -35,7 +35,7 @@ function BigPostComp({ postInfo, username }: post_type) {
   async function getUser() {
     try {
       const response = await axios.get(
-        `/api/v1/velog/account/user/@${postInfo.author}`
+        `/api/v1/accounts/user/@${postInfo.author}`
       );
       const responseUser: user = response.data;
       setUser(responseUser);

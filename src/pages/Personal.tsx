@@ -1,130 +1,17 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
-import Header from '../components/Header';
-// eslint-disable-next-line import/extensions,import/no-unresolved
-import UserIntro from '../components/UserIntro';
+import axios from 'axios';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import BigPostComp from '../components/BigPostComp';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './Personal.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved,camelcase
-import { post, user, userDetail } from '../contexts/types';
+import { post, tag } from '../contexts/types';
 
 const cx = classNames.bind(styles);
-const currentUser: user = {
-  username: 'myId',
-  velog_name: 'my_velog',
-  email: 'mail',
-  name: '이름',
-  profile_image: '',
-  introduction: '내 벨로그',
-  github: 'github',
-  twitter: 'twitter',
-  facebook: 'facebook',
-  homepage: 'https://localhost:3000',
-  mail: 'myId@snu.ac.kr',
-  about: 'about 페이지에 들어갈 설명입니다',
-};
-
-const userTags: string[] = ['tagA', 'tagB', 'tagC'];
-
-const postList: post[] = [
-  {
-    pid: 1,
-    title: '포스트 제목입니다',
-    author: 'id',
-    url: 'post-title-1',
-    preview: '포스트를 소개해주세요.',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    tags: [
-      {
-        name: 'html',
-        postCount: 6,
-      },
-      {
-        name: 'css',
-        postCount: 6,
-      },
-    ],
-    created_at: '2023-01-26 12:30:10',
-    updated_at: '2023-01-26 12:30:10',
-    comments: 23,
-    likes: 45,
-    is_private: false,
-  },
-  {
-    pid: 2,
-    title: '포스트 제목입니다',
-    author: 'id',
-    url: 'post-title-2',
-    preview: '포스트를 소개해주세요.',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    tags: [
-      {
-        name: 'html',
-        postCount: 6,
-      },
-      {
-        name: 'css',
-        postCount: 6,
-      },
-    ],
-    created_at: '2023-01-23 12:30:10',
-    updated_at: '2023-01-23 12:30:10',
-    comments: 23,
-    likes: 45,
-    is_private: false,
-  },
-  {
-    pid: 3,
-    title: '포스트 제목입니다',
-    author: 'id',
-    url: 'post-title-3',
-    preview: '포스트를 소개해주세요.',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    tags: [
-      {
-        name: 'html',
-        postCount: 6,
-      },
-      {
-        name: 'css',
-        postCount: 6,
-      },
-    ],
-    created_at: '2023-01-26 16:10:10',
-    updated_at: '2023-01-26 16:10:10',
-    comments: 23,
-    likes: 45,
-    is_private: false,
-  },
-  {
-    pid: 4,
-    title: '포스트 제목입니다',
-    author: 'id',
-    url: 'post-title-4',
-    preview: '포스트를 소개해주세요.',
-    thumbnail: 'https://pbs.twimg.com/media/Ct9Zp2UVYAAcnEt.jpg',
-    tags: [
-      {
-        name: 'html',
-        postCount: 6,
-      },
-      {
-        name: 'css',
-        postCount: 6,
-      },
-    ],
-    created_at: '2023-01-26 12:30:10',
-    updated_at: '2023-01-26 12:30:10',
-    comments: 23,
-    likes: 45,
-    is_private: true,
-  },
-];
 
 function Personal() {
   const [query, setQuery] = useState('');
@@ -132,6 +19,40 @@ function Personal() {
     return tag.length;
   }
   const tagQuery = new URLSearchParams(window.location.search).get('tag');
+  const { id } = useParams();
+
+  const [postList, setPost] = useState([]);
+  const getPost = useCallback(async () => {
+    try {
+      if (tagQuery === null) {
+        console.log(id);
+        const response = await axios.get(`/api/v1/velog/${id}`);
+        setPost(response.data);
+      } else {
+        const response = await axios.get(
+          `/api/v1/velog/${id}/tags/${tagQuery}`
+        );
+        setPost(response.data);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, [id]);
+
+  const [userTags, setTags] = useState([]);
+  const getTags = useCallback(async () => {
+    try {
+      const response = await axios.get(`/api/v1/velog/${id}/tags`);
+      setTags(response.data.results);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    getTags();
+    getPost();
+  }, []);
 
   return (
     <div>
@@ -166,20 +87,18 @@ function Personal() {
                     tagQuery === null ? 'tagActive' : 'none'
                   )}
                 >
-                  <Link to={`/@${currentUser.username}`}>전체보기</Link>
+                  <Link to={`/${id}`}>전체보기</Link>
                   <span>({getPostnum('')})</span>
                 </li>
-                {userTags.map((tag: string) => (
+                {userTags?.map((tag: tag) => (
                   <li
                     className={cx(
                       'tagElem',
-                      tagQuery === tag ? 'tagActive' : 'none'
+                      tagQuery === tag.name ? 'tagActive' : 'none'
                     )}
                   >
-                    <Link to={`/@${currentUser.username}?tag=${tag}`}>
-                      {tag}
-                    </Link>
-                    <span>({getPostnum(tag)})</span>
+                    <Link to={`/${id}?tag=${tag.name}`}>{tag.name}</Link>
+                    <span>({tag.postCount})</span>
                   </li>
                 ))}
               </ul>
@@ -194,7 +113,7 @@ function Personal() {
             <BigPostComp
               key={postComp.pid}
               postInfo={postComp}
-              username={currentUser.username}
+              username={id !== undefined ? id.replace('@', '') : ''}
             />
           ))}
         </div>

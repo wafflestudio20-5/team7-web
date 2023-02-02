@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
@@ -13,13 +13,13 @@ import { showToast } from '../../components/Toast';
 import { useLoginValue } from '../../contexts/LoginProvider';
 
 type postPostType = {
-  get_or_create_series: string;
+  get_or_create_series: string | null;
   title: string;
-  preview: string;
+  preview: string | null;
   content: string;
   is_private: boolean;
-  create_tag: string;
-  url: string;
+  create_tag: string | null;
+  url: string | null;
 };
 
 const cx = classNames.bind(styles);
@@ -39,36 +39,42 @@ export default function PublishModal({
 }: PublishModalProps) {
   const [thumbnailActive, setThumbnailActive] = useState(false);
   const [seriesActive, setSeriesActive] = useState(false);
-  const [curSeries, setCurSeries] = useState(0);
+  const [curSeries, setCurSeries] = useState(-1);
   const [newSeriesActive, setNewSeriesActive] = useState(false);
   const [newSeriesStart, setNewSeriesStart] = useState(false);
   const [newSeriesTitle, setNewSeriesTitle] = useState('');
   const [newSeriesUrl, setNewSeriesUrl] = useState('');
   const [seriesUrlSync, setSeriesUrlSync] = useState(true);
-  const [dummySeries, setDummySeries] = useState<series[]>([
-    {
-      id: 1,
-      series_name: 'series 1',
-      url: 'series-1',
-      photo: '',
-      update: '',
-      author: 'id',
-      postNum: 1,
-    },
-    {
-      id: 2,
-      series_name: 'series 2',
-      url: 'series-2',
-      photo: '',
-      update: '',
-      author: 'id',
-      postNum: 1,
-    },
-  ]);
+  const [seriesList, setSeriesList] = useState<series[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useLoginValue();
+
+  const getSeriesList = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `/api/v1/velog/@${user?.username}/series`
+      );
+      setSeriesList(response.data);
+    } catch (error) {
+      showToast({
+        type: 'error',
+        message: '시리즈 로드에 실패하였습니다. 새로고침 해주세요.',
+      });
+      console.log(error);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    getSeriesList();
+  }, [getSeriesList]);
+
+  useEffect(() => {
+    if (post.series) {
+      setCurSeries(post.series.id);
+    }
+  }, [post]);
 
   const onCancelClick = () => {
     setModalActive(false);
@@ -141,7 +147,7 @@ export default function PublishModal({
 
   const onSeriesCancelClick = () => {
     setSeriesActive(false);
-    setCurSeries(0);
+    setCurSeries(post.series?.id || -1);
     setNewSeriesTitle('');
     setNewSeriesUrl('');
     setSeriesUrlSync(true);
@@ -185,14 +191,15 @@ export default function PublishModal({
   };
 
   const onNewSeriesAddClick = () => {
-    if (dummySeries.find(series => series.url === newSeriesUrl) !== undefined) {
+    if (seriesList.find(series => series.url === newSeriesUrl) !== undefined) {
       showToast({ type: 'error', message: '이미 존재하는 URL입니다.' });
       onBackgroundClick();
       return;
     }
 
+    // 리스트에 띄울 용도, 실제 생성은 서버에서
     const newSeries: series = {
-      id: dummySeries[dummySeries.length - 1].id + 1,
+      id: seriesList[seriesList.length - 1].id + 1,
       series_name: newSeriesTitle,
       url: newSeriesUrl,
       photo: '',
@@ -201,7 +208,7 @@ export default function PublishModal({
       postNum: 1,
     };
 
-    setDummySeries([...dummySeries, newSeries]);
+    setSeriesList([...seriesList, newSeries]);
 
     setCurSeries(newSeries.id);
     setNewSeriesTitle('');
@@ -211,14 +218,18 @@ export default function PublishModal({
 
   const onPublishClick = async () => {
     try {
+      const curSeriesName = seriesList.find(
+        series => series.id === curSeries
+      )?.series_name;
+
       const postParams: postPostType = {
-        get_or_create_series: 'Null',
+        get_or_create_series: curSeriesName || null,
         title: post.title,
-        preview: post.preview,
+        preview: post.preview || null,
         content: post.content,
         is_private: post.is_private,
-        create_tag: post.create_tag,
-        url: post.url,
+        create_tag: post.create_tag || null,
+        url: post.url || null,
       };
       const pid = searchParams.get('id');
       const response =
@@ -226,7 +237,7 @@ export default function PublishModal({
           ? await axios.post(`/api/v1/velog/write/`, postParams)
           : await axios.put(`/api/v1/velog/write/id=${pid}`, postParams);
 
-      if (user !== null) navigate(`/@${user.username}/${post.title}`);
+      if (user !== null) navigate(`/@${user.username}/${post.url}`);
     } catch (error) {
       showToast({ type: 'error', message: '다시 시도해주세요.' });
       console.log(error);
@@ -282,7 +293,7 @@ export default function PublishModal({
                 />
               </div>
               <div className={styles.summary_container}>
-                <h4>rer</h4>
+                <h4>{post.title}</h4>
                 <textarea
                   className={styles.summary}
                   placeholder="당신의 포스트를 짧게 소개해보세요."
@@ -324,7 +335,7 @@ export default function PublishModal({
                           })}
                         >
                           <div className={styles.url_container}>
-                            <span>/fef/</span>
+                            <span>/@{user?.username}/</span>
                             <input
                               name="urlSlug"
                               value={newSeriesUrl}
@@ -353,7 +364,7 @@ export default function PublishModal({
                     </form>
                   </div>
                   <ul className={styles.series_list}>
-                    {dummySeries.map(series => (
+                    {seriesList.map(series => (
                       <li
                         className={cx(
                           curSeries === series.id
@@ -447,7 +458,7 @@ export default function PublishModal({
                       <div className={styles.name_wrapper}>
                         <div className={styles.name}>
                           {
-                            dummySeries.find(series => series.id === curSeries)
+                            seriesList.find(series => series.id === curSeries)
                               ?.series_name
                           }
                         </div>

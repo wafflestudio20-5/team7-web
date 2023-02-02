@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
+import axios from 'axios';
 import Header from '../components/Header';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import UserIntro from '../components/UserIntro';
@@ -10,27 +11,41 @@ import UserIntro from '../components/UserIntro';
 import styles from './PersonalAbout.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import { useLoginValue } from '../contexts/LoginProvider';
-// eslint-disable-next-line import/extensions,import/no-unresolved
-import { user, userDetail } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
-const currentUser: user = {
-  username: 'id',
-  velog_name: 'myvelog.log',
-  email: 'mail',
-  name: '이름',
-  profile_image: '',
-  introduction: 'desc',
-  github: 'github',
-  twitter: 'twitter',
-  facebook: 'facebook',
-  homepage: 'https://localhost:3000',
-  mail: 'yuye2002@snu.ac.kr',
-  about: 'about',
-};
-
 function PersonalAbout() {
+  const { id } = useParams();
+  const [currentUser, setUser] = useState({
+    username: 'id',
+    velog_name: 'id.log',
+    email: 'mail',
+    name: 'name',
+    profile_image: 'img',
+    introduction: 'intro',
+    github: 'github',
+    twitter: 'twitter',
+    facebook: 'facebook',
+    homepage: 'homepage',
+    mail: 'email',
+    about: 'desc',
+  });
+  const [newAbout, setAbout] = useState(currentUser.about);
+
+  const getUser = useCallback(async () => {
+    try {
+      const response = await axios.get(`/api/v1/accounts/user/${id}`);
+      setUser(response.data);
+      setAbout(currentUser.about);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    getUser();
+  }, [id]);
+
   const loginUser =
     useLoginValue().isLogin &&
     useLoginValue().user?.username === currentUser.username;
@@ -38,10 +53,17 @@ function PersonalAbout() {
   function writeOpen() {
     setWriting(true);
   }
-  const [newAbout, setAbout] = useState(currentUser.about);
-  function writeClose() {
-    currentUser.about = newAbout;
-    setWriting(false);
+  async function writeClose() {
+    try {
+      setWriting(false);
+      await axios.patch('/api/v1/accounts/user/', {
+        ...currentUser,
+        about: newAbout,
+      });
+      getUser();
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return (
@@ -79,7 +101,7 @@ function PersonalAbout() {
               </button>
             </div>
           )}
-          <div className={cx('intro')}>{newAbout}</div>
+          <div className={cx('intro')}>{currentUser.about}</div>
         </div>
       )}
       {isWriting && (

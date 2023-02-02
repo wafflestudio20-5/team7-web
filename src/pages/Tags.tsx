@@ -1,41 +1,50 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useCallback, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
+import axios from 'axios';
 import styles from './Tags.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import Header from '../components/Header';
-// eslint-disable-next-line import/extensions,import/no-unresolved
-import { tag } from '../contexts/types';
 
 const cx = classNames.bind(styles);
 
-const tagList: tag[] = [
-  {
-    name: 'JavaScript',
-    postCount: 1234,
-  },
-  {
-    name: 'TypeScript',
-    postCount: 4321,
-  },
-  {
-    name: 'Python',
-    postCount: 56,
-  },
-  {
-    name: 'TIL',
-    postCount: 100,
-  },
-]; // sortTab 이용해서 불러오기
+type tagGetType = {
+  tag_name: string;
+  postCount: number;
+};
 
 function Tags() {
+  const path = useLocation().search;
   const [sortTab, setSortTab] = useState('trending');
-  function toggle() {
-    if (sortTab === 'alphabetical') setSortTab('trending');
-    else setSortTab('alphabetical');
-  }
+
+  const [tagList, setTags] = useState([]);
+  const getTags = useCallback(async () => {
+    try {
+      if (sortTab !== 'alphabetical') {
+        const response = await axios.get(`/api/v1/velog/tags/?num=yes`);
+        setTags(response.data);
+        console.log(sortTab);
+      } else {
+        const response = await axios.get(`/api/v1/velog/tags/`);
+        setTags(response.data);
+        console.log(sortTab);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, [sortTab]);
+
+  useEffect(() => {
+    console.log(path);
+    if (path === '?sort=alphabetical') setSortTab('alphabetical');
+    else setSortTab('trending');
+  }, [path]);
+
+  useEffect(() => {
+    getTags();
+  }, [sortTab]);
 
   return (
     <div className={cx('page')}>
@@ -43,26 +52,24 @@ function Tags() {
       <main>
         <div className={cx('sortDiv')}>
           <div className={cx('tabWrapper')}>
-            <div
-              onClick={toggle}
+            <Link
+              to="/tags?sort=trending"
               className={cx(
                 'tab',
                 sortTab !== 'alphabetical' ? 'active' : 'none'
               )}
-              role="presentation"
             >
               인기순
-            </div>
-            <div
-              onClick={toggle}
+            </Link>
+            <Link
+              to="/tags?sort=alphabetical"
               className={cx(
                 'tab',
                 sortTab === 'alphabetical' ? 'active' : 'none'
               )}
-              role="presentation"
             >
               이름순
-            </div>
+            </Link>
             <div
               className={cx(
                 'line',
@@ -72,11 +79,11 @@ function Tags() {
           </div>
         </div>
         <section className={cx('tagSection')}>
-          {tagList.map((tagInfo: tag) => (
+          {tagList.map((tagInfo: tagGetType) => (
             <div className={cx('tagComp')}>
               <div>
-                <Link to={`/tags/${tagInfo.name}`} className={cx('title')}>
-                  {tagInfo.name}
+                <Link to={`/tags/${tagInfo.tag_name}`} className={cx('title')}>
+                  {tagInfo.tag_name}
                 </Link>
               </div>
               <div className={cx('count')}>

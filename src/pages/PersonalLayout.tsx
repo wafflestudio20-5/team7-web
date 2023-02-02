@@ -1,35 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
+import axios from 'axios';
 import Header from '../components/Header';
 import HeaderMoving from '../components/HeaderMoving';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import UserIntro from '../components/UserIntro';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './PersonalLayout.module.scss';
-// eslint-disable-next-line import/extensions,import/no-unresolved,camelcase
-import { user } from '../contexts/types';
 
 const cx = classNames.bind(styles);
-const currentUser: user = {
-  username: 'id',
-  velog_name: 'myvelog.log',
-  email: 'mail',
-  name: '이름',
-  profile_image: '',
-  introduction: 'desc',
-  github: 'github',
-  twitter: 'twitter',
-  facebook: 'facebook',
-  homepage: 'https://localhost:3000',
-  mail: 'yuye2002@snu.ac.kr',
-  about: 'about',
-};
 
 function PersonalLayout() {
+  const { id } = useParams();
+  const [currentUser, setUser] = useState({
+    username: 'id',
+    velog_name: 'id.log',
+    email: 'mail',
+    name: 'name',
+    profile_image: 'img',
+    introduction: 'intro',
+    github: 'github',
+    twitter: 'twitter',
+    facebook: 'facebook',
+    homepage: 'homepage',
+    mail: 'email',
+    about: 'desc',
+  });
+
+  const getUser = useCallback(async () => {
+    try {
+      const response = await axios.get(`/api/v1/accounts/user/${id}`);
+      setUser(response.data);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    getUser();
+  }, [id]);
+
   const path = useLocation().pathname;
+
   const [underlinePos, setUnderlinePos] = useState(0);
   const [underlineDest, setUnderlineDest] = useState(0);
 

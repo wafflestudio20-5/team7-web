@@ -46,11 +46,12 @@ function Search() {
     []
   );
   function debounceSearch(str: string) {
+    setPage(1);
     setQuery(str);
     updatePosts(str);
   }
 
-  const postCount = posts.length;
+  const postCount = posts !== undefined ? posts.length : 0;
 
   return (
     <div>
@@ -88,7 +89,7 @@ function Search() {
         )}
         {query !== '' && (
           <div>
-            {posts.map((postComp: post) => (
+            {posts?.map((postComp: post) => (
               <BigPostComp
                 key={postComp.pid}
                 postInfo={postComp}

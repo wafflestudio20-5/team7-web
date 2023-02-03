@@ -155,7 +155,7 @@ function Write() {
       // series id 만 필요
       const frontSeries: seriesDetail = {
         id: series,
-        title: '',
+        series_name: '',
         photo: '',
         update: '',
         author: '',

@@ -62,7 +62,7 @@ const dummySeriesPost: seriesPost = {
 
 const dummySeriesDetail: seriesDetail = {
   id: 1,
-  title: 'series',
+  series_name: 'series',
   photo: 'photo',
   update: '2020-02-20 20:20:20',
   author: 'id',

@@ -80,7 +80,7 @@ export type series = {
 
 export type seriesDetail = {
   id: number;
-  title: string;
+  series_name: string;
   photo: string;
   update: string;
   author: string;

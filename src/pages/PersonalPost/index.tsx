@@ -52,7 +52,7 @@ type tagGetType = {
 
 type postGetType = {
   pid: number;
-  series: number;
+  series: seriesDetail;
   title: string;
   tags: tagGetType[];
   author: string;
@@ -103,7 +103,6 @@ function PersonalPost() {
     about: '',
   });
   const [isLoad, setLoad] = useState(false);
-  const [seriesId, setSeriesId] = useState(-1);
   const [commentLoadTrig, setCommentLoadTrig] = useState(false);
   const [tocFixed, setTocFixed] = useState(false);
   const [utilFixed, setUtilFixed] = useState(false);
@@ -155,10 +154,10 @@ function PersonalPost() {
         created_at: createdAt,
         updated_at: updatedAt,
         content,
+        series,
         likes: parseInt(likes, 10),
         is_active: isLikeActive,
       });
-      setSeriesId(series);
       setLoad(true);
     } catch (error) {
       showToast({ type: 'error', message: '글이 존재하지 않습니다.' });
@@ -186,43 +185,43 @@ function PersonalPost() {
     getAuthor();
   }, [getAuthor]);
 
-  const getSeries = useCallback(async () => {
-    if (!isLoad) return;
+  // const getSeries = useCallback(async () => {
+  //   if (!isLoad) return;
 
-    try {
-      const response = await axios.get(`/api/v1/velog/@${post.author}/series/`);
-      const curSeries: series = response.data.find(
-        (series: series) => series.id === seriesId
-      );
+  //   try {
+  //     const response = await axios.get(`/api/v1/velog/@${post.author}/series/`);
+  //     const curSeries: series = response.data.find(
+  //       (series: series) => series.id === seriesId
+  //     );
 
-      if (!curSeries) return;
+  //     if (!curSeries) return;
 
-      const postListRes = await axios.get(
-        `/api/v1/velog/@${post.author}/series/${curSeries.series_name}`
-      );
+  //     const postListRes = await axios.get(
+  //       `/api/v1/velog/@${post.author}/series/${curSeries.series_name}`
+  //     );
 
-      const seriesPostList: seriesPost[] = postListRes.data.map(
-        (post: postGetType) => {
-          return { series_id: seriesId, post };
-        }
-      );
+  //     const seriesPostList: seriesPost[] = postListRes.data.map(
+  //       (post: postGetType) => {
+  //         return { series_id: seriesId, post };
+  //       }
+  //     );
 
-      setPost({
-        ...post,
-        series: {
-          ...curSeries,
-          title: curSeries.series_name,
-          postList: seriesPostList,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }, [isLoad]);
+  //     setPost({
+  //       ...post,
+  //       series: {
+  //         ...curSeries,
+  //         title: curSeries.series_name,
+  //         postList: seriesPostList,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [isLoad]);
 
-  useEffect(() => {
-    getSeries();
-  }, [getSeries]);
+  // useEffect(() => {
+  //   getSeries();
+  // }, [getSeries]);
 
   const getComment = useCallback(async () => {
     if (!isLoad) return;

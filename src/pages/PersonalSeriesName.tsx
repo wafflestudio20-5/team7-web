@@ -47,7 +47,7 @@ const dummySeriesPost2: seriesPost = {
 
 const dummySeriesDetail: seriesDetail = {
   id: 1,
-  title: 'series',
+  series_name: 'series',
   photo: 'photo',
   update: '2020-02-20 20:20:20',
   author: 'id',
@@ -92,7 +92,7 @@ function PersonalSeriesName() {
       <div className={cx('pageBody')}>
         <div>
           <span className={cx('label')}>시리즈</span>
-          <h1>{dummySeriesDetail.title}</h1>
+          <h1>{dummySeriesDetail.series_name}</h1>
           <div className={cx('line')} />
           <section>
             <div className={cx('sortRule')}>

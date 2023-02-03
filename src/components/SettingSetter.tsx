@@ -58,14 +58,31 @@ export default function SettingSetter() {
   const onFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       try {
-        console.log(URL.createObjectURL(e.target.files[0]));
-        const response = await axios.patch('/api/v1/accounts/user/', {
-          profile_image: URL.createObjectURL(e.target.files[0]),
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('profile_image', file);
+        const value = [
+          {
+            title: file.name,
+            content: file.name,
+          },
+        ];
+        const blob = new Blob([JSON.stringify(value)], {
+          type: 'application/json',
         });
+        formData.append('data', blob);
+        const urlResponse = await axios.patch(
+          '/api/v1/accounts/user/',
+          formData,
+          { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
+        const imageUrl = urlResponse.data.image;
+
+        const response = await axios.get('/api/v1/accounts/user/');
         changeUserValue(response.data);
         setInput({
           ...input,
-          profile_image: URL.createObjectURL(e.target.files[0]),
+          profile_image: imageUrl,
         });
       } catch (error: Error | any) {
         const keys = Object.keys(error.response.data);
@@ -79,7 +96,7 @@ export default function SettingSetter() {
   const onFileDelete = async () => {
     try {
       const response = await axios.patch('/api/v1/accounts/user/', {
-        profile_image: '',
+        profile_image: null,
       });
       changeUserValue(response.data);
       setInput({

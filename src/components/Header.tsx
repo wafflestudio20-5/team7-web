@@ -113,9 +113,6 @@ export default function Header() {
               <Link to="/lists/liked">
                 <div>읽기 목록</div>
               </Link>
-              <Link to="/follows">
-                <div>팔로우 관리</div>
-              </Link>
               <Link to="/setting">
                 <div>설정</div>
               </Link>

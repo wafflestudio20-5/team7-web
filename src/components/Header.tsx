@@ -112,9 +112,6 @@ export default function Header() {
               <Link to={`/@${user ? user.username : ''}`}>
                 <div>내 벨로그</div>
               </Link>
-              <Link to="/saves">
-                <div>임시 글</div>
-              </Link>
               <Link to="/lists/liked">
                 <div>읽기 목록</div>
               </Link>

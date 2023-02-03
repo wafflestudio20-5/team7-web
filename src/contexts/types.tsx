@@ -65,7 +65,7 @@ export type postDetail = {
 }; // post별 page에서 필요한 post 정보
 
 export type seriesPost = {
-  series_id: number;
+  series_order: number;
   post: post;
 }; // 각 series별 page에서 필요한 post 정보
 

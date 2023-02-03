@@ -56,7 +56,7 @@ const dummyPost: post = {
 };
 
 const dummySeriesPost: seriesPost = {
-  series_id: 1,
+  series_order: 1,
   post: dummyPost,
 };
 

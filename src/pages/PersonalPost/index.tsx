@@ -195,7 +195,7 @@ function PersonalPost() {
       const userInfo: user = response.data;
       setAuthorInfo({ ...userInfo });
 
-      if (post.is_private && user?.username === userInfo.username) {
+      if (post.is_private && user?.username !== userInfo.username) {
         showToast({ type: 'error', message: '비공개 게시글 입니다.' });
         navigate(-1);
       }

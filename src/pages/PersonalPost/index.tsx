@@ -64,6 +64,7 @@ type postGetType = {
   content: string;
   likes: string;
   is_active: boolean;
+  comments: commentType[];
   is_private: boolean;
   prev_post: post | null;
   next_post: post | null;
@@ -143,6 +144,7 @@ function PersonalPost() {
         content,
         likes,
         is_active: isLikeActive,
+        comments,
         is_private: isPrivate,
         prev_post: prevPost,
         next_post: nextPost,
@@ -169,6 +171,7 @@ function PersonalPost() {
         series,
         likes: parseInt(likes, 10),
         is_active: isLikeActive,
+        comments,
         is_private: isPrivate,
         prev_post: prevPost,
         next_post: nextPost,
@@ -199,6 +202,7 @@ function PersonalPost() {
     } catch (error) {
       console.log(error);
     }
+    setLoad(false);
   }, [isLoad]);
 
   useEffect(() => {
@@ -206,8 +210,6 @@ function PersonalPost() {
   }, [getAuthor]);
 
   const getComment = useCallback(async () => {
-    if (!isLoad) return;
-
     try {
       const response = await axios.get(`/api/v1/velog/${post.pid}/comment/`);
       setPost({ ...post, comments: response.data });

@@ -1,55 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import moment from 'moment';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
-import Header from '../components/Header';
-// eslint-disable-next-line import/extensions,import/no-unresolved
-import UserIntro from '../components/UserIntro';
+import axios from 'axios';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './PersonalSeries.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved
-import {
-  series,
-  seriesDetail,
-  seriesPost,
-  user,
-  userDetail,
-} from '../contexts/types';
+import { series } from '../contexts/types';
+import SeriesComp from '../components/SeriesComp';
 
 const cx = classNames.bind(styles);
 
-const currentUser: user = {
-  username: 'id',
-  velog_name: 'myvelog.log',
-  email: 'mail',
-  name: '이름',
-  profile_image: '',
-  introduction: 'desc',
-  github: 'github',
-  twitter: 'twitter',
-  facebook: 'facebook',
-  homepage: 'https://localhost:3000',
-  mail: 'yuye2002@snu.ac.kr',
-  about: 'about',
-};
-
-const dummySeries: series[] = [
-  {
-    id: 1,
-    series_name: 'series',
-    url: 'seriesName',
-    photo: '',
-    update: '2022-02-02 00:01:11',
-    author: 'id',
-    postNum: 2,
-  },
-];
-
 function PersonalSeries() {
-  const timeNow = moment();
+  const { id } = useParams();
 
+  const timeNow = moment();
   function timeSetting(timeComp: string) {
     const timeSeries = moment(timeComp);
     const [agoFormat, setAgoFormat] = useState('YYYY-MM-DD');
@@ -67,35 +34,25 @@ function PersonalSeries() {
     return agoFormat;
   }
 
+  const [seriesList, setSeriesList] = useState([]);
+  async function getSeries() {
+    try {
+      const response = await axios.get(`/api/v1/velog/${id}/series/`);
+      setSeriesList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getSeries();
+  }, []);
+
   return (
     <div>
       <div className={cx('seriesList')}>
-        {dummySeries.map((seriesInfo: series) => (
-          <div className={cx('seriesDiv')}>
-            <Link
-              to={`/@${seriesInfo.author}/series/${seriesInfo.url}`}
-              className={cx('link')}
-            >
-              <div>
-                <img src={seriesInfo.photo} alt="thumbnail" />
-              </div>
-            </Link>
-            <h4>
-              <Link
-                to={`/@${seriesInfo.author}/series/${seriesInfo.url}`}
-                className={cx('link')}
-              >
-                {seriesInfo.series_name}
-              </Link>
-            </h4>
-            <div className={cx('subInfo')}>
-              <span className={cx('count')}>
-                {seriesInfo.postNum}개의 포스트
-              </span>
-              <span className={cx('dot')}>·</span>
-              마지막 업테이트 {timeSetting(seriesInfo.update)}
-            </div>
-          </div>
+        {seriesList.map((seriesInfo: series) => (
+          <SeriesComp key={seriesInfo.url} seriesInfo={seriesInfo} />
         ))}
       </div>
     </div>

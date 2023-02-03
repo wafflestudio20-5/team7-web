@@ -1,66 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import moment from 'moment/moment';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
+import axios from 'axios';
 import Header from '../components/Header';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './PersonalSeriesName.module.scss';
 // eslint-disable-next-line import/extensions,import/no-unresolved
-import { user, seriesDetail, seriesPost, post } from '../contexts/types';
+import { seriesPost } from '../contexts/types';
+import OrderPostComp from '../components/OrderPostComp';
 
 const cx = classNames.bind(styles);
-
-const dummyPost: post = {
-  pid: 1,
-  title: 'title',
-  author: 'id',
-  url: '/userid/posttitle',
-  preview: 'preview',
-  thumbnail: 'thm',
-  tags: [
-    {
-      name: 'html',
-      postCount: 6,
-    },
-    {
-      name: 'css',
-      postCount: 6,
-    },
-  ],
-  created_at: '2020-02-20 20:20:20',
-  updated_at: '2020-02-20 20:20:20',
-  comments: 2,
-  likes: 77,
-  is_private: false,
-};
-
-const dummySeriesPost: seriesPost = {
-  series_order: 1,
-  post: dummyPost,
-};
-const dummySeriesPost2: seriesPost = {
-  series_order: 2,
-  post: dummyPost,
-};
-
-const dummySeriesDetail: seriesDetail = {
-  id: 1,
-  title: 'series',
-  photo: 'photo',
-  update: '2020-02-20 20:20:20',
-  author: 'id',
-  postNum: 2,
-  postList: [dummySeriesPost, dummySeriesPost2],
-};
 
 function PersonalSeriesName() {
   const [rotate, setRotate] = useState(false);
 
+  const [seriesDetail, setSeries] = useState({
+    id: 1,
+    title: 'series',
+    photo: 'photo',
+    update: '2020-02-20 20:20:20',
+    author: 'id',
+    postNum: 0,
+    postList: [],
+  });
   const [sortedList, setList] = useState(
-    rotate ? dummySeriesDetail.postList : dummySeriesDetail.postList.reverse()
+    rotate ? seriesDetail.postList : seriesDetail.postList.reverse()
   );
+
+  const { id, seriesName } = useParams();
+
+  async function getSeries() {
+    try {
+      const response = await axios.get(
+        `/api/v1/velog/${id}/series/${seriesName}`
+      );
+      setSeries(response.data);
+      setList(
+        rotate ? response.data.postList : response.data.postList.reverse()
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getSeries();
+  }, []);
+
   const changeOrder = () => {
     setRotate(!rotate);
     const reverseList = sortedList.reverse();
@@ -92,7 +81,7 @@ function PersonalSeriesName() {
       <div className={cx('pageBody')}>
         <div>
           <span className={cx('label')}>시리즈</span>
-          <h1>{dummySeriesDetail.title}</h1>
+          <h1>{seriesDetail.title}</h1>
           <div className={cx('line')} />
           <section>
             <div className={cx('sortRule')}>
@@ -120,25 +109,10 @@ function PersonalSeriesName() {
             </div>
             <div className={cx('postList')}>
               {sortedList.map((postInfo: seriesPost) => (
-                <div className={cx('postDiv')} key={postInfo.series_order}>
-                  <h2>
-                    <span>{postInfo.series_order}.</span>
-                    <Link to={`/@${postInfo.post.author}/${postInfo.post.url}`}>
-                      {postInfo.post.title}
-                    </Link>
-                  </h2>
-                  <section>
-                    <Link to={`/@${postInfo.post.author}/${postInfo.post.url}`}>
-                      <img src={postInfo.post.thumbnail} alt="post-thumbnail" />
-                    </Link>
-                    <div className={cx('postInfo')}>
-                      <p>{postInfo.post.preview}</p>
-                      <div className={cx('date')}>
-                        {timeSetting(postInfo.post.created_at)}
-                      </div>
-                    </div>
-                  </section>
-                </div>
+                <OrderPostComp
+                  post={postInfo.post}
+                  series_order={postInfo.series_order}
+                />
               ))}
             </div>
           </section>

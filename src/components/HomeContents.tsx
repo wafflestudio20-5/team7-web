@@ -14,13 +14,13 @@ export default function HomeContents({ posts }: HomeContentsProps) {
   return (
     <div className={cx('contents')}>
       <div className={cx('container')}>
-        <main>
+        <div className={cx('main')}>
           <div className={cx('posts')}>
             {posts.map(post => (
               <PostComp post={post} key={post.pid} />
             ))}
           </div>
-        </main>
+        </div>
       </div>
     </div>
   );

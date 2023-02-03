@@ -547,25 +547,6 @@ export default function SettingSetter() {
         <div className={cx('bottom-setting')}>
           <div className={cx('wrapper')}>
             <div className={cx('title')}>
-              <h3>이메일 수신 설정</h3>
-            </div>
-            <div className={cx('block')}>
-              <div className={cx('contents')}>
-                <ul>
-                  <li>
-                    <span>댓글 알림</span>
-                  </li>
-                  <li>
-                    <span>벨로그 업데이트 소식</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={cx('bottom-setting')}>
-          <div className={cx('wrapper')}>
-            <div className={cx('title')}>
               <h3>회원 탈퇴</h3>
             </div>
             <div className={cx('block')}>

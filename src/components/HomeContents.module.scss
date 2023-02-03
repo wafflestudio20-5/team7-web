@@ -6,7 +6,8 @@
   margin-right: auto;
   .container {
     display: flex;
-    main {
+    .main {
+      margin-top: 1rem;
       flex: 1 1 0%;
       box-sizing: inherit;
       display: flex;

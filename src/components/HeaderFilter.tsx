@@ -31,7 +31,6 @@ export default function HeaderFilter() {
     else if (path === '/recent') setUnderlineDest(112);
     else if (path === '/lists/liked') setUnderlineDest(0);
     else if (path === '/lists/read') setUnderlineDest(144);
-    else if (path === '/lists/following') setUnderlineDest(288);
   }, [path]);
 
   useEffect(() => {
@@ -113,16 +112,6 @@ export default function HeaderFilter() {
             }
           >
             최근 읽은 포스트
-          </Link>
-          <Link
-            to="/lists/following"
-            className={
-              path === '/lists/following'
-                ? cx('highlight', 'wider')
-                : cx('wider')
-            }
-          >
-            구독한 포스트
           </Link>
         </div>
         <div

@@ -27,16 +27,16 @@ export default function HeaderFilter() {
     setFilterValue(e.target.innerHTML);
     switch (e.target.innerHTML) {
       case '올해':
-        setDateFilter('y');
+        setDateFilter('year');
         break;
       case '이번 달':
-        setDateFilter('m');
+        setDateFilter('month');
         break;
       case '이번 주':
-        setDateFilter('w');
+        setDateFilter('week');
         break;
       default:
-        setDateFilter('d');
+        setDateFilter('today');
         break;
     }
     setFilterOn(false);

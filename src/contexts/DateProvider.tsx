@@ -16,7 +16,7 @@ export default function DateProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [dateFilter, setDateFilter] = useState('d');
+  const [dateFilter, setDateFilter] = useState('today');
 
   const filterSet = useMemo(
     () => ({

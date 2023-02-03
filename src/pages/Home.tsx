@@ -28,8 +28,8 @@ function Home() {
         setLoading(true);
         const url =
           pageNumber === 1
-            ? `/api/v1/velog/?filter=${dateFilter}/`
-            : `/api/v1/velog/?filter=${dateFilter}&page=${pageNumber}`;
+            ? `/api/v1/velog/${dateFilter}`
+            : `/api/v1/velog/${dateFilter}/?page=${pageNumber}`;
         const response = await axios.get(url);
         setPosts(posts => posts.concat(response.data.results));
         pageNumber += 1;

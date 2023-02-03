@@ -117,6 +117,10 @@ function PersonalPost() {
   const timeNow = moment();
   const timePost = moment(post.updated_at);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const getPost = useCallback(async () => {
     if (!atId || !postUrl) return;
 

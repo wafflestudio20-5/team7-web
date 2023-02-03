@@ -98,7 +98,6 @@ function Write() {
     is_private: false,
     is_active: true,
     create_tag: '',
-    get_or_create_series: '',
   });
   const [isLoad, setLoad] = useState(false);
   const [isHide, setHide] = useState(false);
@@ -107,6 +106,7 @@ function Write() {
   const [tagDescActive, setTagDescActive] = useState(false);
   const [tagDescVisible, setTagDescVisible] = useState(false);
   const [tagDescDamp, setTagDescDamp] = useState(false);
+  const [tagText, setTagText] = useState('');
   const previewRef = useRef<HTMLDivElement>(null);
   const mouseIsOn = useRef<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -117,9 +117,9 @@ function Write() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useLoginValue();
+  const pid = searchParams.get('id');
 
   const getCurPost = useCallback(async () => {
-    const pid = searchParams.get('id');
     if (pid === null) return;
 
     try {
@@ -127,7 +127,6 @@ function Write() {
       const {
         pid: id,
         series,
-        get_or_create_series: seriesTigger,
         title,
         author,
         created_at: createdAt,
@@ -157,7 +156,7 @@ function Write() {
       // series id 만 필요
       const frontSeries: seriesDetail = {
         id: series,
-        title: '',
+        series_name: '',
         photo: '',
         update: '',
         author: '',
@@ -180,14 +179,13 @@ function Write() {
         tags: frontTags,
         url,
         create_tag: createTag,
-        get_or_create_series: seriesTigger,
       });
       setLoad(true);
     } catch (error) {
       showToast({ type: 'error', message: '글이 존재하지 않습니다.' });
       navigate(-1);
     }
-  }, [searchParams]);
+  }, [pid]);
 
   useEffect(() => {
     getCurPost();
@@ -371,13 +369,16 @@ function Write() {
           return {
             ...post,
             tags: [...post.tags, { name: newTag, postCount: 0 }],
-            create_tag: `${post.create_tag}${newTag}, `,
+            create_tag: `${
+              post.create_tag === null ? '' : post.create_tag
+            }${newTag}, `,
           };
         });
       }
 
       e.target.value = '';
     }
+    setTagText(e.target.value);
   };
 
   // 엔터 입력 시 태그 추가
@@ -393,13 +394,16 @@ function Write() {
           return {
             ...post,
             tags: [...post.tags, { name: text, postCount: 0 }],
-            create_tag: `${post.create_tag}${text}, `,
+            create_tag: `${
+              post.create_tag === null ? '' : post.create_tag
+            }${text}, `,
           };
         });
+        setTagText('');
       }
 
       target.value = '';
-    } else if (e.key === 'Backspace') {
+    } else if (e.key === 'Backspace' && text === '') {
       const tempTags = post.tags;
       if (tempTags.pop() === undefined) return;
 
@@ -649,6 +653,7 @@ function Write() {
               onBlur={onTagBlur}
               onChange={handleTagInput}
               onKeyDown={onTagKeyDown}
+              value={tagText}
             />
             <div className={styles.md_tag_underline}>
               {tagDescVisible && (
@@ -746,7 +751,7 @@ function Write() {
               className={styles.md_footer_publish}
               onClick={onPublishClick}
             >
-              출간하기
+              {pid === null ? '출간하기' : '수정하기'}
             </button>
           </div>
         </div>
@@ -768,6 +773,7 @@ function Write() {
         setPost={setPost}
         modalActive={modalActive}
         setModalActive={setModalActive}
+        tagText={tagText}
       />
     </div>
   );

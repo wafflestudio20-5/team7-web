@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Moment from 'react-moment';
 import 'moment/locale/ko';
 import moment from 'moment';
@@ -20,22 +20,6 @@ interface commentProps {
   setCommentLoadTrig: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const dummyUser: user = {
-  username: 'id',
-  velog_name: 'velog',
-  email: 'mail',
-  name: 'name',
-  profile_image:
-    'https://velog.velcdn.com/images/shinhw371/profile/2a470881-5a62-429f-97fb-c449c2dc1911/social_profile.png',
-  introduction: 'desc',
-  github: 'git',
-  twitter: 'twit',
-  facebook: 'face',
-  homepage: 'home',
-  mail: 'mail',
-  about: '소개',
-};
-
 // nested ternery 회피용
 const buttonText = (visible: boolean, children: commentType[]) => {
   if (visible) {
@@ -54,12 +38,44 @@ function CommentItem({
   setCommentLoadTrig,
 }: commentProps) {
   const [children, setChildren] = useState<commentType[]>([]);
+  const [authorInfo, setAuthorInfo] = useState<user>({
+    username: '',
+    velog_name: '',
+    email: '',
+    name: '',
+    profile_image: '',
+    introduction: '',
+    github: '',
+    twitter: '',
+    facebook: '',
+    homepage: '',
+    mail: '',
+    about: '',
+  });
   const [replyVisible, setReplyVisible] = useState(false);
   const [replyWrite, setReplyWrite] = useState(false);
   const [replyRevise, setReplyRevise] = useState(false);
   const { open } = useModalActions();
   const timeNow = moment();
   const timeComment = moment(comment.created_at);
+
+  const getAuthor = useCallback(async () => {
+    if (!comment) return;
+
+    try {
+      const response = await axios.get(
+        `/api/v1/accounts/user/@${comment.author}`
+      );
+      const userInfo: user = response.data;
+      setAuthorInfo({ ...userInfo });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [comment]);
+
+  useEffect(() => {
+    getAuthor();
+  }, [getAuthor]);
 
   useEffect(() => {
     setChildren(
@@ -110,12 +126,12 @@ function CommentItem({
     <div className={styles.comment}>
       <div className={styles.comment_head}>
         <div className={styles.profile}>
-          <Link to={`/@${dummyUser.username}`}>
-            <img src={dummyUser.profile_image} alt="profile" />
+          <Link to={`/@${authorInfo.username}`}>
+            <img src={authorInfo.profile_image} alt="profile" />
           </Link>
           <div className={styles.comment_info}>
             <div className={styles.username}>
-              <Link to={`/@${dummyUser.username}`}>{dummyUser.username}</Link>
+              <Link to={`/@${authorInfo.username}`}>{authorInfo.username}</Link>
             </div>
             <div className={styles.date}>
               {moment.duration(timeNow.diff(timeComment)).asDays() > 7 ? (

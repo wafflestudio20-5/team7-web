@@ -61,7 +61,6 @@ export type postDetail = {
   is_private: boolean;
   is_active: boolean;
   create_tag: string;
-  get_or_create_series: string;
 }; // post별 page에서 필요한 post 정보
 
 export type seriesPost = {
@@ -81,7 +80,7 @@ export type series = {
 
 export type seriesDetail = {
   id: number;
-  title: string;
+  series_name: string;
   photo: string;
   update: string;
   author: string;

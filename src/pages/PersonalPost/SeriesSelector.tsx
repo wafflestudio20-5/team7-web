@@ -19,16 +19,23 @@ export default function SeriesSelector({ post }: { post: postDetail | null }) {
   const navigate = useNavigate();
   const { pid, series }: { pid: number; series: seriesDetail | null } =
     post || { pid: -1, series: null };
-  const { id, title, photo, update, author, postNum, postList }: seriesDetail =
-    series || {
-      id: -1,
-      title: '',
-      photo: '',
-      update: '',
-      author: '',
-      postNum: 0,
-      postList: [],
-    };
+  const {
+    id,
+    series_name: seriesName,
+    photo,
+    update,
+    author,
+    postNum,
+    postList,
+  }: seriesDetail = series || {
+    id: -1,
+    series_name: '',
+    photo: '',
+    update: '',
+    author: '',
+    postNum: 0,
+    postList: [],
+  };
   const curPostIdx = postList.findIndex(spost => spost.post.pid === pid) + 1;
 
   const toggleList = () => {
@@ -46,7 +53,7 @@ export default function SeriesSelector({ post }: { post: postDetail | null }) {
   return (
     <div className={styles.series_container}>
       <h2>
-        <Link to={`/@${author}/series/${title}`}>{title}</Link>
+        <Link to={`/@${author}/series/${seriesName}`}>{seriesName}</Link>
       </h2>
       <SeriesIcon className={styles.series_mark} />
       {listVisible && (

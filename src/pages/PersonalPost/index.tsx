@@ -185,44 +185,6 @@ function PersonalPost() {
     getAuthor();
   }, [getAuthor]);
 
-  // const getSeries = useCallback(async () => {
-  //   if (!isLoad) return;
-
-  //   try {
-  //     const response = await axios.get(`/api/v1/velog/@${post.author}/series/`);
-  //     const curSeries: series = response.data.find(
-  //       (series: series) => series.id === seriesId
-  //     );
-
-  //     if (!curSeries) return;
-
-  //     const postListRes = await axios.get(
-  //       `/api/v1/velog/@${post.author}/series/${curSeries.series_name}`
-  //     );
-
-  //     const seriesPostList: seriesPost[] = postListRes.data.map(
-  //       (post: postGetType) => {
-  //         return { series_id: seriesId, post };
-  //       }
-  //     );
-
-  //     setPost({
-  //       ...post,
-  //       series: {
-  //         ...curSeries,
-  //         title: curSeries.series_name,
-  //         postList: seriesPostList,
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, [isLoad]);
-
-  // useEffect(() => {
-  //   getSeries();
-  // }, [getSeries]);
-
   const getComment = useCallback(async () => {
     if (!isLoad) return;
 

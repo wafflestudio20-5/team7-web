@@ -29,6 +29,7 @@ interface PublishModalProps {
   setPost: React.Dispatch<React.SetStateAction<postDetail>>;
   modalActive: boolean;
   setModalActive: React.Dispatch<React.SetStateAction<boolean>>;
+  tagText: string;
 }
 
 export default function PublishModal({
@@ -36,6 +37,7 @@ export default function PublishModal({
   setPost,
   modalActive,
   setModalActive,
+  tagText,
 }: PublishModalProps) {
   const [thumbnailActive, setThumbnailActive] = useState(false);
   const [seriesActive, setSeriesActive] = useState(false);
@@ -50,6 +52,7 @@ export default function PublishModal({
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useLoginValue();
+  const pid = searchParams.get('id');
 
   const getSeriesList = useCallback(async () => {
     if (!user) return;
@@ -73,9 +76,7 @@ export default function PublishModal({
   }, [getSeriesList]);
 
   useEffect(() => {
-    if (post.series) {
-      setCurSeries(post.series.id);
-    }
+    setCurSeries(post.series?.id || -1);
   }, [post]);
 
   const onCancelClick = () => {
@@ -230,6 +231,15 @@ export default function PublishModal({
   };
 
   const onPublishClick = async () => {
+    if (tagText) {
+      showToast({
+        type: 'error',
+        message:
+          '태그 등록이 미완성 상태입니다. 엔터나 쉼표로 입력을 완료해주세요.',
+      });
+      return;
+    }
+
     try {
       const postParams: postPostType = {
         series: curSeries > -1 ? curSeries : null,
@@ -240,7 +250,6 @@ export default function PublishModal({
         create_tag: post.create_tag || null,
         url: post.url || null,
       };
-      const pid = searchParams.get('id');
       const response =
         pid === null
           ? await axios.post(`/api/v1/velog/write/`, postParams)
@@ -506,7 +515,7 @@ export default function PublishModal({
                 className={styles.publish_button}
                 onClick={onPublishClick}
               >
-                출간하기
+                {pid === null ? '출간하기' : '수정하기'}
               </button>
             </div>
           )}

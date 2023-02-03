@@ -106,6 +106,7 @@ function Write() {
   const [tagDescActive, setTagDescActive] = useState(false);
   const [tagDescVisible, setTagDescVisible] = useState(false);
   const [tagDescDamp, setTagDescDamp] = useState(false);
+  const [tagText, setTagText] = useState('');
   const previewRef = useRef<HTMLDivElement>(null);
   const mouseIsOn = useRef<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -116,9 +117,9 @@ function Write() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useLoginValue();
+  const pid = searchParams.get('id');
 
   const getCurPost = useCallback(async () => {
-    const pid = searchParams.get('id');
     if (pid === null) return;
 
     try {
@@ -184,7 +185,7 @@ function Write() {
       showToast({ type: 'error', message: '글이 존재하지 않습니다.' });
       navigate(-1);
     }
-  }, [searchParams]);
+  }, [pid]);
 
   useEffect(() => {
     getCurPost();
@@ -375,6 +376,7 @@ function Write() {
 
       e.target.value = '';
     }
+    setTagText(e.target.value);
   };
 
   // 엔터 입력 시 태그 추가
@@ -393,6 +395,7 @@ function Write() {
             create_tag: `${post.create_tag}${text}, `,
           };
         });
+        setTagText('');
       }
 
       target.value = '';
@@ -646,6 +649,7 @@ function Write() {
               onBlur={onTagBlur}
               onChange={handleTagInput}
               onKeyDown={onTagKeyDown}
+              value={tagText}
             />
             <div className={styles.md_tag_underline}>
               {tagDescVisible && (
@@ -743,7 +747,7 @@ function Write() {
               className={styles.md_footer_publish}
               onClick={onPublishClick}
             >
-              출간하기
+              {pid === null ? '출간하기' : '수정하기'}
             </button>
           </div>
         </div>
@@ -765,6 +769,7 @@ function Write() {
         setPost={setPost}
         modalActive={modalActive}
         setModalActive={setModalActive}
+        tagText={tagText}
       />
     </div>
   );

@@ -91,7 +91,7 @@ function PersonalPost() {
     comments: [],
     likes: 0,
     is_private: false,
-    is_active: true,
+    is_active: false,
     create_tag: '',
   });
   const [authorInfo, setAuthorInfo] = useState<user>({
@@ -112,7 +112,6 @@ function PersonalPost() {
   const [commentLoadTrig, setCommentLoadTrig] = useState(false);
   const [tocFixed, setTocFixed] = useState(false);
   const [utilFixed, setUtilFixed] = useState(false);
-  const [likeClicked, setLikeClicked] = useState(false);
   const tocRef = useRef<HTMLDivElement>(null);
   const utilRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -285,8 +284,32 @@ function PersonalPost() {
     open('포스트 삭제', '정말로 삭제하시겠습니까?', deletePost);
   };
 
+  const handleLike = useCallback(async () => {
+    try {
+      const postParams = {
+        series: post.series,
+        title: post.title,
+        url: post.url,
+        preview: post.preview,
+        content: post.content,
+        is_private: post.is_private,
+      };
+      const response = await axios.post(
+        `/api/v1/velog/@${post.author}/${post.url}/`,
+        postParams
+      );
+      setPost({
+        ...post,
+        likes: response.data.likes,
+        is_active: response.data.is_active,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [isLoad]);
+
   const onLikeClick = () => {
-    setLikeClicked(x => !x);
+    handleLike();
   };
 
   return (
@@ -325,11 +348,11 @@ function PersonalPost() {
             <div className={styles.like_container}>
               <button
                 type="button"
-                className={cx({ active: likeClicked })}
+                className={cx({ active: post.is_active })}
                 onClick={onLikeClick}
               >
                 <LikeIcon />
-                <span>0</span>
+                <span>{post.likes}</span>
               </button>
             </div>
           </div>
@@ -347,8 +370,8 @@ function PersonalPost() {
               <UtilBar
                 utilFixed={utilFixed}
                 likes={post.likes}
-                likeClicked={likeClicked}
-                setLikeClicked={setLikeClicked}
+                isActive={post.is_active}
+                onLikeClick={onLikeClick}
               />
             </div>
           </div>

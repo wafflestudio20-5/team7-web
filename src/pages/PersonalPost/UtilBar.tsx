@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { FacebookShareButton, TwitterShareButton } from 'react-share';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -15,11 +15,11 @@ const cx = classNames.bind(styles);
 interface utilProps {
   utilFixed: boolean;
   likes: number;
-  likeClicked: boolean;
-  setLikeClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  isActive: boolean;
+  onLikeClick: () => void;
 }
 
-function UtilBar({ utilFixed, likes, likeClicked, setLikeClicked }: utilProps) {
+function UtilBar({ utilFixed, likes, isActive, onLikeClick }: utilProps) {
   const [likeScale, setLikeScale] = useState(1.0);
   const [likeTransit, setLikeTransit] = useState(150);
   const [linkClicked, setLinkClicked] = useState(false);
@@ -28,10 +28,8 @@ function UtilBar({ utilFixed, likes, likeClicked, setLikeClicked }: utilProps) {
   const [clipPos, setClipPos] = useState([0, 0]);
   const curUrl = window.location.href;
 
-  const onLikeClick = () => {
-    setLikeClicked(x => !x);
-
-    if (!likeClicked) {
+  useEffect(() => {
+    if (isActive) {
       setLikeScale(1.25);
       setTimeout(() => {
         setLikeScale(1.0);
@@ -46,7 +44,7 @@ function UtilBar({ utilFixed, likes, likeClicked, setLikeClicked }: utilProps) {
         setLikeTransit(220);
       }, 375);
     }
-  };
+  }, [isActive]);
 
   const onLinkClick = () => {
     setLinkClicked(x => !x);
@@ -78,7 +76,7 @@ function UtilBar({ utilFixed, likes, likeClicked, setLikeClicked }: utilProps) {
       style={utilFixed ? { position: 'fixed', top: '112px' } : {}}
     >
       <div
-        className={cx(likeClicked ? 'like_active' : 'like')}
+        className={cx(isActive ? 'like_active' : 'like')}
         onClick={onLikeClick}
         role="presentation"
         style={{

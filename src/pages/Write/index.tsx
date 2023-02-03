@@ -164,6 +164,10 @@ function Write() {
         postList: [],
       };
 
+      const tempCreateTag = frontTags.length
+        ? `${frontTags.map(x => x.name).join(', ')}, `
+        : 'null';
+
       setPost({
         ...post,
         pid: id,
@@ -178,7 +182,7 @@ function Write() {
         is_private: isPrivate,
         tags: frontTags,
         url,
-        create_tag: createTag,
+        create_tag: tempCreateTag,
       });
       setLoad(true);
     } catch (error) {
@@ -370,7 +374,7 @@ function Write() {
             ...post,
             tags: [...post.tags, { name: newTag, postCount: 0 }],
             create_tag: `${
-              post.create_tag === null ? '' : post.create_tag
+              post.create_tag === 'null' ? '' : post.create_tag
             }${newTag}, `,
           };
         });
@@ -395,7 +399,7 @@ function Write() {
             ...post,
             tags: [...post.tags, { name: text, postCount: 0 }],
             create_tag: `${
-              post.create_tag === null ? '' : post.create_tag
+              post.create_tag === 'null' ? '' : post.create_tag
             }${text}, `,
           };
         });
@@ -407,11 +411,15 @@ function Write() {
       const tempTags = post.tags;
       if (tempTags.pop() === undefined) return;
 
+      const createTag = tempTags.length
+        ? `${tempTags.map(x => x.name).join(', ')}, `
+        : 'null';
+
       setPost(post => {
         return {
           ...post,
           tag: [...tempTags],
-          created_at: `${tempTags.map(x => x.name).join(', ')}, `,
+          create_tag: createTag,
         };
       });
     }

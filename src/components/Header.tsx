@@ -24,7 +24,12 @@ export default function Header() {
 
   return (
     <div>
-      <div className={cx('header')}>
+      <div
+        className={cx('header')}
+        style={{
+          background: path[1] === '@' ? 'var(--bg-page2)' : 'var(--bg-page1)',
+        }}
+      >
         <div className={cx('center')}>
           <div className={path[1] === '@' ? cx('blind') : cx('left')}>
             <Link to="/">velog</Link>
@@ -37,7 +42,7 @@ export default function Header() {
               />
             </Link>
             <Link to={`/${path.split('/')[1]}`}>
-              {path.split('/')[1].slice(1)}
+              {path.split('/')[1].slice(1)}.log
             </Link>
           </div>
           <div className={cx('right')}>

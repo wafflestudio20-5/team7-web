@@ -103,7 +103,7 @@ export default function Header() {
               />
             </Link>
             <Link to={`/${path.split('/')[1]}`}>
-              {path.split('/')[1].slice(1)}
+              {path.split('/')[1].slice(1)}.log
             </Link>
           </div>
           <div className={cx('right')}>

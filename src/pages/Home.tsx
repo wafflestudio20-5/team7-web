@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import HomeContents from '../components/HomeContents';
 import { post } from '../contexts/types';
+import { useDateFilter } from '../contexts/DateProvider';
 
 function Home() {
   const tempPosts: post[] = [];
   const [posts, setPosts] = useState(tempPosts);
+  const { dateFilter } = useDateFilter();
+  const [filter, setFilter] = useState(dateFilter);
 
   const [target, setTarget] = useState<HTMLElement | null>(null);
   let pageNumber: number = 1;
@@ -23,7 +26,11 @@ function Home() {
       try {
         observer.unobserve(entry.target);
         setLoading(true);
-        const response = await axios.get(`/api/v1/velog?page=${pageNumber}`);
+        const url =
+          pageNumber === 1
+            ? `/api/v1/velog/?filter=${dateFilter}/`
+            : `/api/v1/velog/?filter=${dateFilter}&page=${pageNumber}`;
+        const response = await axios.get(url);
         setPosts(posts => posts.concat(response.data.results));
         pageNumber += 1;
         setLoading(false);
@@ -34,6 +41,19 @@ function Home() {
     }
   }
 
+  const acceptFilter = (dateFilter: any) => {
+    if (dateFilter !== filter) {
+      setFilter(dateFilter);
+      setPosts([]);
+      pageNumber = 1;
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    acceptFilter(dateFilter);
+  }, [dateFilter]);
+
   useEffect(() => {
     let observer: IntersectionObserver;
     if (target) {
@@ -43,7 +63,7 @@ function Home() {
       observer.observe(target);
     }
     return () => observer && observer.disconnect();
-  }, [target]);
+  }, [target, dateFilter]);
 
   return (
     <>

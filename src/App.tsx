@@ -24,6 +24,7 @@ import LoginProcess from './pages/LoginProcess';
 import NotFound from './pages/NotFound';
 import ModalProvider from './contexts/ModalProvider';
 import LoginProvider from './contexts/LoginProvider';
+import DateProvider from './contexts/DateProvider';
 import Toast from './components/Toast';
 import Modal from './components/Modal';
 import HeaderLayout from './pages/HeaderLayout';
@@ -32,7 +33,9 @@ import PersonalLayout from './pages/PersonalLayout';
 function AppProvider({ children }: { children: React.ReactNode }) {
   return (
     <LoginProvider>
-      <ModalProvider>{children}</ModalProvider>
+      <DateProvider>
+        <ModalProvider>{children}</ModalProvider>
+      </DateProvider>
     </LoginProvider>
   );
 }
@@ -48,14 +51,12 @@ function App() {
         <Route path="/write" element={<Write />} />
         <Route path="/saves" element={<Saves />} />
         <Route path="/setting" element={<Setting />} />
-        <Route path="/follows" element={<Follows />} />
         <Route element={<HeaderLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/recent" element={<Recent />} />
           <Route path="/lists">
             <Route path="liked" element={<ListsLiked />} />
             <Route path="read" element={<ListsRead />} />
-            <Route path="following" element={<ListsFollowing />} />
             <Route path="" element={<NotFound />} />
           </Route>
         </Route>

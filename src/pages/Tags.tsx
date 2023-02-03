@@ -25,11 +25,9 @@ function Tags() {
       if (sortTab !== 'alphabetical') {
         const response = await axios.get(`/api/v1/velog/tags/?num=yes`);
         setTags(response.data);
-        console.log(sortTab);
       } else {
         const response = await axios.get(`/api/v1/velog/tags/`);
         setTags(response.data);
-        console.log(sortTab);
       }
     } catch (e) {
       console.error(e);
@@ -37,7 +35,6 @@ function Tags() {
   }, [sortTab]);
 
   useEffect(() => {
-    console.log(path);
     if (path === '?sort=alphabetical') setSortTab('alphabetical');
     else setSortTab('trending');
   }, [path]);

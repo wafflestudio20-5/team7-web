@@ -141,10 +141,11 @@ export default function LoginProvider({
               access_token: accessToken,
             }
           );
+          axios.defaults.headers.common.Authorization = `Bearer ${response.data.access}`;
           setLoginValue({
             isLogin: true,
             user: response.data.user,
-            accessToken: '',
+            accessToken: response.data.access,
           });
           localStorage.setItem('refreshToken', response.data.refresh_token);
           navigate('/');

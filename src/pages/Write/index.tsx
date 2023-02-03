@@ -107,6 +107,7 @@ function Write() {
   const [tagDescVisible, setTagDescVisible] = useState(false);
   const [tagDescDamp, setTagDescDamp] = useState(false);
   const [tagText, setTagText] = useState('');
+  const [imageData, setImageData] = useState<FormData | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
   const mouseIsOn = useRef<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -430,8 +431,42 @@ function Write() {
   };
 
   const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setImageLink(e.target.files && e.target.files[0].name);
+    if (!e.target.files) return;
+
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+    const value = [
+      {
+        title: file.name,
+        content: file.name,
+      },
+    ];
+    const blob = new Blob([JSON.stringify(value)], {
+      type: 'application/json',
+    });
+    formData.append('data', blob);
+    setImageData(formData);
   };
+
+  const getImageLink = useCallback(async () => {
+    if (!imageData) return;
+
+    try {
+      const response = await axios.post(
+        `/api/v1/velog/image_upload/${post.pid}`,
+        imageData,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
+      setImageLink(response.data.image);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [imageData]);
+
+  useEffect(() => {
+    getImageLink();
+  }, [getImageLink]);
 
   useEffect(() => {
     // 원래는 업로드 완료 후 링크 넣기
@@ -441,8 +476,8 @@ function Write() {
     editorView.dispatch({
       changes: {
         from: cursor.from,
-        to: cursor.from + 11,
-        insert: `[](${imageLink})`,
+        to: cursor.from + 12,
+        insert: `![](${imageLink})`,
       },
       selection: {
         anchor: cursor.from + 4 + (imageLink ? imageLink.length : 0),
@@ -598,7 +633,7 @@ function Write() {
         break;
       }
       case presetBtn.image:
-        change.insert = '[업로드 중..]()';
+        change.insert = '![업로드 중..]()';
         onImageLinkClick();
 
         break;

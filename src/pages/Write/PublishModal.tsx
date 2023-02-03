@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import { url } from 'inspector';
 import styles from './PublishModal.module.scss';
 import { ReactComponent as ImageIcon } from '../../assets/image.svg';
 import { ReactComponent as WorldIcon } from '../../assets/world.svg';
@@ -15,6 +16,7 @@ import { useLoginValue } from '../../contexts/LoginProvider';
 type postPostType = {
   series: number | null;
   title: string;
+  thumbnail: FormData | null | undefined;
   preview: string | null;
   content: string;
   is_private: boolean;
@@ -40,6 +42,8 @@ export default function PublishModal({
   tagText,
 }: PublishModalProps) {
   const [thumbnailActive, setThumbnailActive] = useState(false);
+  const [thumbnailData, setThumbnailData] = useState<FormData | null>(null);
+  const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [seriesActive, setSeriesActive] = useState(false);
   const [curSeries, setCurSeries] = useState(-1);
   const [newSeriesActive, setNewSeriesActive] = useState(false);
@@ -77,6 +81,10 @@ export default function PublishModal({
 
   useEffect(() => {
     setCurSeries(post.series?.id || -1);
+    if (post.thumbnail) {
+      setThumbnailActive(true);
+      setThumbnailUrl(post.thumbnail);
+    }
   }, [post]);
 
   const onCancelClick = () => {
@@ -85,9 +93,8 @@ export default function PublishModal({
 
   const onDeleteClick = () => {
     setThumbnailActive(false);
-    setPost(post => {
-      return { ...post, thumbnail: '' };
-    });
+    setThumbnailData(null);
+    setThumbnailUrl('');
   };
 
   const onUploadClick = () => {
@@ -96,12 +103,31 @@ export default function PublishModal({
   };
 
   const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPost(post => {
-      return {
-        ...post,
-        thumbnail: e.target.files ? URL.createObjectURL(e.target.files[0]) : '',
-      };
+    if (!e.target.files) return;
+
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('thumbnail', file);
+    const value = [
+      {
+        title: file.name,
+        content: file.name,
+      },
+    ];
+    const blob = new Blob([JSON.stringify(value)], {
+      type: 'application/json',
     });
+    formData.append('data', blob);
+    formData.append('series', curSeries > -1 ? curSeries.toString() : '');
+    formData.append('title', post.title);
+    formData.append('preview', post.preview || '');
+    formData.append('content', post.content);
+    formData.append('is_private', post.is_private ? 'true' : 'false');
+    formData.append('create_tag', post.create_tag || '');
+    formData.append('url', post.url || '');
+
+    setThumbnailData(formData);
+    setThumbnailUrl(URL.createObjectURL(e.target.files[0]));
   };
 
   const onPreviewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -244,16 +270,30 @@ export default function PublishModal({
       const postParams: postPostType = {
         series: curSeries > -1 ? curSeries : null,
         title: post.title,
+        thumbnail: thumbnailData || undefined,
         preview: post.preview || null,
         content: post.content,
         is_private: post.is_private,
         create_tag: post.create_tag || null,
         url: post.url || null,
       };
+      if (!thumbnailUrl) postParams.thumbnail = null;
+      const postConfig = thumbnailData
+        ? { headers: { 'Content-Type': 'multipart/form-data' } }
+        : undefined;
+
       const response =
         pid === null
-          ? await axios.post(`/api/v1/velog/write/`, postParams)
-          : await axios.put(`/api/v1/velog/write/id=${pid}/`, postParams);
+          ? await axios.post(
+              `/api/v1/velog/write/`,
+              thumbnailData || postParams,
+              postConfig
+            )
+          : await axios.patch(
+              `/api/v1/velog/write/id=${pid}/`,
+              thumbnailData || postParams,
+              postConfig
+            );
 
       if (user !== null) navigate(`/@${user.username}/${post.url}`);
     } catch (error) {
@@ -295,7 +335,7 @@ export default function PublishModal({
                   {thumbnailActive ? (
                     <img
                       className={styles.thumbnail}
-                      src={post.thumbnail}
+                      src={thumbnailUrl}
                       alt="썸네일"
                     />
                   ) : (

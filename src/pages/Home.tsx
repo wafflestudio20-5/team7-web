@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import HomeContents from '../components/HomeContents';
 import { post } from '../contexts/types';
-import { useDateFilter } from '../contexts/LoginProvider';
+import { useDateFilter } from '../contexts/DateProvider';
 
 function Home() {
   const tempPosts: post[] = [];

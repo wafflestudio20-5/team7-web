@@ -37,18 +37,9 @@ const initialSetting: loginSetting = {
   googleFinish: () => undefined,
   changeUserValue: (newUser: user) => undefined,
 };
-type filterType = {
-  dateFilter: string;
-  setDateFilter: React.Dispatch<React.SetStateAction<string>>;
-};
-const initialFilter: filterType = {
-  dateFilter: '',
-  setDateFilter: () => undefined,
-};
 
 const loginValueContext = createContext<loginValue>(initialValue);
 const loginSettingContext = createContext<loginSetting>(initialSetting);
-const dateFilterContext = createContext<filterType>(initialFilter);
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -204,22 +195,10 @@ export default function LoginProvider({
     autoLogin();
   }, [autoLogin]);
 
-  const [dateFilter, setDateFilter] = useState('d');
-
-  const filterSet = useMemo(
-    () => ({
-      dateFilter,
-      setDateFilter,
-    }),
-    [dateFilter, setDateFilter]
-  );
-
   return (
     <loginValueContext.Provider value={valueSet}>
       <loginSettingContext.Provider value={setting}>
-        <dateFilterContext.Provider value={filterSet}>
-          {children}
-        </dateFilterContext.Provider>
+        {children}
       </loginSettingContext.Provider>
     </loginValueContext.Provider>
   );
@@ -235,14 +214,6 @@ export function useLoginValue() {
 
 export function useLoginSetting() {
   const value = useContext(loginSettingContext);
-  if (value === undefined) {
-    throw new Error('context error');
-  }
-  return value;
-}
-
-export function useDateFilter() {
-  const value = useContext(dateFilterContext);
   if (value === undefined) {
     throw new Error('context error');
   }

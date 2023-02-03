@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './HeaderFilter.module.scss';
-import { useDateFilter } from '../contexts/LoginProvider';
+import { useDateFilter } from '../contexts/DateProvider';
 
 const cx = classNames.bind(styles);
 

@@ -70,7 +70,7 @@ function Search() {
 
   useEffect(() => {
     if (page > Math.ceil(postCount / 20)) setHasMore(false);
-    console.log(Math.ceil(postCount / 20), page);
+    else setHasMore(true);
   }, [page, postCount]);
 
   return (

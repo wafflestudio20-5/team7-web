@@ -369,7 +369,9 @@ function Write() {
           return {
             ...post,
             tags: [...post.tags, { name: newTag, postCount: 0 }],
-            create_tag: `${post.create_tag}${newTag}, `,
+            create_tag: `${
+              post.create_tag === null ? '' : post.create_tag
+            }${newTag}, `,
           };
         });
       }
@@ -392,7 +394,9 @@ function Write() {
           return {
             ...post,
             tags: [...post.tags, { name: text, postCount: 0 }],
-            create_tag: `${post.create_tag}${text}, `,
+            create_tag: `${
+              post.create_tag === null ? '' : post.create_tag
+            }${text}, `,
           };
         });
         setTagText('');

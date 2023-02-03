@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './HeaderFilter.module.scss';
+import { useDateFilter } from '../contexts/LoginProvider';
 
 const cx = classNames.bind(styles);
 
 export default function HeaderFilter() {
   const path = useLocation().pathname;
+  const { setDateFilter } = useDateFilter();
 
   const [filterOn, setFilterOn] = useState(false);
   const [filterValue, setFilterValue] = useState('오늘');
@@ -23,6 +25,20 @@ export default function HeaderFilter() {
 
   function changeFilter(e: any) {
     setFilterValue(e.target.innerHTML);
+    switch (e.target.innerHTML) {
+      case '올해':
+        setDateFilter('y');
+        break;
+      case '이번 달':
+        setDateFilter('m');
+        break;
+      case '이번 주':
+        setDateFilter('w');
+        break;
+      default:
+        setDateFilter('d');
+        break;
+    }
     setFilterOn(false);
   }
 

@@ -13,7 +13,7 @@ type post_type = {
 };
 
 // eslint-disable-next-line camelcase
-function SeriesComp({ series_order, post }: post_type) {
+function OrderPostComp({ series_order, post }: post_type) {
   const timeNow = moment();
   const timePost = moment(post.created_at);
 
@@ -50,4 +50,4 @@ function SeriesComp({ series_order, post }: post_type) {
   );
 }
 
-export default SeriesComp;
+export default OrderPostComp;

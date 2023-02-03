@@ -133,3 +133,131 @@
 .postDiv + .postDiv {
   margin-top: 4rem;
 }
+
+.seriesCustom {
+  display: flex;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  height: 2rem;
+  -webkit-box-align: center;
+  align-items: center;
+  button {
+    padding: 0;
+    outline: none;
+    border: none;
+    background: none;
+    font-size: inherit;
+    cursor: pointer;
+    color: var(--text3);
+  }
+  button + button {
+    margin-left: 0.5rem;
+  }
+  .editButton {
+     display: inline-flex;
+     -webkit-box-align: center;
+     align-items: center;
+     -webkit-box-pack: center;
+     justify-content: center;
+     font-weight: bold;
+     cursor: pointer;
+     outline: none;
+     border: none;
+     background: var(--primary1);
+     color: var(--button-text);
+     border-radius: 4px;
+     padding: 0 1.25rem;
+     height: 2rem;
+     font-size: 1rem;
+   }
+}
+
+.title {
+  display: flex;
+  letter-spacing: -0.004em;
+  margin-top: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--text1);
+  outline: none;
+  border: none;
+}
+
+.deleteModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 60;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  .modalContainer {
+    width: 25rem;
+    border-radius: 4px;
+    background: var(--bg-element1);
+    padding: 2rem 1.5rem;
+    box-shadow: rgba(black, 0.9) 0 2px 12px 0;
+    animation: 0.4s ease-in-out 0s 1 normal forwards running cptskd;
+  }
+  h3 {
+    margin: 0px;
+    font-size: 1.5rem;
+    color: var(--text1);
+    line-height: 1.5;
+    font-weight: bold;
+  }
+  .message {
+    line-height: 1.5;
+    font-size: 1rem;
+    color: var(--text2);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    white-space: pre-wrap;
+  }
+  .button-area {
+    margin-top: 2rem;
+    display: flex;
+    -webkit-box-pack: end;
+    justify-content: flex-end;
+  }
+  .cancle {
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background: none;
+    color: var(--primary1);
+    border-radius: 4px;
+    padding: 0 1.25rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+  .deleteButton {
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background: var(--primary1);
+    color: var(--button-text);
+    border-radius: 4px;
+    padding: 0 1.25rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+}

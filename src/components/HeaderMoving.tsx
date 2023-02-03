@@ -103,7 +103,7 @@ export default function Header() {
               />
             </Link>
             <Link to={`/${path.split('/')[1]}`}>
-              {path.split('/')[1].slice(1)}
+              {path.split('/')[1].slice(1)}.log
             </Link>
           </div>
           <div className={cx('right')}>
@@ -167,9 +167,6 @@ export default function Header() {
             <div className={cx('menu-wrapper')}>
               <Link to={`/@${user ? user.username : ''}`}>
                 <div>내 벨로그</div>
-              </Link>
-              <Link to="/saves">
-                <div>임시 글</div>
               </Link>
               <Link to="/lists/liked">
                 <div>읽기 목록</div>

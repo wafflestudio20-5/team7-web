@@ -612,14 +612,6 @@ function Write() {
     });
   };
 
-  const onSaveClick = () => {
-    if (post.title && post.content) {
-      showToast({ type: 'success', message: '포스트가 임시저장되었습니다.' });
-    } else {
-      showToast({ type: 'error', message: '제목 또는 내용이 비어있습니다.' });
-    }
-  };
-
   const onPublishClick = () => {
     setModalActive(true);
     setPost(post => {
@@ -747,13 +739,6 @@ function Write() {
             <span>나가기</span>
           </button>
           <div className={styles.md_footer_right}>
-            <button
-              type="button"
-              className={styles.md_footer_save}
-              onClick={onSaveClick}
-            >
-              임시저장
-            </button>
             <button
               type="button"
               className={styles.md_footer_publish}

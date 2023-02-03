@@ -24,7 +24,12 @@ export default function Header() {
 
   return (
     <div>
-      <div className={cx('header')}>
+      <div
+        className={cx('header')}
+        style={{
+          background: path[1] === '@' ? 'var(--bg-page2)' : 'var(--bg-page1)',
+        }}
+      >
         <div className={cx('center')}>
           <div className={path[1] === '@' ? cx('blind') : cx('left')}>
             <Link to="/">velog</Link>
@@ -37,7 +42,7 @@ export default function Header() {
               />
             </Link>
             <Link to={`/${path.split('/')[1]}`}>
-              {path.split('/')[1].slice(1)}
+              {path.split('/')[1].slice(1)}.log
             </Link>
           </div>
           <div className={cx('right')}>
@@ -106,9 +111,6 @@ export default function Header() {
             >
               <Link to={`/@${user ? user.username : ''}`}>
                 <div>내 벨로그</div>
-              </Link>
-              <Link to="/saves">
-                <div>임시 글</div>
               </Link>
               <Link to="/lists/liked">
                 <div>읽기 목록</div>

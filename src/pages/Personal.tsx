@@ -24,7 +24,6 @@ type tagGetType = {
 function Personal() {
   const path = useLocation().search;
 
-  const [query, setQuery] = useState('');
   const [word, setWord] = useState('');
   const [tagQuery, setTagQuery] = useState('');
   const { id } = useParams();
@@ -133,19 +132,22 @@ function Personal() {
                   <Link to={`/${id}`}>전체보기</Link>
                   <span>({allPosts})</span>
                 </li>
-                {userTags?.map((tag: tagGetType) => (
-                  <li
-                    className={cx(
-                      'tagElem',
-                      tagQuery === tag.tag_name ? 'tagActive' : 'none'
-                    )}
-                  >
-                    <Link to={`/${id}?tag=${tag.tag_name}`}>
-                      {tag.tag_name}
-                    </Link>
-                    <span>({tag.postCount})</span>
-                  </li>
-                ))}
+                {userTags?.map(
+                  (tag: tagGetType) =>
+                    tag.postCount !== 0 && (
+                      <li
+                        className={cx(
+                          'tagElem',
+                          tagQuery === tag.tag_name ? 'tagActive' : 'none'
+                        )}
+                      >
+                        <Link to={`/${id}?tag=${tag.tag_name}`}>
+                          {tag.tag_name}
+                        </Link>
+                        <span>({tag.postCount})</span>
+                      </li>
+                    )
+                )}
               </ul>
             </div>
           </div>

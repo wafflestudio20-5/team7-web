@@ -470,7 +470,7 @@ function PersonalPost() {
           </div>
         </div>
       </div>
-      <InterestPost />
+      <InterestPost tags={post.tags} pid={post.pid} />
     </div>
   );
 }

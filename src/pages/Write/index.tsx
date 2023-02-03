@@ -454,7 +454,7 @@ function Write() {
 
     try {
       const response = await axios.post(
-        `/api/v1/velog/image_upload/${post.pid}`,
+        `/api/v1/velog/image_upload/1`,
         imageData,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );

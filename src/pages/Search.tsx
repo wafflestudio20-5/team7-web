@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -20,24 +20,29 @@ function Search() {
   const initialPost: post[] = [];
   const [posts, setPosts] = useState(initialPost);
   const [page, setPage] = useState(1);
+  const [postCount, setCount] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
 
   const updatePosts = useCallback(
     debounce(async (str: string) => {
       try {
         if (str === '') {
           setPosts([]);
+          setPage(page => page + 1);
+          setCount(0);
+          setHasMore(false);
         } else if (username === null) {
-          const response = await axios.get(
-            `/api/v1/velog/search?page=${page}&q=${str}`
-          );
-          setPosts(response.data.results);
-          setPage(page + 1);
+          const response = await axios.get(`/api/v1/velog/search?q=${str}`);
+          setPosts(posts => posts.concat(response.data.results));
+          setPage(page => page + 1);
+          setCount(response.data.count);
         } else {
           const response = await axios.get(
-            `/api/v1/velog/search?page=${page}&q=${str}&username=${username}`
+            `/api/v1/velog/search?q=${str}&username=${username}`
           );
-          setPosts(response.data.results);
-          setPage(page + 1);
+          setPosts(posts => posts.concat(response.data.results));
+          setPage(page => page + 1);
+          setCount(response.data.count);
         }
       } catch (e) {
         console.error(e);
@@ -47,11 +52,26 @@ function Search() {
   );
   function debounceSearch(str: string) {
     setPage(1);
+    setHasMore(true);
+    setPosts([]);
     setQuery(str);
     updatePosts(str);
   }
 
-  const postCount = posts !== undefined ? posts.length : 0;
+  async function fetchPosts() {
+    if (page !== 1) {
+      try {
+        updatePosts(query);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (page > Math.ceil(postCount / 20)) setHasMore(false);
+    else setHasMore(true);
+  }, [page, postCount]);
 
   return (
     <div>
@@ -96,6 +116,29 @@ function Search() {
                 username={username === null ? '' : username}
               />
             ))}
+            {hasMore && (
+              <div className={cx('buttonContainer')}>
+                <button
+                  type="button"
+                  className={cx('showMore')}
+                  onClick={fetchPosts}
+                >
+                  <svg
+                    stroke="teal"
+                    fill="teal"
+                    strokeWidth="0"
+                    viewBox="0 0 24 24"
+                    data-testid="arrow"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
+                  </svg>
+                  포스트 더 보기
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

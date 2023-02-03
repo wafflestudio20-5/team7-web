@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import classNames from 'classnames/bind';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import axios from 'axios';
 // eslint-disable-next-line import/extensions,import/no-unresolved
+import { debounce } from 'lodash';
 import BigPostComp from '../components/BigPostComp';
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import styles from './Personal.module.scss';
@@ -21,16 +22,17 @@ type tagGetType = {
 };
 
 function Personal() {
-  const path = useLocation().pathname;
-  const [query, setQuery] = useState('');
-  const tagQuery = new URLSearchParams(window.location.search).get('tag');
+  const path = useLocation().search;
+
+  const [word, setWord] = useState('');
+  const [tagQuery, setTagQuery] = useState('');
   const { id } = useParams();
 
   const [postList, setPost] = useState([]);
   const [allPosts, setAllCount] = useState(0);
   const getPost = useCallback(async () => {
     try {
-      if (tagQuery === null) {
+      if (tagQuery === '') {
         const response = await axios.get(`/api/v1/velog/${id}`);
         setPost(response.data);
         setAllCount(response.data.length);
@@ -43,7 +45,31 @@ function Personal() {
     } catch (e) {
       console.error(e);
     }
-  }, [id]);
+  }, [tagQuery]);
+
+  const updatePosts = useCallback(
+    debounce(async (str: string) => {
+      try {
+        if (str === '') {
+          const response = await axios.get(`/api/v1/velog/${id}`);
+          setPost(response.data);
+        } else {
+          const response = await axios.get(
+            `/api/v1/velog/search/?q=${str}&username=${id?.split('@')[1]}`
+          );
+          setPost(response.data.results);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }, 500),
+    []
+  );
+
+  function searchIn(str: string) {
+    setWord(str);
+    updatePosts(str);
+  }
 
   const [userTags, setTags] = useState([]);
   const getTags = useCallback(async () => {
@@ -57,8 +83,18 @@ function Personal() {
 
   useEffect(() => {
     getTags();
+  }, []);
+
+  useEffect(() => {
+    if (path.split('=')[0] === '?tag') {
+      const qTag = path.split('=')[1];
+      setTagQuery(qTag);
+    } else setTagQuery('');
+  }, [path]);
+
+  useEffect(() => {
     getPost();
-  }, [id, path]);
+  }, [tagQuery]);
 
   return (
     <div>
@@ -75,8 +111,8 @@ function Personal() {
             </svg>
             <input
               placeholder="검색어를 입력하세요"
-              value={query}
-              onChange={e => setQuery(e.target.value)}
+              value={word}
+              onChange={e => searchIn(e.target.value)}
             />
           </div>
         </section>
@@ -90,25 +126,28 @@ function Personal() {
                 <li
                   className={cx(
                     'tagElem',
-                    tagQuery === null ? 'tagActive' : 'none'
+                    tagQuery === '' ? 'tagActive' : 'none'
                   )}
                 >
                   <Link to={`/${id}`}>전체보기</Link>
                   <span>({allPosts})</span>
                 </li>
-                {userTags?.map((tag: tagGetType) => (
-                  <li
-                    className={cx(
-                      'tagElem',
-                      tagQuery === tag.tag_name ? 'tagActive' : 'none'
-                    )}
-                  >
-                    <Link to={`/${id}?tag=${tag.tag_name}`}>
-                      {tag.tag_name}
-                    </Link>
-                    <span>({tag.postCount})</span>
-                  </li>
-                ))}
+                {userTags?.map(
+                  (tag: tagGetType) =>
+                    tag.postCount !== 0 && (
+                      <li
+                        className={cx(
+                          'tagElem',
+                          tagQuery === tag.tag_name ? 'tagActive' : 'none'
+                        )}
+                      >
+                        <Link to={`/${id}?tag=${tag.tag_name}`}>
+                          {tag.tag_name}
+                        </Link>
+                        <span>({tag.postCount})</span>
+                      </li>
+                    )
+                )}
               </ul>
             </div>
           </div>
@@ -117,7 +156,7 @@ function Personal() {
 
       <div>
         <div className="postList">
-          {postList.map((postComp: post) => (
+          {postList?.map((postComp: post) => (
             <BigPostComp
               key={postComp.pid}
               postInfo={postComp}

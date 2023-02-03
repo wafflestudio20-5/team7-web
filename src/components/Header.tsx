@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
+import { constant } from 'lodash';
 import styles from './Header.module.scss';
 import { useLoginValue, useLoginSetting } from '../contexts/LoginProvider';
 
@@ -21,6 +22,10 @@ export default function Header() {
       setMenuOn(false);
     }
   }
+  const searchLink =
+    path[1] === '@'
+      ? `/search/?username=${path.split('/')[1].replace('@', '')}`
+      : '/search';
 
   return (
     <div>
@@ -46,7 +51,7 @@ export default function Header() {
             </Link>
           </div>
           <div className={cx('right')}>
-            <Link to="/search" className={cx('search')}>
+            <Link to={searchLink} className={cx('search')}>
               <svg width="17" height="17" viewBox="0 0 17 17">
                 <path
                   fillRule="evenodd"

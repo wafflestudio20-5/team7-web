@@ -57,11 +57,17 @@ type postGetType = {
   tags: tagGetType[];
   author: string;
   url: string;
+  preview: string | null;
+  thumbnail: string | null;
   created_at: string;
   updated_at: string;
   content: string;
   likes: string;
   is_active: boolean;
+  comments: commentType[];
+  is_private: boolean;
+  prev_post: post | null;
+  next_post: post | null;
 };
 
 let treeData: any;
@@ -85,7 +91,7 @@ function PersonalPost() {
     comments: [],
     likes: 0,
     is_private: false,
-    is_active: true,
+    is_active: false,
     create_tag: '',
   });
   const [authorInfo, setAuthorInfo] = useState<user>({
@@ -106,7 +112,6 @@ function PersonalPost() {
   const [commentLoadTrig, setCommentLoadTrig] = useState(false);
   const [tocFixed, setTocFixed] = useState(false);
   const [utilFixed, setUtilFixed] = useState(false);
-  const [likeClicked, setLikeClicked] = useState(false);
   const tocRef = useRef<HTMLDivElement>(null);
   const utilRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -119,7 +124,7 @@ function PersonalPost() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [atId, postUrl]);
 
   const getPost = useCallback(async () => {
     if (!atId || !postUrl) return;
@@ -138,6 +143,10 @@ function PersonalPost() {
         content,
         likes,
         is_active: isLikeActive,
+        comments,
+        is_private: isPrivate,
+        prev_post: prevPost,
+        next_post: nextPost,
       }: postGetType = response.data;
 
       const frontTags = tags.map(tag => {
@@ -161,6 +170,10 @@ function PersonalPost() {
         series,
         likes: parseInt(likes, 10),
         is_active: isLikeActive,
+        comments,
+        is_private: isPrivate,
+        prev_post: prevPost,
+        next_post: nextPost,
       });
       setLoad(true);
     } catch (error) {
@@ -180,9 +193,15 @@ function PersonalPost() {
       const response = await axios.get(`/api/v1/accounts/user/@${post.author}`);
       const userInfo: user = response.data;
       setAuthorInfo({ ...userInfo });
+
+      if (post.is_private && user?.username !== userInfo.username) {
+        showToast({ type: 'error', message: '비공개 게시글 입니다.' });
+        navigate(-1);
+      }
     } catch (error) {
       console.log(error);
     }
+    setLoad(false);
   }, [isLoad]);
 
   useEffect(() => {
@@ -190,8 +209,6 @@ function PersonalPost() {
   }, [getAuthor]);
 
   const getComment = useCallback(async () => {
-    if (!isLoad) return;
-
     try {
       const response = await axios.get(`/api/v1/velog/${post.pid}/comment/`);
       setPost({ ...post, comments: response.data });
@@ -267,8 +284,32 @@ function PersonalPost() {
     open('포스트 삭제', '정말로 삭제하시겠습니까?', deletePost);
   };
 
+  const handleLike = useCallback(async () => {
+    try {
+      const postParams = {
+        series: post.series,
+        title: post.title,
+        url: post.url,
+        preview: post.preview,
+        content: post.content,
+        is_private: post.is_private,
+      };
+      const response = await axios.post(
+        `/api/v1/velog/@${post.author}/${post.url}/`,
+        postParams
+      );
+      setPost({
+        ...post,
+        likes: response.data.likes,
+        is_active: response.data.is_active,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [isLoad]);
+
   const onLikeClick = () => {
-    setLikeClicked(x => !x);
+    handleLike();
   };
 
   return (
@@ -307,11 +348,11 @@ function PersonalPost() {
             <div className={styles.like_container}>
               <button
                 type="button"
-                className={cx({ active: likeClicked })}
+                className={cx({ active: post.is_active })}
                 onClick={onLikeClick}
               >
                 <LikeIcon />
-                <span>0</span>
+                <span>{post.likes}</span>
               </button>
             </div>
           </div>
@@ -329,8 +370,8 @@ function PersonalPost() {
               <UtilBar
                 utilFixed={utilFixed}
                 likes={post.likes}
-                likeClicked={likeClicked}
-                setLikeClicked={setLikeClicked}
+                isActive={post.is_active}
+                onLikeClick={onLikeClick}
               />
             </div>
           </div>
@@ -377,36 +418,32 @@ function PersonalPost() {
         {post.prev_post && (
           <div className={styles.link_box}>
             <Link
-              to={`/@${authorInfo.username}/${post.url}`}
+              to={`/@${post.prev_post.author}/${post.prev_post.url}`}
               className={styles.left_link}
             >
               <div className={styles.arrow_container}>
                 <LeftArrowIcon />
               </div>
-              {post.prev_post && (
-                <div className={styles.desc_container}>
-                  <div className={styles.description}>이전 포스트</div>
-                  <h3>{post.prev_post.title}</h3>
-                </div>
-              )}
+              <div className={styles.desc_container}>
+                <div className={styles.description}>이전 포스트</div>
+                <h3>{post.prev_post.title}</h3>
+              </div>
             </Link>
           </div>
         )}
         {post.next_post && (
           <div className={styles.link_box}>
             <Link
-              to={`/@${authorInfo.username}/${post.url}`}
+              to={`/@${post.next_post.author}/${post.next_post.url}`}
               className={styles.right_link}
             >
               <div className={styles.arrow_container}>
                 <RightArrowIcon />
               </div>
-              {post.next_post && (
-                <div className={styles.desc_container}>
-                  <div className={styles.description}>다음 포스트</div>
-                  <h3>{post.next_post.title}</h3>
-                </div>
-              )}
+              <div className={styles.desc_container}>
+                <div className={styles.description}>다음 포스트</div>
+                <h3>{post.next_post.title}</h3>
+              </div>
             </Link>
           </div>
         )}

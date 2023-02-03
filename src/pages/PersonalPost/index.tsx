@@ -57,11 +57,16 @@ type postGetType = {
   tags: tagGetType[];
   author: string;
   url: string;
+  preview: string | null;
+  thumbnail: string | null;
   created_at: string;
   updated_at: string;
   content: string;
   likes: string;
   is_active: boolean;
+  is_private: boolean;
+  prev_post: post | null;
+  next_post: post | null;
 };
 
 let treeData: any;
@@ -119,7 +124,7 @@ function PersonalPost() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [atId, postUrl]);
 
   const getPost = useCallback(async () => {
     if (!atId || !postUrl) return;
@@ -138,6 +143,9 @@ function PersonalPost() {
         content,
         likes,
         is_active: isLikeActive,
+        is_private: isPrivate,
+        prev_post: prevPost,
+        next_post: nextPost,
       }: postGetType = response.data;
 
       const frontTags = tags.map(tag => {
@@ -161,6 +169,9 @@ function PersonalPost() {
         series,
         likes: parseInt(likes, 10),
         is_active: isLikeActive,
+        is_private: isPrivate,
+        prev_post: prevPost,
+        next_post: nextPost,
       });
       setLoad(true);
     } catch (error) {
@@ -180,6 +191,11 @@ function PersonalPost() {
       const response = await axios.get(`/api/v1/accounts/user/@${post.author}`);
       const userInfo: user = response.data;
       setAuthorInfo({ ...userInfo });
+
+      if (post.is_private && user?.username === userInfo.username) {
+        showToast({ type: 'error', message: '비공개 게시글 입니다.' });
+        navigate(-1);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -377,36 +393,32 @@ function PersonalPost() {
         {post.prev_post && (
           <div className={styles.link_box}>
             <Link
-              to={`/@${authorInfo.username}/${post.url}`}
+              to={`/@${post.prev_post.author}/${post.prev_post.url}`}
               className={styles.left_link}
             >
               <div className={styles.arrow_container}>
                 <LeftArrowIcon />
               </div>
-              {post.prev_post && (
-                <div className={styles.desc_container}>
-                  <div className={styles.description}>이전 포스트</div>
-                  <h3>{post.prev_post.title}</h3>
-                </div>
-              )}
+              <div className={styles.desc_container}>
+                <div className={styles.description}>이전 포스트</div>
+                <h3>{post.prev_post.title}</h3>
+              </div>
             </Link>
           </div>
         )}
         {post.next_post && (
           <div className={styles.link_box}>
             <Link
-              to={`/@${authorInfo.username}/${post.url}`}
+              to={`/@${post.next_post.author}/${post.next_post.url}`}
               className={styles.right_link}
             >
               <div className={styles.arrow_container}>
                 <RightArrowIcon />
               </div>
-              {post.next_post && (
-                <div className={styles.desc_container}>
-                  <div className={styles.description}>다음 포스트</div>
-                  <h3>{post.next_post.title}</h3>
-                </div>
-              )}
+              <div className={styles.desc_container}>
+                <div className={styles.description}>다음 포스트</div>
+                <h3>{post.next_post.title}</h3>
+              </div>
             </Link>
           </div>
         )}

@@ -403,7 +403,7 @@ function Write() {
       }
 
       target.value = '';
-    } else if (e.key === 'Backspace') {
+    } else if (e.key === 'Backspace' && text === '') {
       const tempTags = post.tags;
       if (tempTags.pop() === undefined) return;
 

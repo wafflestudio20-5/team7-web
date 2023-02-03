@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
-import { url } from 'inspector';
 import styles from './PublishModal.module.scss';
 import { ReactComponent as ImageIcon } from '../../assets/image.svg';
 import { ReactComponent as WorldIcon } from '../../assets/world.svg';

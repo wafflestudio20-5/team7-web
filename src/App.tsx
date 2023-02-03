@@ -48,14 +48,12 @@ function App() {
         <Route path="/write" element={<Write />} />
         <Route path="/saves" element={<Saves />} />
         <Route path="/setting" element={<Setting />} />
-        <Route path="/follows" element={<Follows />} />
         <Route element={<HeaderLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/recent" element={<Recent />} />
           <Route path="/lists">
             <Route path="liked" element={<ListsLiked />} />
             <Route path="read" element={<ListsRead />} />
-            <Route path="following" element={<ListsFollowing />} />
             <Route path="" element={<NotFound />} />
           </Route>
         </Route>

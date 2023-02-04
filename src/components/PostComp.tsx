@@ -80,7 +80,7 @@ export default function PostComp({ post }: postCompProps) {
         </div>
       </div>
       <div className={cx('footer')}>
-        <Link to={`@${post.author}`}>
+        <Link to={`/@${post.author}`}>
           <img
             className={cx('profile')}
             src={

@@ -12,8 +12,7 @@ function Home() {
 
   const [target, setTarget] = useState<HTMLElement | null>(null);
   let pageNumber: number = 1;
-
-  const [loading, setLoading] = useState(false);
+  let loading: Boolean = false;
 
   async function getVelog(
     [entry]: IntersectionObserverEntry[],
@@ -25,7 +24,7 @@ function Home() {
     if ((pageNumber === 1 || entry.isIntersecting) && !loading) {
       try {
         observer.unobserve(entry.target);
-        setLoading(true);
+        loading = true;
         const url =
           pageNumber === 1
             ? `/api/v1/velog/${dateFilter}`
@@ -33,7 +32,7 @@ function Home() {
         const response = await axios.get(url);
         setPosts(posts => posts.concat(response.data.results));
         pageNumber += 1;
-        setLoading(false);
+        loading = false;
         observer.observe(entry.target);
       } catch (error: Error | any) {
         console.log(error);
@@ -41,20 +40,14 @@ function Home() {
     }
   }
 
-  const acceptFilter = (dateFilter: any) => {
+  useEffect(() => {
     if (dateFilter !== filter) {
+      loading = false;
       setFilter(dateFilter);
       setPosts([]);
       pageNumber = 1;
-      setLoading(false);
     }
-  };
-
-  useEffect(() => {
-    acceptFilter(dateFilter);
-  }, [dateFilter]);
-
-  useEffect(() => {
+    console.log(loading, pageNumber);
     let observer: IntersectionObserver;
     if (target) {
       observer = new IntersectionObserver(getVelog, {

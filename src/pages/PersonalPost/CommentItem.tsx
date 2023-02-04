@@ -127,7 +127,14 @@ function CommentItem({
       <div className={styles.comment_head}>
         <div className={styles.profile}>
           <Link to={`/@${authorInfo.username}`}>
-            <img src={authorInfo.profile_image} alt="profile" />
+            <img
+              src={
+                authorInfo.profile_image && authorInfo.profile_image[0] === '/'
+                  ? `https://api.7elog.store${authorInfo.profile_image}`
+                  : authorInfo.profile_image
+              }
+              alt="profile"
+            />
           </Link>
           <div className={styles.comment_info}>
             <div className={styles.username}>

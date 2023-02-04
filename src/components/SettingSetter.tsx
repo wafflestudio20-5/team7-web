@@ -198,7 +198,14 @@ export default function SettingSetter() {
       <section className={cx('top')}>
         <div className={cx('thumbnail')}>
           {/* eslint-disable-next-line camelcase */}
-          <img src={input.profile_image} alt="profile_image" />
+          <img
+            src={
+              input.profile_image && input.profile_image[0] === '/'
+                ? `https://api.7elog.store${input.profile_image}`
+                : input.profile_image
+            }
+            alt="profile_image"
+          />
           <label htmlFor="profile_image">
             <input
               type="file"

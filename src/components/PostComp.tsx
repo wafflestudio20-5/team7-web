@@ -57,9 +57,9 @@ export default function PostComp({ post }: postCompProps) {
           <div className={cx('image-container')}>
             <img
               src={
-                post.thumbnail && post.thumbnail[0] === 'h'
-                  ? post.thumbnail
-                  : `https://api.7elog.store${post.thumbnail}`
+                post.thumbnail && post.thumbnail[0] === '/'
+                  ? `https://api.7elog.store${post.thumbnail}`
+                  : post.thumbnail
               }
               alt="post"
             />
@@ -84,9 +84,9 @@ export default function PostComp({ post }: postCompProps) {
           <img
             className={cx('profile')}
             src={
-              user.profile_image && user.profile_image[0] === 'h'
-                ? user.profile_image
-                : `https://api.7elog.store${user.profile_image}`
+              user.profile_image && user.profile_image[0] === '/'
+                ? `https://api.7elog.store${user.profile_image}`
+                : user.profile_image
             }
             alt="profile"
           />

@@ -37,9 +37,9 @@ function SeriesComp({ seriesInfo }: series_type) {
         <div>
           <img
             src={
-              seriesInfo.photo && seriesInfo.photo[0] === 'h'
-                ? seriesInfo.photo
-                : `https://api.7elog.store${seriesInfo.photo}`
+              seriesInfo.photo && seriesInfo.photo[0] === '/'
+                ? `https://api.7elog.store${seriesInfo.photo}`
+                : seriesInfo.photo
             }
             alt="thumbnail"
           />
@@ -56,7 +56,7 @@ function SeriesComp({ seriesInfo }: series_type) {
       <div className={cx('subInfo')}>
         <span className={cx('count')}>{seriesInfo.postNum}개의 포스트</span>
         <span className={cx('dot')}>·</span>
-        마지막 업테이트 {agoFormat}
+        마지막 업데이트 {agoFormat}
       </div>
     </div>
   );

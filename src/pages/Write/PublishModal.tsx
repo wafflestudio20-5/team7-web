@@ -275,8 +275,8 @@ export default function PublishModal({
         );
         thumbnailData.append('title', post.title);
         thumbnailData.append('preview', post.preview || '');
-        thumbnailData.append('content', post.content);
         thumbnailData.append('is_private', post.is_private ? 'true' : 'false');
+        thumbnailData.append('content', post.content);
         thumbnailData.append('create_tag', post.create_tag || '');
         thumbnailData.append('url', post.url || '');
       }

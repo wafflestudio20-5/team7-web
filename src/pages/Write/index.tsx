@@ -469,7 +469,6 @@ function Write() {
   }, [getImageLink]);
 
   useEffect(() => {
-    // 원래는 업로드 완료 후 링크 넣기
     if (!editorView || !imageLink) return;
     const cursor = editorView.state.selection.main;
 
@@ -652,7 +651,7 @@ function Write() {
     setPost(post => {
       return {
         ...post,
-        preview: post.content.slice(0, 150),
+        preview: post.content.slice(0, 150).replace(/\r|\n/g, ''),
         url: post.title,
       };
     });

@@ -8,7 +8,7 @@ const cx = classNames.bind(styles);
 
 export default function HeaderFilter() {
   const path = useLocation().pathname;
-  const { setDateFilter } = useDateFilter();
+  const { dateFilter, setDateFilter } = useDateFilter();
 
   const [filterOn, setFilterOn] = useState(false);
   const [filterValue, setFilterValue] = useState('오늘');
@@ -41,6 +41,23 @@ export default function HeaderFilter() {
     }
     setFilterOn(false);
   }
+
+  useEffect(() => {
+    switch (dateFilter) {
+      case 'year':
+        setFilterValue('올해');
+        break;
+      case 'month':
+        setFilterValue('이번 달');
+        break;
+      case 'week':
+        setFilterValue('이번 주');
+        break;
+      default:
+        setFilterValue('오늘');
+        break;
+    }
+  }, [dateFilter]);
 
   useEffect(() => {
     if (path === '/') setUnderlineDest(0);

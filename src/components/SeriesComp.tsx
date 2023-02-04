@@ -35,7 +35,14 @@ function SeriesComp({ seriesInfo }: series_type) {
         className={cx('link')}
       >
         <div>
-          <img src={seriesInfo.photo} alt="thumbnail" />
+          <img
+            src={
+              seriesInfo.photo && seriesInfo.photo[0] === 'h'
+                ? seriesInfo.photo
+                : `https://api.7elog.store${seriesInfo.photo}`
+            }
+            alt="thumbnail"
+          />
         </div>
       </Link>
       <h4>

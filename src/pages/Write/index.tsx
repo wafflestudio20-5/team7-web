@@ -651,7 +651,8 @@ function Write() {
     setPost(post => {
       return {
         ...post,
-        preview: post.content.slice(0, 150).replace(/\r|\n/g, ''),
+        preview:
+          post.preview || post.content.slice(0, 150).replace(/\r|\n/g, ''),
         url: post.title,
       };
     });

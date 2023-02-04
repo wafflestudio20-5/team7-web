@@ -404,6 +404,12 @@
       tab-size: 4;
       hyphens: none;
     }
+
+    img {
+      display: block;
+      margin: 3rem auto;
+      max-width: 100%;
+    }
   }
 
   .pv_footer {

@@ -117,14 +117,6 @@ export default function PublishModal({
       type: 'application/json',
     });
     formData.append('data', blob);
-    formData.append('series', curSeries > -1 ? curSeries.toString() : '');
-    formData.append('title', post.title);
-    formData.append('preview', post.preview || '');
-    formData.append('content', post.content);
-    formData.append('is_private', post.is_private ? 'true' : 'false');
-    formData.append('create_tag', post.create_tag || '');
-    formData.append('url', post.url || '');
-
     setThumbnailData(formData);
     setThumbnailUrl(URL.createObjectURL(e.target.files[0]));
   };
@@ -276,6 +268,19 @@ export default function PublishModal({
         create_tag: post.create_tag || null,
         url: post.url || null,
       };
+      if (thumbnailData) {
+        thumbnailData.append(
+          'series',
+          curSeries > -1 ? curSeries.toString() : ''
+        );
+        thumbnailData.append('title', post.title);
+        thumbnailData.append('preview', post.preview || '');
+        thumbnailData.append('is_private', post.is_private ? 'true' : 'false');
+        thumbnailData.append('content', post.content);
+        thumbnailData.append('create_tag', post.create_tag || '');
+        thumbnailData.append('url', post.url || '');
+      }
+
       if (!thumbnailUrl) postParams.thumbnail = null;
       const postConfig = thumbnailData
         ? { headers: { 'Content-Type': 'multipart/form-data' } }

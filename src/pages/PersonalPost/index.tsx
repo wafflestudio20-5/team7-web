@@ -242,9 +242,12 @@ function PersonalPost() {
           return child !== '\n' && child.type[0] === 'h';
         })
         .map((child: any) => {
+          console.log(child);
           const mdKey: string = child.key;
           const mdRank: number = parseInt(child.type.slice(1), 10);
-          const mdContent: string = child.props.children[0];
+          const mdContent: string = child.props.children
+            ? child.props.children[0]
+            : ' ';
 
           return { key: mdKey, rank: mdRank, content: mdContent };
         })
@@ -274,7 +277,7 @@ function PersonalPost() {
   const deletePost = async () => {
     try {
       const response = await axios.delete(`/api/v1/velog/${atId}/${postUrl}/`);
-      navigate(-1);
+      navigate(`/${atId}`);
     } catch (error) {
       showToast({ type: 'error', message: '다시 시도 해주세요.' });
     }

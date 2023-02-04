@@ -22,7 +22,14 @@ function UserIntro({ userInfo }: user_type) {
     <div className={cx('user')}>
       <div className={cx('intro')}>
         <Link to={`/@${userInfo.username}`}>
-          <img src={userInfo.profile_image} alt="profile" />
+          <img
+            src={
+              userInfo.profile_image && userInfo.profile_image[0] === '/'
+                ? `https://api.7elog.store${userInfo.profile_image}`
+                : userInfo.profile_image
+            }
+            alt="profile"
+          />
         </Link>
         <div className={cx('textIntro')}>
           <div className={cx('name')}>

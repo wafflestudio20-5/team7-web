@@ -180,7 +180,7 @@ export default function LoginProvider({
         }
       );
       axios.defaults.headers.common.Authorization = `Bearer ${response.data.access}`;
-      const response2 = await axios.get('/api/v1/accounts/user');
+      const response2 = await axios.get('/api/v1/accounts/user/');
       setLoginValue({
         isLogin: true,
         user: response2.data,

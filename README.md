@@ -65,7 +65,7 @@
 
 ### 6. 유저 페이지
   - 유저가 작성한 글, 시리즈를 조회하고 검색할 수 있습니다. 
-<img width="777" alt="image" src="https://user-images.githubusercontent.com/110719049/216743886-5dae9166-08ac-4fa5-aced-0d4cc6a80c8f.png">
+<img width="777" alt="image" src="https://user-images.githubusercontent.com/110719049/216748580-55134246-451d-4d32-8fa4-ef2c55dd4a62.png">
 
 ### 7. 설정 페이지
   - 유저의 이름, 소개, 이미지, 소셜 계정 정보 등을 설정할 수 있습니다.  

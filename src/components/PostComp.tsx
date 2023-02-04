@@ -55,7 +55,14 @@ export default function PostComp({ post }: postCompProps) {
       {post.thumbnail !== null && post.thumbnail !== '' && (
         <Link className={cx('image-link')} to={`/@${post.author}/${post.url}`}>
           <div className={cx('image-container')}>
-            <img src={post.thumbnail} alt="post" />
+            <img
+              src={
+                post.thumbnail && post.thumbnail[0] === 'h'
+                  ? post.thumbnail
+                  : `https://api.7elog.store${post.thumbnail}`
+              }
+              alt="post"
+            />
           </div>
         </Link>
       )}
@@ -76,7 +83,11 @@ export default function PostComp({ post }: postCompProps) {
         <Link to={`@${post.author}`}>
           <img
             className={cx('profile')}
-            src={user.profile_image}
+            src={
+              user.profile_image && user.profile_image[0] === 'h'
+                ? user.profile_image
+                : `https://api.7elog.store${user.profile_image}`
+            }
             alt="profile"
           />
           by

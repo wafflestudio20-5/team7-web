@@ -130,7 +130,7 @@ function PersonalPost() {
     if (!atId || !postUrl) return;
 
     try {
-      const response = await axios.get(`/api/v1/velog/${atId}/${postUrl}`);
+      const response = await axios.get(`/api/v1/velog/${atId}/${postUrl}/`);
       const {
         pid,
         series,
@@ -400,7 +400,15 @@ function PersonalPost() {
         <div className={styles.name_card_box}>
           <div className={styles.name_card}>
             <Link to={`/@${authorInfo.username}`}>
-              <img src={authorInfo.profile_image} alt="profile" />
+              <img
+                src={
+                  authorInfo.profile_image &&
+                  authorInfo.profile_image[0] === '/'
+                    ? `https://api.7elog.store${authorInfo.profile_image}`
+                    : authorInfo.profile_image
+                }
+                alt="profile"
+              />
             </Link>
             <div className={styles.name_desc}>
               <div className={styles.name}>

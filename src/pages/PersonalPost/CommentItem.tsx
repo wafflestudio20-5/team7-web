@@ -12,6 +12,7 @@ import Comment from './Comment';
 import { useModalActions } from '../../contexts/ModalProvider';
 import CommentWrite from './CommentWrite';
 import { showToast } from '../../components/Toast';
+import { useLoginValue } from '../../contexts/LoginProvider';
 
 interface commentProps {
   comment: commentType;
@@ -37,6 +38,8 @@ function CommentItem({
   commentList,
   setCommentLoadTrig,
 }: commentProps) {
+  const loginUser = useLoginValue().user;
+
   const [children, setChildren] = useState<commentType[]>([]);
   const [authorInfo, setAuthorInfo] = useState<user>({
     username: '',
@@ -150,14 +153,17 @@ function CommentItem({
           </div>
         </div>
         <div className={styles.actions}>
-          {replyRevise || (
-            <span onClick={toggleReplyRevise} role="presentation">
-              수정
+          {replyRevise ||
+            (authorInfo.username === loginUser?.username && (
+              <span onClick={toggleReplyRevise} role="presentation">
+                수정
+              </span>
+            ))}
+          {authorInfo.username === loginUser?.username && (
+            <span onClick={onDeleteClick} role="presentation">
+              삭제
             </span>
           )}
-          <span onClick={onDeleteClick} role="presentation">
-            삭제
-          </span>
         </div>
       </div>
       {replyRevise ? (

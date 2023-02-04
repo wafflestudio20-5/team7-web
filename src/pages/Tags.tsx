@@ -76,18 +76,25 @@ function Tags() {
           </div>
         </div>
         <section className={cx('tagSection')}>
-          {tagList.map((tagInfo: tagGetType) => (
-            <div className={cx('tagComp')}>
-              <div>
-                <Link to={`/tags/${tagInfo.tag_name}`} className={cx('title')}>
-                  {tagInfo.tag_name}
-                </Link>
-              </div>
-              <div className={cx('count')}>
-                총 {tagInfo.postCount}개의 포스트
-              </div>
-            </div>
-          ))}
+          {tagList.map(
+            (tagInfo: tagGetType) =>
+              tagInfo.tag_name !== '' &&
+              tagInfo.postCount !== 0 && (
+                <div className={cx('tagComp')}>
+                  <div>
+                    <Link
+                      to={`/tags/${tagInfo.tag_name}`}
+                      className={cx('title')}
+                    >
+                      {tagInfo.tag_name}
+                    </Link>
+                  </div>
+                  <div className={cx('count')}>
+                    총 {tagInfo.postCount}개의 포스트
+                  </div>
+                </div>
+              )
+          )}
         </section>
       </main>
     </div>
